@@ -616,6 +616,10 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                 if (mEZPlayer != null) {
                     stopDrag(false);
                 }
+                // TODO: 2016/9/9 java.lang.NullPointerException
+//                at com.videogo.ui.realplay.EZRealPlayActivity$4.onEnd(EZRealPlayActivity.java:619)
+//                at com.videogo.widget.CustomTouchListener.touch(CustomTouchListener.java:206)
+//                at com.videogo.widget.CustomTouchListener.onTouch(CustomTouchListener.java:101) 
                 if (mEZPlayer != null && mDeviceInfo.isSupportZoom()) {
                     stopZoom();
                 }
