@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:background="@drawable/item"
+    >/
+    
+    <TextView 
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#019B79"
+        android:text="智慧培养箱"
+        android:textSize="18sp"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:padding="10dip"
+        />
+    
+    <ImageView android:id="@+id/caution"
+        android:layout_width="20dp" 
+        android:layout_height="20dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/caution"
+        android:layout_toRightOf="@id/name"
+        />
+    
+    <ImageView android:id="@+id/caution1"
+        android:layout_width="20dp" 
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/caution"
+        android:layout_toRightOf="@id/caution"
+        />
+    
+    <ImageView android:id="@+id/caution2"
+        android:layout_width="20dp" 
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/caution"
+        android:layout_toRightOf="@id/caution1"
+        />
+    
+    <ImageView android:id="@+id/caution3"
+        android:layout_width="20dp" 
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/caution"
+        android:layout_toRightOf="@id/caution2"
+        />
+    
+     <TextView android:id="@+id/no"
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:paddingLeft="10dp"
+         android:layout_marginTop="-8dp"
+         android:paddingBottom="5dp"
+         android:layout_below="@id/name"
+         android:layout_alignParentLeft="true"
+         android:gravity="center_vertical"
+         android:text="No.11124"
+         android:textColor="@android:color/darker_gray"
+         />
+    
+     <TextView android:id="@+id/time"
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:paddingLeft="10dp"
+         android:layout_marginTop="-5dp"
+         android:paddingBottom="5dp"
+         android:layout_below="@id/no"
+         android:layout_alignParentLeft="true"
+         android:gravity="center_vertical"
+         android:text="2015-6-13"
+         android:textColor="@android:color/darker_gray"
+         />
+    
+     <View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#E6E2DE"
+        android:layout_below="@+id/time"
+        android:id="@+id/line"
+        />
+     
+     <TextView android:layout_below="@id/line"
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"
+         android:paddingTop="20dip"
+         android:paddingLeft="10dip"
+         android:paddingRight="10dip"
+         android:paddingBottom="20dip"
+         android:id="@+id/content"
+         android:text="告警告警告警告警告警告警告警告警告警告警告警告警告警"
+         />
+     
+     
+     
+     
+    
+
+</RelativeLayout>

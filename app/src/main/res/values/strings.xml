@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">富智</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="CustomProgressDialog" parent="@style/CustomDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <string name="register_normal_useraccount">姓名：</string>
+    <string name="register_normal_useraccount_hint">请输入您的姓名</string>
+    <string name="register_normal_email">帐户名：</string>
+    <string name="register_normal_email_hint">请输入您的帐号名</string>
+    <string name="register_normal_password">密码：</string>
+    <string name="register_normal_password_hint">请输入密码</string>
+    <string name="register_normal_repassword">确认密码：</string>
+    <string name="register_normal_repassword_hint">请输入确认密码</string>
+    <string name="title_activity_location">LocationActivity</string>
+
+    <!--人工干预-->
+    <string name="scheme_default_time_5m">5分钟</string>
+    <string name="scheme_default_time_10m">10分钟</string>
+    <string name="scheme_default_time_15m">15分钟</string>
+    <string name="scheme_default_time_30m">30分钟</string>
+    <string name="scheme_default_customer">自定义</string>
+
+    <!--没选中设备时显示的信息-->
+    <string name="equipment_not_selected_text">请到设备列表中选择设备</string>
+</resources>

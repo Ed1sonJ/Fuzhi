@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--application-->
+    <color name="title_background">#20282b</color>
+
+    <!--fragment_chart_background_orginal-->
+    <color name="chart_background">#64ffda</color>
+
+    <!--others-->
+    <color name="citylist_divider">#ffd8d8d8</color>
+    <color name="background_color">#fff0f0f0</color>
+    <color name="action_bar_disable">#ff66ccc3</color>
+    <color name="black1">#ff333333</color>
+    <color name="abs__background_holo_light">#fff3f3f3</color>
+    <color name="abs__bright_foreground_holo_dark">@color/abs__background_holo_light</color>
+    <color name="black2">#ff666666</color>
+    <color name="abs__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#000</color>
+
+    <!-- OverviewActivity -->
+    <color name="overview_title_bg">#e6f2eb</color>
+    <color name="overview_btn_font">#03932a</color>
+    <color name="overview_table_bg">#dcdcdc</color>
+    <color name="gray_1">#df000000</color>
+    <color name="gray_2">#8f000000</color>
+    <color name="gray_3">#43000000</color>
+    <color name="gray_4">#bdbdbd</color>
+    <color name="green_1">#e0f2f1</color>
+    <color name="green_2">#009688</color>
+    <color name="green_3">#00796b</color>
+    <color name="green_4">#02998b</color>
+    <color name="red_2">#ec407a</color>
+    <color name="blue_100">#b3e5fc</color>
+    <color name="blue_500">#03a9f4</color>
+    <color name="gray_300">#E0E0E0</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="blue_A100">#80d8ff</color>
+    <color name="blue_A200">#40c4ff</color>
+    <color name="blue_A400">#00b0ff</color>
+    <color name="blue_A700">#0091ea</color>
+    <color name="red_1">#e3495d</color>
+
+</resources>

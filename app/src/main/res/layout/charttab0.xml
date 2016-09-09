@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="#F2F2F2"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        android:overScrollMode="never"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="光强"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" >
+
+                <!-- LineChart是为 android 应用而设计的绘图工具 -->
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartofLS"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip"
+                    android:layout_margin="10dip" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="光质比"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" >
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartofLQS"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip"
+                    android:layout_margin="10dip" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="温度"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" >
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartofTS"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip"
+                    android:layout_margin="10dip" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="湿度"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" >
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartofHS"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip"
+                    android:layout_margin="10dip" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="CO2浓度"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" >
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartofCO2S"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip"
+                    android:layout_margin="10dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

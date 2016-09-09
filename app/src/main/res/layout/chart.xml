@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2" >
+
+    <RelativeLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="44dip"
+        android:background="#019B79"
+        android:gravity="center_vertical"
+        android:padding="0.0px" >
+
+        <RelativeLayout
+            android:id="@+id/backR"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_green"
+            android:paddingRight="10dp" >
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/actionbar_white_back_icon" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:layout_toRightOf="@id/back"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="返回"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:typeface="monospace" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/updateR"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_green"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" >
+
+            <ImageView
+                android:id="@+id/update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/update" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlebar"
+        android:background="#FFF"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/tab"
+            android:layout_width="fill_parent"
+            android:layout_height="38dip"
+            android:background="#FFF"
+            android:orientation="horizontal"
+            android:weightSum="3" >
+
+            <TextView
+                android:id="@+id/workspace"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="实时"
+                android:textColor="@drawable/selector_text_green" />
+
+            <TextView
+                android:id="@+id/warn"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="历史"
+                android:textColor="@drawable/selector_text_green" />
+
+            <TextView
+                android:id="@+id/mine"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="方案"
+                android:textColor="@drawable/selector_text_green" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/cursor"
+            android:layout_width="120dip"
+            android:layout_height="4dip"
+            android:layout_below="@+id/tab"
+            android:background="#019B79" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_below="@+id/cursor"
+            android:background="#E6E2DE" />
+    </LinearLayout>
+
+    <com.smartfarm.view.StaticViewPager
+        android:id="@+id/chartview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/top" />
+
+</RelativeLayout>

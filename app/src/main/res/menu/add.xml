@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_menu_item_device"
+        android:title="扫一扫添加设备" />
+    <item
+        android:id="@+id/add_menu_item_group"
+        android:title="添加设备分组" />
+
+</menu>

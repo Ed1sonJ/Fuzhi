@@ -1,0 +1,181 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_50">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_300" />
+
+        <LinearLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="#fcfcfc"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/equipment_list_btn"
+                    style="@style/BottomBarBtnStyle"
+                    android:layout_width="@dimen/bottom_bar_btn_size"
+                    android:layout_height="@dimen/bottom_bar_btn_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/bottom_bar_btn_padding"
+                    android:src="@drawable/icon_devices_pressed" />
+
+                <TextView
+                    android:id="@+id/devices_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/equipment_list_btn"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="设备列表"
+                    android:textColor="@color/green_2"
+                    android:textSize="@dimen/description_test_size" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/plant_btn"
+                    style="@style/BottomBarBtnStyle"
+                    android:layout_width="@dimen/bottom_bar_btn_size"
+                    android:layout_height="@dimen/bottom_bar_btn_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/bottom_bar_btn_padding"
+                    android:src="@drawable/icon_plant" />
+
+                <TextView
+                    android:id="@+id/plant_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/plant_btn"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="主界面"
+                    android:textColor="@color/gray_3"
+                    android:textSize="@dimen/description_test_size" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible" >
+
+                <ImageView
+                    android:id="@+id/chart_btn"
+                    style="@style/BottomBarBtnStyle"
+                    android:layout_width="@dimen/bottom_bar_btn_size"
+                    android:layout_height="@dimen/bottom_bar_btn_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/bottom_bar_btn_padding"
+                    android:src="@drawable/icon_chart" />
+
+                <TextView
+                    android:id="@+id/chart_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/chart_btn"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="历史数据"
+                    android:textColor="@color/gray_3"
+                    android:textSize="@dimen/description_test_size" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/scheme_btn"
+                    style="@style/BottomBarBtnStyle"
+                    android:layout_width="@dimen/bottom_bar_btn_size"
+                    android:layout_height="@dimen/bottom_bar_btn_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/bottom_bar_btn_padding"
+                    android:src="@drawable/controller" />
+
+                <TextView
+                    android:id="@+id/scheme_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scheme_btn"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="设备控制"
+                    android:textColor="@color/gray_3"
+
+                    android:textSize="@dimen/description_test_size" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/user_btn"
+                    style="@style/BottomBarBtnStyle"
+                    android:layout_width="@dimen/bottom_bar_btn_size"
+                    android:layout_height="@dimen/bottom_bar_btn_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/bottom_bar_btn_padding"
+                    android:src="@drawable/person" />
+
+                <TextView
+                    android:id="@+id/user_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_btn"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="我的"
+                    android:textColor="@color/gray_3"
+
+                    android:textSize="@dimen/description_test_size" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

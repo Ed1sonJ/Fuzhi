@@ -1,0 +1,174 @@
+package com.smartfarm.update;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
+
+import com.smartfarm.util.BaseProgressDialog;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+public class UpdateManager {
+	static private UpdateManager instance;
+
+	private Activity context;
+
+	static public synchronized UpdateManager getInstance(Activity ctx) {
+		if (instance == null) {
+			instance = new UpdateManager(ctx);
+		}
+		return instance;
+	}
+
+	private UpdateManager(Activity ctx) {
+		context = ctx;
+	}
+
+	public void checkUpdate(final CheckUpdateCallback callback) {
+		final int currentVersion = getCurrentVersion();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				callback.onCheckingUpdate();
+				StringBuffer sb = new StringBuffer();
+				try {
+					URL url = new URL("http://app.gzfuzhi.com/app/update.json");
+					HttpURLConnection urlConnection = (HttpURLConnection) url
+							.openConnection();
+					int length = urlConnection.getContentLength();
+					if (length > 0) {
+						byte[] buff = new byte[length];
+						InputStream in = new BufferedInputStream(urlConnection
+								.getInputStream());
+						int count = 0;
+						while (count < length) {
+							count += in.read(buff);
+						}
+						String strJson = new String(buff);
+						JSONObject json = new JSONObject(strJson);
+						int lastestVersion = json.getJSONObject(
+								context.getPackageName()).getInt("version");
+						String apkUrl = json.getJSONObject(
+								context.getPackageName()).getString("url");
+						String date = json.getJSONObject(
+								context.getPackageName()).getString("date");
+						String note = json.getJSONObject(
+								context.getPackageName()).getString("note");
+						callback.onCheckUpdateFinished(currentVersion,
+								lastestVersion, apkUrl, date, note);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					callback.onCheckUpdateFinished(currentVersion, -1, "", "",
+							"");
+				}
+			}
+		}).start();
+	}
+
+	public int getCurrentVersion() {
+		try {
+			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
+					context.getPackageName(), 0);
+			return pInfo.versionCode;
+
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public String getCurrentVersionName() {
+		try {
+			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
+					context.getPackageName(), 0);
+			return pInfo.versionName;
+
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			return "0.0.1";
+		}
+	}
+
+	public void downloadAndInstall(String url) {
+		DownloadAndInstallTask task = new DownloadAndInstallTask();
+		task.execute(url);
+	}
+
+	private class DownloadAndInstallTask extends
+			AsyncTask<String, Integer, Boolean> {
+
+		private File apkFile = new File(context.getExternalCacheDir(),
+				"SmartFarm_tmp.apk");
+		private boolean downloadFinished = false;
+		private BaseProgressDialog progressDialog;
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog = new BaseProgressDialog(context);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.show();
+		};
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			try {
+				URL url;
+				url = new URL(urls[0]);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				int len = connection.getContentLength();
+				if (len > 0) {
+					BufferedInputStream bin = new BufferedInputStream(
+							connection.getInputStream());
+					FileOutputStream fout = new FileOutputStream(apkFile);
+					byte[] buffer = new byte[1024];
+					int count = 0;
+					int progress = 0;
+					while ((count = bin.read(buffer)) != -1) {
+						fout.write(buffer, 0, count);
+						progress += count;
+						publishProgress((int) (1.0f * progress / len * 100));
+					}
+					bin.close();
+					connection.disconnect();
+					fout.close();
+					downloadFinished = true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return downloadFinished;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... progress) {
+			progressDialog.setProgress(progress[0]);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean finished) {
+			progressDialog.dismiss();
+			if (finished) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.fromFile(apkFile),
+						"application/vnd.android.package-archive");
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent);
+			}
+		}
+	}
+}

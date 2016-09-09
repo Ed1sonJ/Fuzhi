@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_time_textview"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:gravity="right" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_switch"
+            android:textOn="结束"
+            android:textOff="开始" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/end_time_textview"
+            android:layout_gravity="center"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:gravity="left" />
+
+    </LinearLayout>
+
+    <DatePicker
+        android:id="@+id/scheme_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:minDate="01/01/2016"
+        android:layout_gravity="center_horizontal" />
+
+    <TimePicker
+        android:id="@+id/scheme_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

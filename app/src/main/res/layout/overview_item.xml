@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/overview_btn_width"
+    android:layout_height="@dimen/overview_btn_height"
+    android:layout_marginBottom="2dp"
+    android:layout_marginRight="2dp"
+    android:background="@color/white"
+    card_view:cardCornerRadius="3dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/overview_btn_icon"
+                android:layout_width="@dimen/overview_btn_icon_size"
+                android:layout_height="@dimen/overview_btn_icon_size"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/overview_btn_icon_padding"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_wendu" />
+
+            <TextView
+                android:id="@+id/overview_value_name"
+                style="@style/OverviewBtnValueNameStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/overview_btn_value_name_padding"
+                android:text="温度" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/overview_value_status"
+            style="@style/OverviewBtnValueStatusStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="正常"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/overview_value"
+            style="@style/OverviewBtnValueStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="载入中" />
+
+        <TextView
+            android:id="@+id/overview_value_unit"
+            style="@style/OverviewBtnValueUnitStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="℃" />
+
+        <TextView
+            android:id="@+id/overview_value_date"
+            style="@style/OverviewBtnValueDateStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="更新日期:-- -- --" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

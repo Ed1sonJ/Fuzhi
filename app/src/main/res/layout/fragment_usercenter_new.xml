@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2" >
+
+    <RelativeLayout
+        android:id="@+id/managerEquipment_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/title_background" >
+
+        <ImageView
+            android:layout_width="@dimen/title_logo_width"
+            android:layout_height="@dimen/title_logo_height"
+            android:id="@+id/usercenter_logo_imageview"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/icon"
+            android:layout_marginLeft="@dimen/title_logo_left"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_centerVertical="true"
+            android:text="用户中心"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_text_size"
+            android:layout_toRightOf="@+id/usercenter_logo_imageview"
+            android:layout_marginLeft="@dimen/title_logo_right" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/managerEquipment_title"
+        android:layout_marginTop="10dp"
+        android:id="@+id/usercenter_layout0">
+
+        <RelativeLayout
+            android:id="@+id/user_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/user_acount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_user_barcode"
+                android:layout_marginRight="10dp"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="#E6E2DE" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/usercenter_layout1"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/usercenter_layout0">
+        <RelativeLayout
+            android:id="@+id/device_init"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="初始化设备"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/mm_submenu_normal" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/usercenter_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usercenter_layout1"
+        android:layout_marginTop="15dp"
+        android:background="#FFF"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/password_change"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="修改密码"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/mm_submenu_normal" />
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="#E6E2DE" />
+
+        <RelativeLayout
+            android:id="@+id/exit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="退出当前账号"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/partsub0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/mm_submenu_normal" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/usercenter_layout3"
+        android:layout_below="@+id/usercenter_layout2"
+        android:layout_marginTop="10dp">
+        <RelativeLayout
+            android:id="@+id/about"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="关于"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/mm_submenu_normal" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/usercenter_layout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usercenter_layout3"
+        android:layout_marginTop="20dp"
+        android:background="#FFF"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/update_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:text="检查更新"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/update_red_dot"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_toRightOf="@id/update_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:visibility="invisible"
+                android:src="@drawable/red_dot" />
+
+            <ImageView
+                android:id="@+id/partsub2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mm_submenu_normal" />
+
+            <TextView
+                android:id="@+id/usercenter_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/partsub2"
+                android:text="1.0.0"
+                android:textColor="#797979"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

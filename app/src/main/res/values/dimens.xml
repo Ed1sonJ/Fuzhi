@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
+
+    <!-- Bottom Bar -->
+    <dimen name="bottom_bar_btn_size">36dp</dimen>
+    <dimen name="bottom_bar_btn_padding">2dp</dimen>
+
+    <!-- Overview Activity -->
+    <dimen name="overview_btn_width">100dp</dimen>
+    <dimen name="overview_btn_height">160dp</dimen>
+    <dimen name="overview_btn_icon_size">36dp</dimen>
+    <dimen name="overview_btn_icon_padding">5dp</dimen>
+    <dimen name="overview_btn_value_name_padding">5dp</dimen>
+
+    <!--SchemeDefaultFragment-->
+    <dimen name="textview_size_under_imageview">10sp</dimen>
+    <dimen name="textview_size_scheme_indicator">18sp</dimen>
+    <dimen name="textview_size_listview">16sp</dimen>
+    <dimen name="textview_size_title">20sp</dimen>
+    <dimen name="image_size_indicator">42dp</dimen>
+
+    <!--application_title-->
+    <dimen name="title_height">52dp</dimen>
+    <dimen name="title_logo_height">36dp</dimen>
+    <dimen name="title_logo_width">36dp</dimen>
+    <dimen name="title_logo_left">15dp</dimen>
+    <dimen name="title_logo_right">10dp</dimen>
+    <dimen name="title_text_right">20dp</dimen>
+    <dimen name="title_text_size">20dp</dimen>
+    <dimen name="title_photo_image_size_width">36dp</dimen>
+    <dimen name="title_photo_image_size_height">36dp</dimen>
+    <dimen name="title_search_image_size_width">42dp</dimen>
+    <dimen name="title_search_image_size_height">42dp</dimen>
+    <!--others-->
+    <dimen name="description_test_size">12dp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <!-- popwindow -->
+    <dimen name="popwin_image_size_width">30dp</dimen>
+    <dimen name="popwin_image_size_height">30dp</dimen>
+    <dimen name="popwin_layout_size_width">200dp</dimen>
+    <dimen name="popwin_layout_size_height">45dp</dimen>
+    <dimen name="popwin_text_size">18dp</dimen>
+</resources>

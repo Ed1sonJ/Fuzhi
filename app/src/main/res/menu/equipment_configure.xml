@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/equipment_menu_item_rename"
+        android:title="命名设备" />
+    <item
+        android:id="@+id/equipment_menu_item_set_group"
+        android:title="设置群组" />
+    <item
+        android:id="@+id/equipment_menu_item_delete"
+        android:title="删除设备" />
+</menu>
