@@ -13,6 +13,8 @@ allprojects {
         jcenter()
     }
 }
+
+
 tasks.withType(JavaCompile) {
     options.encoding = "GBK"
 }
