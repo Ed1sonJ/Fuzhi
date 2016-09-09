@@ -15,6 +15,7 @@ allprojects {
 }
 
 
+
 tasks.withType(JavaCompile) {
     options.encoding = "GBK"
 }
