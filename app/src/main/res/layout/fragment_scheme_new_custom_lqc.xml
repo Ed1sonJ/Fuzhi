@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:paddingRight="3dp"
+    android:paddingLeft="3dp"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,22 +45,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <NumberPicker
+        <!--<NumberPicker-->
+            <!--android:id="@+id/scheme_custom_led_red"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1" />-->
+
+        <!--<NumberPicker-->
+            <!--android:id="@+id/scheme_custom_led_blue"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1" />-->
+
+        <!--<NumberPicker-->
+            <!--android:id="@+id/scheme_custom_led_white"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1" />-->
+        <com.smartfarm.view.NumberPickerView
             android:id="@+id/scheme_custom_led_red"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <NumberPicker
+            android:layout_weight="1"
+            app:npv_TextArray="@array/custom_dialog_time"
+            app:npv_TextColorNormal = "@color/gray_2"
+            app:npv_TextColorSelected = "@color/red_2"
+            app:npv_DividerColor = "@color/red_2"
+            app:npv_DividerHeight = "4dp"
+            app:npv_TextSizeSelected="25sp"
+            app:npv_TextSizeNormal="16sp"
+            app:npv_ItemPaddingHorizontal="5dp"
+            app:npv_ItemPaddingVertical="5dp"
+            app:npv_ShowCount="5"
+            app:npv_WrapSelectorWheel="true"/>
+        <com.smartfarm.view.NumberPickerView
             android:id="@+id/scheme_custom_led_blue"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <NumberPicker
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            app:npv_TextArray="@array/custom_dialog_time"
+            app:npv_TextColorNormal = "@color/gray_2"
+            app:npv_TextColorSelected = "@color/blue_2"
+            app:npv_DividerColor = "@color/blue_2"
+            app:npv_DividerHeight = "4dp"
+            app:npv_TextSizeSelected="25sp"
+            app:npv_TextSizeNormal="16sp"
+            app:npv_ItemPaddingHorizontal="5dp"
+            app:npv_ItemPaddingVertical="5dp"
+            app:npv_ShowCount="5"
+            app:npv_WrapSelectorWheel="true"/>
+        <com.smartfarm.view.NumberPickerView
             android:id="@+id/scheme_custom_led_white"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            app:npv_TextArray="@array/custom_dialog_time"
+            app:npv_TextColorNormal = "@color/gray_2"
+            app:npv_TextColorSelected = "@color/gray"
+            app:npv_DividerColor = "@color/gray"
+            app:npv_DividerHeight = "4dp"
+            app:npv_TextSizeSelected="25sp"
+            app:npv_TextSizeNormal="16sp"
+            app:npv_ItemPaddingHorizontal="5dp"
+            app:npv_ItemPaddingVertical="5dp"
+            app:npv_ShowCount="5"
+            app:npv_WrapSelectorWheel="true"/>
     </LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.baidu.location.LocationClient;
 import com.smartfarm.activity.LocationActivity;
@@ -37,6 +39,8 @@ import com.smartfarm.activity.R;
 import com.smartfarm.adapter.EquipmentListAdapter;
 import com.smartfarm.adapter.SearchListAdapter;
 import com.smartfarm.bean.EquipmentBean;
+import com.smartfarm.dialog.BaseAlterDialogUtil;
+import com.smartfarm.dialog.BaseCustomAlterDialog;
 import com.smartfarm.event.EquipmentGroupLongClickedEvent;
 import com.smartfarm.event.EquipmentImageEvent;
 import com.smartfarm.event.EquipmentItemConfigureClickedEvent;
@@ -52,6 +56,7 @@ import com.smartfarm.observable.SendQRCodeObservable;
 import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.Common;
 import com.smartfarm.util.ToastUtil;
+import com.videogo.remoteplayback.list.querylist.StandardArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -388,25 +393,26 @@ public class EquipmentListFragment extends BaseFragment {
         builder.create().show();
     }
 
+    /**
+     * 点击list中的item的设置，重命名设备
+     * @param equipmentCode
+     */
     protected void showRenameEquipmentDialog(final String equipmentCode) {
-        LinearLayout view = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.equipment_add_group_content_view, null);
-        final EditText renameEditText = (EditText) view.findViewById(R.id.equipment_add_group_edittext);
-        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.add_group_dialog_sure);
-        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.add_group_dialog_cancel);
-        TextView title=(TextView)view.findViewById(R.id.add_group_dialog_title);
-        ImageView img=(ImageView)view.findViewById(R.id.add_group_dialog_title_img);
-        img.setImageResource(R.drawable.rename_group_title);
-        final String name=Equipment.getEquipmentName(activity, equipmentCode);
-        title.setText("设备:" + name);
-        renameEditText.setText(name);
-        //设置光的位置
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
+        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
+        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
+        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
+        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
+        //设置光标的位置
         renameEditText.setSelection(renameEditText.getText().length());
-        final AlertDialog dialog= new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        sure.setOnClickListener(new View.OnClickListener() {
+        icon.setImageResource(R.drawable.rename_group_title);
+        icon.setVisibility(View.VISIBLE);
+        final String name=Equipment.getEquipmentName(activity, equipmentCode);
+        renameEditText.setText(name);
+        title.setText("设备:" + name);
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -415,9 +421,9 @@ public class EquipmentListFragment extends BaseFragment {
                     {
                         Equipment.setEquipmentName(activity, equipmentCode, renameEditText.getText().toString());
                         reloadView();
-                        dialog.dismiss();
+                        baseDialog.dismiss();
                     }
-                    dialog.dismiss();
+                    baseDialog.dismiss();
                 }
                 else
                 {
@@ -425,25 +431,32 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
+        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setContentView(contentView);
     }
 
+    /**
+     * 显示添加分组的对话框，已经修改完布局
+     */
     protected void showAddGroupDialog() {
-        LinearLayout view = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.equipment_add_group_content_view, null);
-        final EditText renameEditText = (EditText) view.findViewById(R.id.equipment_add_group_edittext);
-        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.add_group_dialog_sure);
-        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.add_group_dialog_cancel);
-        final AlertDialog dialog= new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        sure.setOnClickListener(new View.OnClickListener() {
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
+        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
+        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
+        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
+        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
+        icon.setImageResource(R.drawable.add_group_img);
+        icon.setVisibility(View.VISIBLE);
+        title.setText("创建分组");
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -455,7 +468,7 @@ public class EquipmentListFragment extends BaseFragment {
                         ToastUtil.showLong(activity, "创建分组失败。");
                     }
                     reloadView();
-                    dialog.dismiss();
+                    baseDialog.dismiss();
                 }
                 else
                 {
@@ -463,32 +476,42 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
+        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setContentView(contentView);
     }
 
+    /**
+     * 重命名分组,已经修改完布局
+     * @param groupName
+     */
     protected void showRenameGroupDailog(final String groupName) {
-        LinearLayout view = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.equipment_add_group_content_view, null);
-        final EditText renameEditText = (EditText) view.findViewById(R.id.equipment_add_group_edittext);
-        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.add_group_dialog_sure);
-        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.add_group_dialog_cancel);
-        TextView title=(TextView)view.findViewById(R.id.add_group_dialog_title);
-        ImageView img=(ImageView)view.findViewById(R.id.add_group_dialog_title_img);
-        img.setImageResource(R.drawable.rename_group_title);
-        title.setText("分组:" + groupName);
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
+        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
+        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
+        final EditText renameEditText = (EditText)contentView.findViewById(R.id.equipment_add_group_edittext);
+        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
+        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
         renameEditText.setText(groupName);
-        //设置光的位置
+        //设置光标的位置
         renameEditText.setSelection(renameEditText.getText().length());
-        final AlertDialog dialog= new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        sure.setOnClickListener(new View.OnClickListener() {
+        icon.setImageResource(R.drawable.rename_group_title);
+        icon.setVisibility(View.VISIBLE);
+        title.setText("分组:"+groupName);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseDialog.dismiss();
+            }
+        });
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -502,9 +525,9 @@ public class EquipmentListFragment extends BaseFragment {
                             ToastUtil.showLong(activity, "重命名分组失败。");
                         }
                         reloadView();
-                        dialog.dismiss();
+                        baseDialog.dismiss();
                     }
-                    dialog.dismiss();
+                    baseDialog.dismiss();
                 }
                 else
                 {
@@ -512,12 +535,9 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setContentView(contentView);
     }
 
     protected void showDeleteEquipmentConfirmDialog(final String equipmentCode) {
@@ -580,25 +600,59 @@ public class EquipmentListFragment extends BaseFragment {
     }
 
     protected void showSetGroupDialog(final String equipmentCode) {
-        LinearLayout view=(LinearLayout) activity.getLayoutInflater().inflate(R.layout.add_to_group_list,null);
-        //dialog
-        final AlertDialog dialog=new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        //listview
-        ListView listView=(ListView)view.findViewById(R.id.add_to_group_dialog_list);
+//        LinearLayout view=(LinearLayout) activity.getLayoutInflater().inflate(R.layout.add_to_group_list,null);
+//        //dialog
+//        final AlertDialog dialog=new AlertDialog.Builder(activity).
+//                setView(view).
+//                create();
+//        dialog.show();
+//        dialog.setCanceledOnTouchOutside(true);
+//        //listview
+//        ListView listView=(ListView)view.findViewById(R.id.add_to_group_dialog_list);
+//        ArrayList<HashMap<String,Object>> data=new ArrayList<HashMap<String,Object>>();
+//        final Group modelGroup = new Group(activity, equipmentBeans);
+//        List<String> groups = modelGroup.getGroupNames();
+//        String[] arrayGroups = new String[groups.size()];
+//        for (int i = 0; i < groups.size(); ++i) {
+//            HashMap<String,Object> map=new HashMap<String,Object>();
+//            map.put("img",R.drawable.group);
+//            map.put("group",groups.get(i));
+//            data.add(map);
+//        }
+//        SimpleAdapter adapter=new SimpleAdapter(
+//                activity,
+//                data,
+//                R.layout.add_to_group_dialog_list_item,
+//                new String[]{"img","group"},
+//                new int[]{R.id.add_to_group_dialog_img,R.id.add_to_group_dialog_title});
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                try {
+//                    new Group(activity, equipmentBeans).addChildToGroup(equipmentCode, modelGroup.getGroupNames().get(position));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ToastUtil.showLong(activity, "设置分组失败。");
+//                }
+//                reloadView();
+//                dialog.dismiss();
+//            }
+//        });
+
+        // TODO: 2016/9/10 可能存在问题
+        View contentView = View.inflate(activity,R.layout.add_to_group_list,null);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        ListView lstView = (ListView) contentView.findViewById(R.id.add_to_group_dialog_list);
         ArrayList<HashMap<String,Object>> data=new ArrayList<HashMap<String,Object>>();
         final Group modelGroup = new Group(activity, equipmentBeans);
         List<String> groups = modelGroup.getGroupNames();
-        String[] arrayGroups = new String[groups.size()];
+//        String[] arrayGroups = new String[groups.size()];
         for (int i = 0; i < groups.size(); ++i) {
             HashMap<String,Object> map=new HashMap<String,Object>();
             map.put("img",R.drawable.group);
             map.put("group",groups.get(i));
             data.add(map);
-
         }
         SimpleAdapter adapter=new SimpleAdapter(
                 activity,
@@ -606,8 +660,8 @@ public class EquipmentListFragment extends BaseFragment {
                 R.layout.add_to_group_dialog_list_item,
                 new String[]{"img","group"},
                 new int[]{R.id.add_to_group_dialog_img,R.id.add_to_group_dialog_title});
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lstView.setAdapter(adapter);
+        lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
@@ -617,9 +671,12 @@ public class EquipmentListFragment extends BaseFragment {
                     ToastUtil.showLong(activity, "设置分组失败。");
                 }
                 reloadView();
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
+        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setContentView(contentView);
     }
 
     protected void closeSearchLayout() {
@@ -709,6 +766,10 @@ public class EquipmentListFragment extends BaseFragment {
             }
         }
     }
+
+    /**
+     * 点击“+”弹出popupWindow
+     */
     private void addPopupWin(){
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.fragment_equipment_list_title_add, null);
@@ -725,6 +786,7 @@ public class EquipmentListFragment extends BaseFragment {
         popupWindow.setFocusable(true);
         // popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
         // Gravity.LEFT|Gravity.BOTTOM, 0, 0);
+        //设置popupWindow显示的位置，依靠在addButton下面
         popupWindow.showAsDropDown(addButton,0,10);
         RelativeLayout scan=(RelativeLayout)view.findViewById(R.id.scan_device);
         RelativeLayout add=(RelativeLayout)view.findViewById(R.id.add_group);
@@ -732,7 +794,6 @@ public class EquipmentListFragment extends BaseFragment {
         add.setOnClickListener(new MyAddClickListener());
     }
     private class MyAddClickListener implements View.OnClickListener{
-
         @Override
         public void onClick(View v) {
             int op=v.getId();
@@ -740,7 +801,6 @@ public class EquipmentListFragment extends BaseFragment {
                 case R.id.add_group:
                     popupWindow.dismiss();
                     showAddGroupDialog();
-
                     break;
                 case R.id.scan_device:
                     popupWindow.dismiss();

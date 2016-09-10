@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.smartfarm.http.GetCodeHttp;
 import com.smartfarm.http.GetCodeHttp.MyListener;
@@ -40,7 +41,8 @@ import java.util.regex.Pattern;
 public class IdentifyingCode extends Activity {
 
 	private EditText phoneNumer = null, phoneYz = null;
-	private Button getYz = null, postYz = null;
+	private TextView getYz = null;
+	private Button postYz = null;
 	private CharSequence charSequence;
 	private GetCodeHttp getCodeHttp = new GetCodeHttp();
 	private TimeCount tc;
@@ -62,7 +64,7 @@ public class IdentifyingCode extends Activity {
 	private void initView() {
 		phoneNumer = (EditText) findViewById(R.id.et_pho_num);
 		phoneYz = (EditText) findViewById(R.id.et_yanzheng);
-		getYz = (Button) findViewById(R.id.btn_yz);
+		getYz = (TextView) findViewById(R.id.btn_yz);
 		postYz = (Button) findViewById(R.id.btn_post);
 
 		progressDialog = new BaseProgressDialog(IdentifyingCode.this);

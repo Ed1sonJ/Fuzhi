@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +31,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.baidu.platform.comapi.map.B;
 import com.smartfarm.activity.R;
+import com.smartfarm.adapter.DialogTimeListAdapter;
+import com.smartfarm.dialog.BaseCustomAlterDialog;
 import com.smartfarm.event.EquipmentSelectedEvent;
 import com.smartfarm.event.GlobalEvent;
 import com.smartfarm.fragmentUtil.UploadAndDownloadScheme;
@@ -38,6 +42,7 @@ import com.smartfarm.model.Equipment;
 import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.ToastUtil;
 import com.smartfarm.util.WaterRoom;
+import com.smartfarm.view.NumberPickerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +56,6 @@ import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.widget.VideoView;
 
 public class SchemeDefaultFragment extends BaseFragment {
-
-
     Activity activity;
     View rootView;
     //util
@@ -328,30 +331,32 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //自定义光质比值
+    //自定义光质比值,已经更新了布局
     private void customLed() {
-        LinearLayout customLed = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_custom_lqc, null);
-        final NumberPicker ledRed = (NumberPicker) customLed.findViewById(R.id.scheme_custom_led_red);
-        ledRed.setMaxValue(10);
-        final NumberPicker ledBlue = (NumberPicker) customLed.findViewById(R.id.scheme_custom_led_blue);
-        ledBlue.setMaxValue(10);
-        final NumberPicker ledWhite = (NumberPicker) customLed.findViewById(R.id.scheme_custom_led_white);
-        ledWhite.setMaxValue(10);
-        new AlertDialog.Builder(activity)
-                .setTitle("自定义光质比")
-                .setView(customLed)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        lqc = ledRed.getValue() + ":" + ledBlue.getValue()+":"+ledWhite.getValue();
-                        uploadScheme("lqc");
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        View contentView = View.inflate(activity,R.layout.fragment_scheme_new_custom_lqc,null);
+        final NumberPickerView ledRed = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_red);
+        final NumberPickerView ledBlue = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_blue);
+        final NumberPickerView ledWhite = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_white);
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setTitle("自定义光质比");
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
+            public void onClick(View v) {
+                baseDialog.dismiss();
             }
-        }).create().show();
+        });
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lqc = ledRed.getValue() + ":" + ledBlue.getValue()+":"+ledWhite.getValue();
+                uploadScheme("lqc");
+                baseDialog.dismiss();
+            }
+        });
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView,contentLp);
     }
 
     //因为获取的光质比参数是“光质比=1：2：3”的情形，而我们只需要1：2：3,所以需要截取
@@ -975,32 +980,42 @@ public class SchemeDefaultFragment extends BaseFragment {
         //isWater = !isWater;
     }
 
-    //设置浇水时间
+    //设置浇水时间，已经更改了新的布局
     private void setWaterTimes() {
-
-        final LinearLayout waterLayout = (LinearLayout) activity.getLayoutInflater().
-                inflate(R.layout.view_water_button, null);
-
-        new AlertDialog.Builder(activity).
-                setTitle(equipmentCodes + ":").
-                setIcon(R.drawable.icon_water_on).
-                setView(waterLayout).
-                setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText waterTimes = (EditText) waterLayout.findViewById(R.id.et_water_time);
-                        String waterMessage = waterTimes.getText().toString();
-                        if (waterMessage.equals("") || waterMessage == null)
-                            return;
-                        waterRoom.waterOn(equipmentCodes, WATERCONTROLLER, clientId, waterMessage);
-                        showDialog("正在打开喷淋");
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        final View contentView = View.inflate(activity,R.layout.view_water_button,null);
+        //设置在屏幕中的显示的比例
+        baseDialog.setWidthAndHeightRadio(0.8f,0.5f);
+        //设置居中显示dialog并不设置偏移量
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
+            public void onClick(View v) {
+                baseDialog.dismiss();
             }
-        }).create().show();
+        });
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText waterTimes = (EditText) contentView.findViewById(R.id.et_water_time);
+                String waterMessage = waterTimes.getText().toString();
+                if (waterMessage.equals("") || waterMessage == null) {
+                    ToastUtil.showShort(activity, "请输入时长");
+                    return;
+                }
+                waterRoom.waterOn(equipmentCodes, WATERCONTROLLER, clientId, waterMessage);
+                showDialog("正在打开喷淋");
+                baseDialog.dismiss();
+            }
+        });
+        //设置dialog显示的标题
+        baseDialog.setTitle(equipmentCodes+"");
+        baseDialog.setIcon(R.drawable.icon_water_on);
+        //设置contentView在dialog中显示的布局参数
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        //匹配dialog与contentView
+        baseDialog.setContentView(contentView,contentLp);
     }
 
     //正在浇水，点亮图片
@@ -1102,35 +1117,54 @@ public class SchemeDefaultFragment extends BaseFragment {
         if (fillingParams(indicator)){
             fillingTime();
         }
-
     }
 
-    //控制选择时间dialog
+    //控制选择时间dialog，已经更改了新的布局
     private void fillingTime() {
         String[] items = new String[]{"1分钟", "3分钟", "5分钟", "10分钟", "自定义"};
         startTime = "";
         endTime = "";
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity).
-                setTitle("请选择持续时间")
-                .setSingleChoiceItems(items, MAGIC_NUMBER, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        countTime(which);
-                    }
-                }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //上存人为干预
-                        uploadAfterChecked();
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-        builder.create().show();
+        //获取摆放到dialog中的listView
+        View contentView = View.inflate(activity,R.layout.dialog_water_choose_time,null);
+        ListView listTime = (ListView) contentView.findViewById(R.id.id_dialog_water_choose_time_list);
+        //设置listView的adapter
+        final DialogTimeListAdapter adapter = new DialogTimeListAdapter(activity,items);
+        listTime.setAdapter(adapter);
+        //为listView的item设置点击时换图片
+        listTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            //view为item复用的convertView
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //先清空所有的图片
+                adapter.removeAllViews();
+                //再设置点击的item的图片变化
+                ((ImageView)view.findViewById(R.id.id_water_choose_time_list_img)).setImageResource(R.drawable.dialog_img_select);
+                countTime(position);
+           }
+        });
+
+        //设置dialog的基本属性，并将contentView加入到dialog中
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseDialog.dismiss();
+            }
+        });
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadAfterChecked();
+                baseDialog.dismiss();
+            }
+        });
+        baseDialog.setTitle("请选择持续时间");
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        contentLp.setMargins(0,45,0,0);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView,contentLp);
     }
 
     //计算时间
