@@ -53,7 +53,6 @@
             android:src="@drawable/icon_research" />
 
     </RelativeLayout>
-    <!--设备列表-->
     <ExpandableListView
         android:id="@+id/equipment_expandable_list"
         android:layout_below="@id/equipment_list_title"
