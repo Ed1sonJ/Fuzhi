@@ -175,6 +175,7 @@ public class EquipmentListFragment extends BaseFragment {
                 return true;
             }
         });
+
     }
 
     /***
@@ -350,6 +351,7 @@ public class EquipmentListFragment extends BaseFragment {
             expandableListAdapter = new EquipmentListAdapter(activity, new Group(activity, beans));
             expandableListView.setAdapter(expandableListAdapter);
             expandableListView.expandGroup(0);
+
         }
     }
 
