@@ -53,15 +53,14 @@
             android:src="@drawable/icon_research" />
 
     </RelativeLayout>
-
     <ExpandableListView
         android:id="@+id/equipment_expandable_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/equipment_list_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:footerDividersEnabled="true"
-        android:scrollbars="none" />
-
+        android:scrollbars="none"
+        android:animateLayoutChanges="@bool/abc_config_closeDialogWhenTouchOutside"/>
 
     <LinearLayout
         android:id="@+id/equipment_list_search_layout"
