@@ -19,4 +19,18 @@
         <item>@drawable/icon_led_1_5</item>
         <item>@drawable/icon_led_blue</item>
     </string-array>
+
+    <string-array name="custom_dialog_time">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

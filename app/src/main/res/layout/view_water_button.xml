@@ -3,27 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-  
- <TextView
-     android:id="@+id/tv_water_time"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_marginLeft="5dp"
-     android:layout_marginRight="5dp"
-     android:text="时长/秒"
-     android:textSize="20sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_water_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center"
+            android:text="请输入喷淋的时长："
+            android:textSize="20sp" />
 
+        <com.smartfarm.view.CleanEditText
+            android:id="@+id/et_water_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:inputType="number"
+            android:ems="10"
+            android:textSize="20sp" >
 
- <com.smartfarm.view.CleanEditText
-     android:id="@+id/et_water_time"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:inputType="number"
-     android:ems="10"
-     android:textSize="20sp" >
-
-     <requestFocus />
- </com.smartfarm.view.CleanEditText>
+            <!--<requestFocus />-->
+        </com.smartfarm.view.CleanEditText>
+    </LinearLayout>
 
 </LinearLayout>

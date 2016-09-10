@@ -2,10 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:background="@color/green_1"
+        android:gravity="center">
         <ImageView
             android:id="@+id/add_to_group_dialog_img"
             android:layout_width="30dp"
@@ -21,7 +24,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/add_to_group_dialog_img"
             android:text="添加分组"
-            android:textColor="#33475f"
+            android:textColor="@color/white"
             android:textSize="18dp"/>
     </RelativeLayout>
     <View
