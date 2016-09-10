@@ -33,6 +33,8 @@ public class BaseAlterDialogUtil {
         baseDialog = new AlertDialog.Builder(context).create();
         dialogWindow = baseDialog.getWindow();
         params = dialogWindow.getAttributes();
+        //设置点击dialog外面dismiss dialog
+        baseDialog.setCanceledOnTouchOutside(true);
         baseDialog.setView(new EditText(context));
         //必须写在获取属性之前
         baseDialog.show();

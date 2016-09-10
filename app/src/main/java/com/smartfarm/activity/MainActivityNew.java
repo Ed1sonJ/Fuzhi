@@ -256,7 +256,7 @@ public class MainActivityNew extends BaseActivity {
         userBtn.setImageResource(R.drawable.person);
         schemeBtn.setImageResource(R.drawable.controller);
         chartBtn.setImageResource(R.drawable.icon_chart);
-        equipmentListTextView.setTextColor(getResources().getColor(R.color.green_2));
+        equipmentListTextView.setTextColor(getResources().getColor(R.color.green_1));
         plantTextView.setTextColor(getResources().getColor(R.color.gray_3));
         userTextView.setTextColor(getResources().getColor(R.color.gray_3));
         schemeTextView.setTextColor(getResources().getColor(R.color.gray_3));
@@ -283,7 +283,7 @@ public class MainActivityNew extends BaseActivity {
         schemeBtn.setImageResource(R.drawable.controller);
         chartBtn.setImageResource(R.drawable.icon_chart);
         equipmentListTextView.setTextColor(getResources().getColor(R.color.gray_3));
-        plantTextView.setTextColor(getResources().getColor(R.color.green_2));
+        plantTextView.setTextColor(getResources().getColor(R.color.green_1));
         userTextView.setTextColor(getResources().getColor(R.color.gray_3));
         schemeTextView.setTextColor(getResources().getColor(R.color.gray_3));
         chartTextView.setTextColor(getResources().getColor(R.color.gray_3));
@@ -306,7 +306,7 @@ public class MainActivityNew extends BaseActivity {
         chartBtn.setImageResource(R.drawable.icon_chart);
         equipmentListTextView.setTextColor(getResources().getColor(R.color.gray_3));
         plantTextView.setTextColor(getResources().getColor(R.color.gray_3));
-        userTextView.setTextColor(getResources().getColor(R.color.green_2));
+        userTextView.setTextColor(getResources().getColor(R.color.green_1));
         schemeTextView.setTextColor(getResources().getColor(R.color.gray_3));
         chartTextView.setTextColor(getResources().getColor(R.color.gray_3));
     }
@@ -331,7 +331,7 @@ public class MainActivityNew extends BaseActivity {
         equipmentListTextView.setTextColor(getResources().getColor(R.color.gray_3));
         plantTextView.setTextColor(getResources().getColor(R.color.gray_3));
         userTextView.setTextColor(getResources().getColor(R.color.gray_3));
-        schemeTextView.setTextColor(getResources().getColor(R.color.green_2));
+        schemeTextView.setTextColor(getResources().getColor(R.color.green_1));
         chartTextView.setTextColor(getResources().getColor(R.color.gray_3));
     }
 
@@ -355,7 +355,7 @@ public class MainActivityNew extends BaseActivity {
         plantTextView.setTextColor(getResources().getColor(R.color.gray_3));
         userTextView.setTextColor(getResources().getColor(R.color.gray_3));
         schemeTextView.setTextColor(getResources().getColor(R.color.gray_3));
-        chartTextView.setTextColor(getResources().getColor(R.color.green_2));
+        chartTextView.setTextColor(getResources().getColor(R.color.green_1));
     }
 
 }

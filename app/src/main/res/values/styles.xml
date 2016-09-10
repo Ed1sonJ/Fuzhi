@@ -2,13 +2,25 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+
+
+
+
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
+
+
+
+
+
+
         -->
     </style>
 
@@ -35,22 +47,22 @@
     <!-- Overview Style -->
     <style name="OverviewBtnValueNameStyle">
         <item name="android:textSize"> 16sp </item>
-        <item name="android:textColor">@color/green_2</item>
+        <item name="android:textColor">@color/green_1</item>
     </style>
 
     <style name="OverviewBtnValueStatusStyle">
         <item name="android:textSize"> 20sp </item>
-        <item name="android:textColor">@color/green_2</item>
+        <item name="android:textColor">@color/green_1</item>
     </style>
 
     <style name="OverviewBtnValueStyle">
         <item name="android:textSize"> 24sp </item>
-        <item name="android:textColor">@color/green_3</item>
+        <item name="android:textColor">@color/green_1</item>
     </style>
 
     <style name="OverviewBtnValueUnitStyle">
         <item name="android:textSize"> 18sp </item>
-        <item name="android:textColor">@color/green_2</item>
+        <item name="android:textColor">@color/green_1</item>
     </style>
 
     <style name="OverviewBtnValueDateStyle">

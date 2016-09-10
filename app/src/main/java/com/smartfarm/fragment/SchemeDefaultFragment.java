@@ -985,7 +985,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final View contentView = View.inflate(activity,R.layout.view_water_button,null);
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f,0.5f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
         //设置居中显示dialog并不设置偏移量
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
@@ -1145,7 +1145,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.65f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override

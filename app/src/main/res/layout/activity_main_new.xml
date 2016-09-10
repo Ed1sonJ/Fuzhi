@@ -51,7 +51,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="设备列表"
-                    android:textColor="@color/green_2"
+                    android:textColor="@color/green_1"
                     android:textSize="@dimen/description_test_size" />
 
             </RelativeLayout>
