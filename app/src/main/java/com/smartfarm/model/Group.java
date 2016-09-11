@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.smartfarm.bean.EquipmentBean;
 import com.smartfarm.bean.GroupBean;
 import com.smartfarm.bean.LatestUseBean;
+import com.smartfarm.bean.TopBean;
 import com.smartfarm.util.Config;
 
 import java.io.FileReader;
@@ -110,30 +111,32 @@ public class Group {
         //读取分组
         GroupBean beans = loadGroupBean(activity);
         LatestUseBean latestUseBean=loadLatestUse(activity);
+        TopBean topBean=loadTop(activity);
         List<String> latest=latestUseBean.latestUse;
         List<List<String>> childBeans = new ArrayList<>();
+        List<String> topList=topBean.top;
         // 分组：我的设备,在我的分组中，我的分组包括所有设备
         List<String> list = new ArrayList<>();
         for (int i = 0; i < equipmentBeans.size(); ++i) {
             list.add(equipmentBeans.get(i).code);
         }
-        //最近使用的为0或最近全部都是用过
-        if(latest.size()==list.size())
+        //有置顶的设备
+        for (int i=0;i<topList.size();i++)
         {
-            childBeans.add(latest);
+            list.remove(topList.get(i));
+            latest.remove(topList.get(i));
         }
-        else
-        {
-            //除去最近用过的设备
-            for (int i=0;i<latest.size();i++) {
-                list.remove(latest.get(i));
-            }
-            //最近用过的设备和没有用过的设备
-            for (int i=0;i<list.size();i++){
-                latest.add(list.get(i));
-            }
-            childBeans.add(latest);
+        //除去最近用过的和置顶的设备
+        for (int i=0;i<latest.size();i++) {
+            list.remove(latest.get(i));
+            //设备的排序，置顶+最近用过的+剩下的
+            topList.add(latest.get(i));
         }
+        //剩下的设备
+        for (int i=0;i<list.size();i++){
+            topList.add(list.get(i));
+        }
+        childBeans.add(topList);
         //其他分组
         for (int i = 0; i < beans.childToGroup.size(); ++i) {
             childBeans.add(beans.childToGroup.get(i));
@@ -174,7 +177,7 @@ public class Group {
     }
     //删除设备的时候也要删除相应的LatestUse
     public void deleteLatestUse(String childCode){
-        //在个分组中最新用过的设备，删除刚刚删除的设备
+        //删除相应在个分组中最新用过的的设备
         GroupBean bean=loadGroupBean(activity);
         List<List<String>> child=bean.childToGroup;
         List<String> group=bean.groups;
@@ -190,7 +193,7 @@ public class Group {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //最近用过的设备信息,删除刚刚删除的设备
+        //删除相应最近用过的设备
         LatestUseBean latestUseBean=loadLatestUse(activity);
         if (latestUseBean.latestUse.contains(childCode)){
             latestUseBean.latestUse.remove(childCode);
@@ -200,7 +203,16 @@ public class Group {
                 e.printStackTrace();
             }
         }
-
+        //删除相应置顶的设备
+        TopBean topBean=loadTop(activity);
+        if (topBean.top.contains(childCode)){
+            topBean.top.remove(childCode);
+            try {
+                saveTop(activity,topBean);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     protected boolean isValidEquipmentCode(String code) {
         int findIndex = -1;
@@ -246,5 +258,53 @@ public class Group {
         FileWriter writer = new FileWriter(act.getFileStreamPath(config.getUsername() + ":LatestUse"));
         writer.write(new GsonBuilder().create().toJson(bean));
         writer.close();
+    }
+
+    //读取设备的置顶的信息
+    private TopBean loadTop(Activity act) {
+        Config config = new Config(act);
+        TopBean bean;
+        try {
+            //Returns the absolute path on the filesystem where a file created with openFileOutput(String, int) is stored.
+            FileReader reader = new FileReader(act.getFileStreamPath(config.getUsername() + ":Top"));
+            bean = new GsonBuilder().create().fromJson(reader, TopBean.class);
+        } catch (Exception e) {
+            bean = new TopBean();
+        }
+        return bean;
+    }
+    //保存设备的置顶的信息
+    private void saveTop(Activity act, TopBean bean) throws Exception {
+        Config config = new Config(act);
+        FileWriter writer = new FileWriter(act.getFileStreamPath(config.getUsername() + ":Top"));
+        writer.write(new GsonBuilder().create().toJson(bean));
+        writer.close();
+    }
+    //添加顶置
+    public void addTop(String equipmentCode){
+        TopBean topBean=loadTop(activity);
+        if(topBean.top.contains(equipmentCode))
+        {
+            topBean.top.remove(equipmentCode);
+        }
+        topBean.top.add(0,equipmentCode);
+        try {
+            saveTop(activity,topBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //取消顶置
+    public void cancelTop(String equipmentCode){
+        TopBean topBean=loadTop(activity);
+        topBean.top.remove(equipmentCode);
+        try {
+            saveTop(activity,topBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public TopBean getTopBean(){
+        return loadTop(activity);
     }
 }

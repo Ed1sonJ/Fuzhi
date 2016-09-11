@@ -121,6 +121,7 @@ public class EquipmentListAdapter extends BaseExpandableListAdapter {
                 GlobalEvent.bus.post(new EquipmentSelectedEvent(equipmentCode,group.getGroupNames().get(groupPosition)));
             }
         });
+
         return convertView;
     }
 

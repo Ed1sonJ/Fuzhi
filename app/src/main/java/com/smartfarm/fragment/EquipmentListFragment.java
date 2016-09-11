@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -30,7 +31,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Button;
 
 import com.baidu.location.LocationClient;
 import com.smartfarm.activity.LocationActivity;
@@ -39,8 +39,8 @@ import com.smartfarm.activity.R;
 import com.smartfarm.adapter.EquipmentListAdapter;
 import com.smartfarm.adapter.SearchListAdapter;
 import com.smartfarm.bean.EquipmentBean;
+import com.smartfarm.bean.TopBean;
 import com.smartfarm.dialog.BaseAlterDialogUtil;
-import com.smartfarm.dialog.BaseCustomAlterDialog;
 import com.smartfarm.event.EquipmentGroupLongClickedEvent;
 import com.smartfarm.event.EquipmentImageEvent;
 import com.smartfarm.event.EquipmentItemConfigureClickedEvent;
@@ -56,7 +56,6 @@ import com.smartfarm.observable.SendQRCodeObservable;
 import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.Common;
 import com.smartfarm.util.ToastUtil;
-import com.videogo.remoteplayback.list.querylist.StandardArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -405,12 +404,12 @@ public class EquipmentListFragment extends BaseFragment {
         Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
         Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-        //设置光标的位置
-        renameEditText.setSelection(renameEditText.getText().length());
         icon.setImageResource(R.drawable.rename_group_title);
         icon.setVisibility(View.VISIBLE);
         final String name=Equipment.getEquipmentName(activity, equipmentCode);
         renameEditText.setText(name);
+        //设置光标的位置
+        renameEditText.setSelection(renameEditText.getText().length());
         title.setText("设备:" + name);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -857,24 +856,60 @@ public class EquipmentListFragment extends BaseFragment {
         //设置事件，命名设备，设置群组，删除设备,置顶
         public void onEvent(final EquipmentItemConfigureClickedEvent event) {
             final PopupMenu equipmentConfigMenu = new PopupMenu(activity, event.view);
-            equipmentConfigMenu.getMenuInflater().inflate(R.menu.equipment_configure, equipmentConfigMenu.getMenu());
-            equipmentConfigMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.equipment_menu_item_rename:
-                            showRenameEquipmentDialog(event.equipmentCode);
-                            break;
-                        case R.id.equipment_menu_item_set_group:
-                            showSetGroupDialog(event.equipmentCode);
-                            break;
-                        case R.id.equipment_menu_item_delete:
-                            showDeleteEquipmentConfirmDialog(event.equipmentCode);
-                            break;
+            final Group group=new Group(activity,equipmentBeans);
+            TopBean topBean=group.getTopBean();
+            final String code=event.equipmentCode;
+            if(topBean.top.contains(code))
+            {
+                equipmentConfigMenu.getMenuInflater().inflate(R.menu.equipment_configure_new,
+                        equipmentConfigMenu.getMenu());
+                equipmentConfigMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.equipment_menu_item_rename_new:
+                                showRenameEquipmentDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_set_group_new:
+                                showSetGroupDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_delete_new:
+                                showDeleteEquipmentConfirmDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_cancel_top:
+                                group.cancelTop(code);
+                                refreshView(equipmentBeans);
+                        }
+                        return false;
                     }
-                    return true;
-                }
-            });
+                });
+            }
+            else
+            {
+                equipmentConfigMenu.getMenuInflater().inflate(R.menu.equipment_configure,
+                        equipmentConfigMenu.getMenu());
+                equipmentConfigMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.equipment_menu_item_rename:
+                                showRenameEquipmentDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_set_group:
+                                showSetGroupDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_delete:
+                                showDeleteEquipmentConfirmDialog(code);
+                                break;
+                            case R.id.equipment_menu_item_add_top:
+                                group.addTop(code);
+                                refreshView(equipmentBeans);
+                        }
+                        return false;
+                    }
+                });
+
+            }
             equipmentConfigMenu.show();
         }
         //GPS事件

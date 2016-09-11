@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/equipment_menu_item_rename"
+        android:id="@+id/equipment_menu_item_rename_new"
         android:title="命名设备" />
     <item
-        android:id="@+id/equipment_menu_item_set_group"
+        android:id="@+id/equipment_menu_item_set_group_new"
         android:title="设置群组" />
     <item
-        android:id="@+id/equipment_menu_item_add_top"
-        android:title="顶置设备" />
+        android:id="@+id/equipment_menu_item_cancel_top"
+        android:title="取消顶置" />
     <item
-        android:id="@+id/equipment_menu_item_delete"
+        android:id="@+id/equipment_menu_item_delete_new"
         android:title="删除设备" />
 </menu>
