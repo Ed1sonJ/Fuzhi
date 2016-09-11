@@ -816,7 +816,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                         case 0:
                             //设置对应的图片
                             setIconWithType(imageView, textView.getText().toString(), true);
-                            textView.setTextColor(getResources().getColor(R.color.green_2));
+                            textView.setTextColor(getResources().getColor(R.color.green_1));
 
                             if (size>1){
                                 //按钮1
@@ -847,7 +847,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                             break;
                         case 1:
                             setIconWithType(imageView, textView.getText().toString(), true);
-                            textView.setTextColor(getResources().getColor(R.color.green_2));
+                            textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
                             linearLayout = (LinearLayout)tableRow.getChildAt(0);
                             imageView = (ImageView)linearLayout.getChildAt(0);
@@ -873,7 +873,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                             break;
                         case 2:
                             setIconWithType(imageView, textView.getText().toString(), true);
-                            textView.setTextColor(getResources().getColor(R.color.green_2));
+                            textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
                             linearLayout = (LinearLayout)tableRow.getChildAt(0);
                             imageView = (ImageView)linearLayout.getChildAt(0);
@@ -899,7 +899,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                             break;
                         case 3:
                             setIconWithType(imageView, textView.getText().toString(), true);
-                            textView.setTextColor(getResources().getColor(R.color.green_2));
+                            textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
                             linearLayout = (LinearLayout)tableRow.getChildAt(0);
                             imageView = (ImageView)linearLayout.getChildAt(0);
