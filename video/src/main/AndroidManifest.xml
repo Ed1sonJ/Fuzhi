@@ -43,11 +43,11 @@
 
     <!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
     <permission
-        android:name="com.videogo.open.permission.C2D_MESSAGE"
+        android:name="com.videogo.open.permission.C2D_MESSAGE_MY"
         android:protectionLevel="signature"/>
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="com.videogo.open.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.videogo.open.permission.C2D_MESSAGE_MY"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
