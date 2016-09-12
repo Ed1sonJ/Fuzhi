@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/id_dialog_about_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="关于富智"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textSize="23sp"
+        android:textColor="@color/white"
+        android:background="@color/green_1"
+        android:textStyle="bold"
+        />
+        <ScrollView
+            android:id="@+id/id_dialog_about_sv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            >
+            <TextView
+                android:id="@+id/id_dialog_about_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:lineSpacingExtra="3dp"
+                />
+        </ScrollView>
+        <Button
+            android:id="@+id/id_dialog_about_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/seletor_base_dialog_btn"
+            android:text="返回"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+
+</LinearLayout>
+
