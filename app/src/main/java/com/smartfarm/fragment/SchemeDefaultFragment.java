@@ -631,7 +631,7 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
             else
             {
-                iconIV.setImageResource(R.drawable.icon_guangzhi_pressed);
+                iconIV.setImageResource(R.drawable.icon_guangzhibi_pressed);
             }
         }
         else if (type.matches("^π‚«ø.*"))

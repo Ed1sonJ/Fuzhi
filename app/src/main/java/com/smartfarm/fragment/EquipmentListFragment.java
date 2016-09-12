@@ -58,6 +58,7 @@ import com.smartfarm.util.Common;
 import com.smartfarm.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -539,45 +540,106 @@ public class EquipmentListFragment extends BaseFragment {
         baseDialog.setContentView(contentView);
     }
 
+    /**
+     * 弹出删除设备对话框，已经更新了布局
+     * @param equipmentCode
+     */
     protected void showDeleteEquipmentConfirmDialog(final String equipmentCode) {
-        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout,null);
-        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
-        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
-        TextView title=(TextView)view.findViewById(R.id.delete_title);
+//        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout_new,null);
+//        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
+//        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
+//        TextView title=(TextView)view.findViewById(R.id.delete_title);
+//        title.setText("确定删除设备：" + Equipment.getEquipmentName(activity, equipmentCode) + "?");
+//        final AlertDialog dialog=new AlertDialog.Builder(activity).
+//                setView(view).
+//                create();
+//        dialog.show();
+//        dialog.setCanceledOnTouchOutside(true);
+//        sure.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new Group(activity,equipmentBeans).deleteLatestUse(equipmentCode);
+//                deleteEquipment(equipmentCode);
+//                dialog.dismiss();
+//            }
+//        });
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+
+        View contentView = View.inflate(activity,R.layout.delete_layout_new,null);
+        TextView title=(TextView)contentView.findViewById(R.id.delete_title);
         title.setText("确定删除设备：" + Equipment.getEquipmentName(activity, equipmentCode) + "?");
-        final AlertDialog dialog=new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        sure.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout positiveBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_sure);
+        RelativeLayout negativeBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_cancel);
+
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.17f);
+        baseDialog.setContentView(contentView);
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Group(activity,equipmentBeans).deleteLatestUse(equipmentCode);
                 deleteEquipment(equipmentCode);
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
+
+
     }
 
+    /**
+     * 删除组对话框
+     * @param groupName
+     */
     protected void showDeleteGroupConfirmDialog(final String groupName) {
-        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout,null);
-        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
-        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
-        TextView title=(TextView)view.findViewById(R.id.delete_title);
+//        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout_new,null);
+//        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
+//        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
+//        TextView title=(TextView)view.findViewById(R.id.delete_title);
+//        title.setText("确定删除分组：" + groupName + "?");
+//        final AlertDialog dialog=new AlertDialog.Builder(activity).
+//                setView(view).
+//                create();
+//        dialog.show();
+//        dialog.setCanceledOnTouchOutside(true);
+//        sure.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    new Group(activity, equipmentBeans).deleteGroup(groupName);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ToastUtil.showLong(activity, "删除分组失败。");
+//                }
+//                reloadView();
+//                dialog.dismiss();
+//            }
+//        });
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+
+        View contentView = View.inflate(activity,R.layout.delete_layout_new,null);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        TextView title=(TextView)contentView.findViewById(R.id.delete_title);
         title.setText("确定删除分组：" + groupName + "?");
-        final AlertDialog dialog=new AlertDialog.Builder(activity).
-                setView(view).
-                create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        sure.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout positiveBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_sure);
+        RelativeLayout negativeBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_cancel);
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -587,17 +649,24 @@ public class EquipmentListFragment extends BaseFragment {
                     ToastUtil.showLong(activity, "删除分组失败。");
                 }
                 reloadView();
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                baseDialog.dismiss();
             }
         });
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.17f);
+        baseDialog.setContentView(contentView);
     }
 
+    /**
+     * 设置群组的对话框
+     * @param equipmentCode
+     */
     protected void showSetGroupDialog(final String equipmentCode) {
 //        LinearLayout view=(LinearLayout) activity.getLayoutInflater().inflate(R.layout.add_to_group_list,null);
 //        //dialog
@@ -623,7 +692,7 @@ public class EquipmentListFragment extends BaseFragment {
 //                data,
 //                R.layout.add_to_group_dialog_list_item,
 //                new String[]{"img","group"},
-//                new int[]{R.id.add_to_group_dialog_img,R.id.add_to_group_dialog_title});
+//                new int[]{R.id.add_to_group,R.id.add_to_group_dialog_title});
 //        listView.setAdapter(adapter);
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -673,7 +742,7 @@ public class EquipmentListFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);
     }

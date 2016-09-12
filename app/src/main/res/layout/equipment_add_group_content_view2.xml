@@ -13,11 +13,10 @@
         android:baselineAligned="true"
         android:background="@color/green_1"
         >
-
         <ImageView
             android:id="@+id/id_base_dialog_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:visibility="gone"/>
         <TextView

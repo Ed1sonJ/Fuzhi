@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:paddingLeft="?android:expandableListPreferredItemPaddingLeft"
-        android:textColor="@color/gray_3"
-        android:textSize="18sp"
+        android:textColor="@color/gray_2"
+        android:textSize="20sp"
         android:layout_weight="1"/>
 </LinearLayout>
