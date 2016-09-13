@@ -60,7 +60,8 @@
         android:layout_height="match_parent"
         android:footerDividersEnabled="true"
         android:scrollbars="none"
-        android:animateLayoutChanges="@bool/abc_config_closeDialogWhenTouchOutside"/>
+        android:animateLayoutChanges="@bool/abc_config_closeDialogWhenTouchOutside"
+        />
 
     <LinearLayout
         android:id="@+id/equipment_list_search_layout"

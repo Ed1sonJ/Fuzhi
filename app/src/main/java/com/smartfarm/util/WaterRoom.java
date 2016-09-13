@@ -30,10 +30,10 @@ public class  WaterRoom {
 	//发布浇水信息，code+controller，000021001/c/shc/1，这个就是topic，message：浇水的时间
 	public void waterOn(final String code,final String controller,final String clientId,final String message){
 
-		if(!isNumeric(message)){
-			return;
-		}
-		
+//		if(!isNumeric(message)){
+//			return;
+//		}
+//
 		publishWC.request(new MyListenerhs() {			
 			@Override
 			public void success(String arrivedMessage) {
@@ -118,7 +118,7 @@ public class  WaterRoom {
 	}
 
 	//判断是否是数字
-	private boolean isNumeric(String str){
+	private  boolean isNumeric(String str){
 		Pattern pattern = Pattern.compile("[0-9]*");
 		Matcher isNum = pattern.matcher(str);
 		if(!isNum.matches()){

@@ -65,30 +65,52 @@ public class SchemeDefaultFragment extends BaseFragment {
     private BaseProgressDialog dialog;
     //view
     private TextView equipmentsName;   //设备名字
-    /**上传按钮*/
+    /**
+     * 上传按钮
+     */
     private RelativeLayout uploadLayout;
-    /**表头功能tableLayout布局*/
+    /**
+     * 表头功能tableLayout布局
+     */
     private TableLayout schemeDefaultIndicatorLayout;   //控制器列表
-    /**没有选中设备显示的默认布局*/
+    /**
+     * 没有选中设备显示的默认布局
+     */
     private RelativeLayout schemeDefaultParameterLayout;    //参数
     private TextView noIndicatorText;
-    /**参数 - 光质比，布局*/
+    /**
+     * 参数 - 光质比，布局
+     */
     private View lqcLayout;
-    /**光质比的listview*/
+    /**
+     * 光质比的listview
+     */
     private ListView listViewlqc;
-    /**其它布局*/
+    /**
+     * 其它布局
+     */
     private LinearLayout othersParamLayout;
-    /**指标值*/
+    /**
+     * 指标值
+     */
     private SeekBar targetSeekBar;
-    /**光质中selected的哪一项红蓝白光之比*/
+    /**
+     * 光质中selected的哪一项红蓝白光之比
+     */
     private TextView targetTextView;
-    /**单位*/
+    /**
+     * 单位
+     */
     private TextView targetUnit;
-    /**上限值*/
+    /**
+     * 上限值
+     */
     private SeekBar upperSeekBar;
     private TextView upperTextView;
     private TextView upperUnit;
-    /**下限值*/
+    /**
+     * 下限值
+     */
     private SeekBar lowerSeekBar;
     private TextView lowerTextView;
     private TextView lowerUnit;
@@ -100,15 +122,25 @@ public class SchemeDefaultFragment extends BaseFragment {
     ImageView fullScreenBtn;
     //data
     String equipmentCodes;  //设备号
-    /**控制器关键字*/
+    /**
+     * 控制器关键字
+     */
     ArrayList<String> indicatorKeys = new ArrayList<>();
-    /**控制器名字*/
+    /**
+     * 控制器名字
+     */
     ArrayList<String> indicatorNames = new ArrayList<>();
-    /**默认光质比内容*/
+    /**
+     * 默认光质比内容
+     */
     private String[] lqcItemText;
-    /**默认光质比图像*/
+    /**
+     * 默认光质比图像
+     */
     private int[] lqcItemColor;
-    /**选中光质比值*/
+    /**
+     * 选中光质比值
+     */
     private String lqc = "";
     private String target;  //目标值
     private String upper;   //上限值
@@ -119,7 +151,9 @@ public class SchemeDefaultFragment extends BaseFragment {
     boolean isStartTime = true; //自定义时间用到的变量
     boolean isWater;    //浇水按钮是否按下
     boolean isWatering; //正在浇水
-    /**浇水控制器信息*/
+    /**
+     * 浇水控制器信息
+     */
     private static final String WATERCONTROLLER = "/c/shc/1";
     private String clientId = "ClientOfSmartFarm";
     //index
@@ -181,6 +215,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         setUpVideoView();
         return rootView;
     }
+
     //视频，还没用到
     protected void startVideo(String path) {
         mVideoView.setBufferSize(128);
@@ -276,7 +311,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         //没有选中设备的默认布局
         schemeDefaultParameterLayout = (RelativeLayout) rootView.findViewById(R.id.scheme_default_parameter_layout);
         //没有选择设备，请到设备列表中选择设备
-        noIndicatorText = (TextView)rootView.findViewById(R.id.textview_no_indicator);
+        noIndicatorText = (TextView) rootView.findViewById(R.id.textview_no_indicator);
         //光质比布局
         lqcLayout = activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_lqc, schemeDefaultParameterLayout, false);
         //lqcLayout中的listview
@@ -296,7 +331,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     private class uploadListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (indicatorKeys!=null && indicatorKeys.size()>0)
+            if (indicatorKeys != null && indicatorKeys.size() > 0)
                 uploadScheme(indicatorKeys.get(currentIndex));
         }
     }
@@ -333,12 +368,12 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     //自定义光质比值,已经更新了布局
     private void customLed() {
-        View contentView = View.inflate(activity,R.layout.fragment_scheme_new_custom_lqc,null);
+        View contentView = View.inflate(activity, R.layout.fragment_scheme_new_custom_lqc, null);
         final NumberPickerView ledRed = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_red);
         final NumberPickerView ledBlue = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_blue);
         final NumberPickerView ledWhite = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_white);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.6f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.6f);
         baseDialog.setTitle("自定义光质比");
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
@@ -349,14 +384,14 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lqc = ledRed.getValue() + ":" + ledBlue.getValue()+":"+ledWhite.getValue();
+                lqc = ledRed.getValue() + ":" + ledBlue.getValue() + ":" + ledWhite.getValue();
                 uploadScheme("lqc");
                 baseDialog.dismiss();
             }
         });
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView,contentLp);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView, contentLp);
     }
 
     //因为获取的光质比参数是“光质比=1：2：3”的情形，而我们只需要1：2：3,所以需要截取
@@ -369,42 +404,42 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     //除光质比外其它参数的初始化
-    private void initParamOthersLayout(){
-        targetSeekBar = (SeekBar)othersParamLayout.findViewById(R.id.target);
+    private void initParamOthersLayout() {
+        targetSeekBar = (SeekBar) othersParamLayout.findViewById(R.id.target);
         targetSeekBar.setProgress(1);
-        targetTextView = (TextView)othersParamLayout.findViewById(R.id.target_textview);
+        targetTextView = (TextView) othersParamLayout.findViewById(R.id.target_textview);
         targetTextView.setOnClickListener(new paramTextViewListener());
         targetSeekBar.setOnSeekBarChangeListener(new onSeekBarChangedListener(targetTextView));
-        targetUnit = (TextView)othersParamLayout.findViewById(R.id.target_unit);
+        targetUnit = (TextView) othersParamLayout.findViewById(R.id.target_unit);
 
-        upperSeekBar = (SeekBar)othersParamLayout.findViewById(R.id.upper);
+        upperSeekBar = (SeekBar) othersParamLayout.findViewById(R.id.upper);
         upperSeekBar.setProgress(1);
-        upperTextView = (TextView)othersParamLayout.findViewById(R.id.upper_textview);
+        upperTextView = (TextView) othersParamLayout.findViewById(R.id.upper_textview);
         upperTextView.setOnClickListener(new paramTextViewListener());
         upperSeekBar.setOnSeekBarChangeListener(new onSeekBarChangedListener(upperTextView));
-        upperUnit = (TextView)othersParamLayout.findViewById(R.id.upper_unit);
+        upperUnit = (TextView) othersParamLayout.findViewById(R.id.upper_unit);
 
-        lowerSeekBar = (SeekBar)othersParamLayout.findViewById(R.id.lower);
+        lowerSeekBar = (SeekBar) othersParamLayout.findViewById(R.id.lower);
         lowerSeekBar.setProgress(1);
-        lowerTextView = (TextView)othersParamLayout.findViewById(R.id.lower_textview);
+        lowerTextView = (TextView) othersParamLayout.findViewById(R.id.lower_textview);
         lowerTextView.setOnClickListener(new paramTextViewListener());
         lowerSeekBar.setOnSeekBarChangeListener(new onSeekBarChangedListener(lowerTextView));
-        lowerUnit = (TextView)othersParamLayout.findViewById(R.id.lower_unit);
+        lowerUnit = (TextView) othersParamLayout.findViewById(R.id.lower_unit);
         //上存按钮
-        uploadLayout = (RelativeLayout)othersParamLayout.findViewById(R.id.upload_relate_layout);
+        uploadLayout = (RelativeLayout) othersParamLayout.findViewById(R.id.upload_relate_layout);
         uploadLayout.setOnClickListener(new uploadListener());
 
     }
 
     //指标值、上限、下限点击时弹出的对话框，点击数字可以设置
-    private class paramTextViewListener implements View.OnClickListener{
+    private class paramTextViewListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LinearLayout paramAdjustment = (LinearLayout)activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_adjustment,null);
-            final EditText target = (EditText)paramAdjustment.findViewById(R.id.param_target);
-            final EditText upper = (EditText)paramAdjustment.findViewById(R.id.param_upper);
-            final EditText lower = (EditText)paramAdjustment.findViewById(R.id.param_lower);
-                    new AlertDialog.Builder(activity)
+            LinearLayout paramAdjustment = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_adjustment, null);
+            final EditText target = (EditText) paramAdjustment.findViewById(R.id.param_target);
+            final EditText upper = (EditText) paramAdjustment.findViewById(R.id.param_upper);
+            final EditText lower = (EditText) paramAdjustment.findViewById(R.id.param_lower);
+            new AlertDialog.Builder(activity)
                     .setTitle("参数调整")
                     .setView(paramAdjustment)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -413,40 +448,41 @@ public class SchemeDefaultFragment extends BaseFragment {
                             int targetTmp = getValidAdjustment(target);
                             int upperTmp = getValidAdjustment(upper);
                             int lowerTmp = getValidAdjustment(lower);
-                            if(targetTmp!=-1)
+                            if (targetTmp != -1)
                                 targetSeekBar.setProgress(targetTmp);
-                            if(upperTmp!=-1)
+                            if (upperTmp != -1)
                                 upperSeekBar.setProgress(upperTmp);
-                            if (lowerTmp!=-1)
+                            if (lowerTmp != -1)
                                 lowerSeekBar.setProgress(lowerTmp);
                         }
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    }).create()
+                }
+            }).create()
                     .show();
         }
     }
+
     //判断输入的指标值是否合理
-    private int  getValidAdjustment(EditText et){
-        if (et.getText().toString().equals("")||et.getText().toString()==null){
+    private int getValidAdjustment(EditText et) {
+        if (et.getText().toString().equals("") || et.getText().toString() == null) {
             return -1;
         }
-        if(Integer.parseInt(et.getText().toString())<=0)
+        if (Integer.parseInt(et.getText().toString()) <= 0)
             return 0;
         if (indicatorKeys.get(currentIndex).equals("lc")) {
-            if(Integer.parseInt(et.getText().toString())>6000)
+            if (Integer.parseInt(et.getText().toString()) > 6000)
                 return 6000;
         } else if (indicatorKeys.get(currentIndex).equals("phc")) {
-            if(Integer.parseInt(et.getText().toString())>10)
+            if (Integer.parseInt(et.getText().toString()) > 10)
                 return 10;
         } else {
-            if(Integer.parseInt(et.getText().toString())>100)
+            if (Integer.parseInt(et.getText().toString()) > 100)
                 return 100;
         }
-        return  Integer.parseInt(et.getText().toString());
+        return Integer.parseInt(et.getText().toString());
     }
 
     //滑动条
@@ -456,16 +492,19 @@ public class SchemeDefaultFragment extends BaseFragment {
         public onSeekBarChangedListener(TextView textView) {
             this.textView = textView;
         }
+
         //fromUser如果是用户触发的改变则返回True
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             textView.setText(String.valueOf(progress));
         }
+
         //通知用户已经开始一个触摸拖动手势，
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
+
         //通知用户触摸手势已经结束
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
@@ -496,18 +535,19 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     //没有控制器时需要隐藏的信息
-    private void noIndicatorHide(){
+    private void noIndicatorHide() {
         noIndicatorText.setVisibility(View.GONE);
     }
+
     //没有控制器时需要显示的信息
-    private void noIndicatorShow(){
+    private void noIndicatorShow() {
         noIndicatorText.setVisibility(View.VISIBLE);
     }
 
     //获取控制的结果
-    private void indicatorsResult(Map<String, ArrayList<String>> result){
+    private void indicatorsResult(Map<String, ArrayList<String>> result) {
         //控制器排序
-        sortIndicators(result,indicatorNames,indicatorKeys);
+        sortIndicators(result, indicatorNames, indicatorKeys);
         initIndicatorLayout(schemeDefaultIndicatorLayout, indicatorNames);
     }
 
@@ -619,33 +659,21 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     //依照控制器类型设置图片
     private void setIconWithType(ImageView iconIV, String type, boolean pressed) {
-        if (type.matches("^喷淋.*"))
-        {
+        if (type.matches("^喷淋.*")) {
             iconIV.setImageResource(R.drawable.icon_jiaoshui);
-        }
-        else if (type.matches("^光质.*"))
-        {
-            if (!pressed)
-            {
+        } else if (type.matches("^光质.*")) {
+            if (!pressed) {
                 iconIV.setImageResource(R.drawable.icon_guangzhibi);
-            }
-            else
-            {
+            } else {
                 iconIV.setImageResource(R.drawable.icon_guangzhibi_pressed);
             }
-        }
-        else if (type.matches("^光强.*"))
-        {
-            if (!pressed)
-            {
+        } else if (type.matches("^光强.*")) {
+            if (!pressed) {
                 iconIV.setImageResource(R.drawable.icon_sun);
-            }
-            else
-            {
+            } else {
                 iconIV.setImageResource(R.drawable.icon_sun_pressed);
             }
-        }
-        else if (type.matches("^温度.*")) {
+        } else if (type.matches("^温度.*")) {
             if (!pressed) {
                 iconIV.setImageResource(R.drawable.icon_wendu);
             } else {
@@ -731,68 +759,59 @@ public class SchemeDefaultFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             int choice = (int) v.getTag();
-            if (choice == MAGIC_NUMBER)
-            {     //选中popupMenu按钮
+            if (choice == MAGIC_NUMBER) {     //选中popupMenu按钮
                 showPopupMenu(v);
-                pressIndicatorMenu(3,indicatorKeys.size());
-            }
-            else if (choice < indicatorKeys.size())
-            {
-                if (indicatorKeys.get(choice).equals("shc"))
-                {    //选中喷淋按钮
+                pressIndicatorMenu(3, indicatorKeys.size());
+            } else if (choice < indicatorKeys.size()) {
+                if (indicatorKeys.get(choice).equals("shc")) {    //选中喷淋按钮
                     water();
-                }
-                else
-                {   //选中其它按钮，
+                } else {   //选中其它按钮，
                     currentIndex = (int) v.getTag();
                     //显示相应的view
                     indicatorShow(currentIndex);
-                    pressIndicatorMenu(currentIndex,indicatorKeys.size());
+                    pressIndicatorMenu(currentIndex, indicatorKeys.size());
                 }
             }
         }
     }
+
     //监听选中的控制器按钮，分别显示光质比等设置界面
-    private void indicatorShow(int index){
+    private void indicatorShow(int index) {
         //单位设置
         setParamsUnit(indicatorKeys.get(index));
         //lqc光质
-        if (indicatorKeys.get(index).equals("lqc"))
-        {
+        if (indicatorKeys.get(index).equals("lqc")) {
             initParamLqc();
         }
         //lc光强
-        else if (indicatorKeys.get(index).equals("lc"))
-        {
+        else if (indicatorKeys.get(index).equals("lc")) {
             initParamOthers(6000);
         }
         //土养湿度控制？有phc?，二氧化碳是什么？
-        else if (indicatorKeys.get(index).equals("phc"))
-        {
+        else if (indicatorKeys.get(index).equals("phc")) {
             initParamOthers(10);
         }
         //其他
-        else
-        {
+        else {
             initParamOthers(100);
         }
     }
 
     //设置控制的单位，比如设置光强的单位为lux
-    private void setParamsUnit(String indicator){
-        if (indicator.equals("lc")){
+    private void setParamsUnit(String indicator) {
+        if (indicator.equals("lc")) {
             targetUnit.setText("/lux");
             upperUnit.setText("/lux");
             lowerUnit.setText("/lux");
-        }else if (indicator.equals("tc")){
+        } else if (indicator.equals("tc")) {
             targetUnit.setText("/°C");
             upperUnit.setText("/°C");
             lowerUnit.setText("/°C");
-        }else if (indicator.equals("hc")){
+        } else if (indicator.equals("hc")) {
             targetUnit.setText("/%");
             upperUnit.setText("/%");
             lowerUnit.setText("/%");
-        }else{
+        } else {
             targetUnit.setText("");
             upperUnit.setText("");
             lowerUnit.setText("");
@@ -801,47 +820,47 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     //按下控制器按钮时调用的方法，该方法鲁棒性有待增强
     //index,选中的功能的下标，size，一共有几种功能可选
-    private void pressIndicatorMenu(int index,int size){
-        if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof  TableRow){
+    private void pressIndicatorMenu(int index, int size) {
+        if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
             //获取要显示的功能，喷淋，光质，等等
-            TableRow tableRow = (TableRow)schemeDefaultIndicatorLayout.getChildAt(0);
-            if (tableRow.getChildAt(index) instanceof LinearLayout){
+            TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+            if (tableRow.getChildAt(index) instanceof LinearLayout) {
                 //获取点击的功能，这个按钮由一张图和一个textview组成
-                LinearLayout linearLayout = (LinearLayout)tableRow.getChildAt(index);
+                LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(index);
                 if (linearLayout.getChildAt(0) instanceof ImageView &&
-                        linearLayout.getChildAt(1) instanceof TextView){
-                    ImageView imageView = (ImageView)linearLayout.getChildAt(0);
-                    TextView textView = (TextView)linearLayout.getChildAt(1);
-                    switch (index){
+                        linearLayout.getChildAt(1) instanceof TextView) {
+                    ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                    TextView textView = (TextView) linearLayout.getChildAt(1);
+                    switch (index) {
                         case 0:
                             //设置对应的图片
                             setIconWithType(imageView, textView.getText().toString(), true);
                             textView.setTextColor(getResources().getColor(R.color.green_1));
 
-                            if (size>1){
+                            if (size > 1) {
                                 //按钮1
-                                linearLayout = (LinearLayout)tableRow.getChildAt(1);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(1);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
 
-                            if (size>2){
+                            if (size > 2) {
                                 //按钮2
-                                linearLayout = (LinearLayout)tableRow.getChildAt(2);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(2);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
 
-                            if (size>3){
+                            if (size > 3) {
                                 //按钮3
-                                linearLayout = (LinearLayout)tableRow.getChildAt(3);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
-                                setIconWithType(imageView,textView.getText().toString(),false);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(3);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
+                                setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
                             break;
@@ -849,25 +868,25 @@ public class SchemeDefaultFragment extends BaseFragment {
                             setIconWithType(imageView, textView.getText().toString(), true);
                             textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
-                            linearLayout = (LinearLayout)tableRow.getChildAt(0);
-                            imageView = (ImageView)linearLayout.getChildAt(0);
-                            textView = (TextView)linearLayout.getChildAt(1);
+                            linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                            imageView = (ImageView) linearLayout.getChildAt(0);
+                            textView = (TextView) linearLayout.getChildAt(1);
                             setIconWithType(imageView, textView.getText().toString(), false);
                             textView.setTextColor(getResources().getColor(R.color.black));
-                            if (size>2){
+                            if (size > 2) {
                                 //按钮2
-                                linearLayout = (LinearLayout)tableRow.getChildAt(2);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(2);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
-                            if (size>3){
+                            if (size > 3) {
                                 //按钮3
-                                linearLayout = (LinearLayout)tableRow.getChildAt(3);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
-                                setIconWithType(imageView,textView.getText().toString(),false);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(3);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
+                                setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
                             break;
@@ -875,25 +894,25 @@ public class SchemeDefaultFragment extends BaseFragment {
                             setIconWithType(imageView, textView.getText().toString(), true);
                             textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
-                            linearLayout = (LinearLayout)tableRow.getChildAt(0);
-                            imageView = (ImageView)linearLayout.getChildAt(0);
-                            textView = (TextView)linearLayout.getChildAt(1);
+                            linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                            imageView = (ImageView) linearLayout.getChildAt(0);
+                            textView = (TextView) linearLayout.getChildAt(1);
                             setIconWithType(imageView, textView.getText().toString(), false);
                             textView.setTextColor(getResources().getColor(R.color.black));
-                            if (size>1){
+                            if (size > 1) {
                                 //按钮1
-                                linearLayout = (LinearLayout)tableRow.getChildAt(1);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(1);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
-                            if (size>3){
+                            if (size > 3) {
                                 //按钮3
-                                linearLayout = (LinearLayout)tableRow.getChildAt(3);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
-                                setIconWithType(imageView,textView.getText().toString(),false);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(3);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
+                                setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
                             break;
@@ -901,25 +920,25 @@ public class SchemeDefaultFragment extends BaseFragment {
                             setIconWithType(imageView, textView.getText().toString(), true);
                             textView.setTextColor(getResources().getColor(R.color.green_1));
                             //按钮0
-                            linearLayout = (LinearLayout)tableRow.getChildAt(0);
-                            imageView = (ImageView)linearLayout.getChildAt(0);
-                            textView = (TextView)linearLayout.getChildAt(1);
+                            linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                            imageView = (ImageView) linearLayout.getChildAt(0);
+                            textView = (TextView) linearLayout.getChildAt(1);
                             setIconWithType(imageView, textView.getText().toString(), false);
                             textView.setTextColor(getResources().getColor(R.color.black));
-                            if (size>1){
+                            if (size > 1) {
                                 //按钮1
-                                linearLayout = (LinearLayout)tableRow.getChildAt(1);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(1);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
 
-                            if (size>2){
+                            if (size > 2) {
                                 //按钮2
-                                linearLayout = (LinearLayout)tableRow.getChildAt(2);
-                                imageView = (ImageView)linearLayout.getChildAt(0);
-                                textView = (TextView)linearLayout.getChildAt(1);
+                                linearLayout = (LinearLayout) tableRow.getChildAt(2);
+                                imageView = (ImageView) linearLayout.getChildAt(0);
+                                textView = (TextView) linearLayout.getChildAt(1);
                                 setIconWithType(imageView, textView.getText().toString(), false);
                                 textView.setTextColor(getResources().getColor(R.color.black));
                             }
@@ -952,18 +971,18 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     //第一次进入时参数布局的显示
-    private void paramFirstShow(){
-        if (indicatorKeys!=null && !indicatorKeys.isEmpty()){
+    private void paramFirstShow() {
+        if (indicatorKeys != null && !indicatorKeys.isEmpty()) {
             //第一项是土壤湿度控制器且控制器个数多于1时，显示第二项
             //因为喷淋那个是个dialog
-            if (indicatorKeys.get(0).equals("shc") && indicatorKeys.size()>1){
+            if (indicatorKeys.get(0).equals("shc") && indicatorKeys.size() > 1) {
                 indicatorShow(1);
                 currentIndex = 1;
-                pressIndicatorMenu(1,indicatorKeys.size());
-            }else{
+                pressIndicatorMenu(1, indicatorKeys.size());
+            } else {
                 indicatorShow(0);
                 currentIndex = 0;
-                pressIndicatorMenu(0,indicatorKeys.size());
+                pressIndicatorMenu(0, indicatorKeys.size());
             }
         }
     }
@@ -983,11 +1002,11 @@ public class SchemeDefaultFragment extends BaseFragment {
     //设置浇水时间，已经更改了新的布局
     private void setWaterTimes() {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        final View contentView = View.inflate(activity,R.layout.view_water_button,null);
+        final View contentView = View.inflate(activity, R.layout.view_water_button, null);
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
         //设置居中显示dialog并不设置偏移量
-        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -997,25 +1016,42 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText waterTimes = (EditText) contentView.findViewById(R.id.et_water_time);
-                String waterMessage = waterTimes.getText().toString();
-                if (waterMessage.equals("") || waterMessage == null) {
+                EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
+                EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
+                EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
+                waterTimeSecs.requestFocus();
+
+                String waterTimeHoursMsg = waterTimeHours.getText().toString();
+                String waterTimeMinsMsg = waterTimeMins.getText().toString();
+                String waterTimeSecsMsg = waterTimeSecs.getText().toString();
+
+                //只需要判空
+                if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null ||
+                        waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null
+                        || waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null) {
                     ToastUtil.showShort(activity, "请输入时长");
                     return;
                 }
+
+                int totalTime = Integer.parseInt(waterTimeHoursMsg) * 3600 +
+                        Integer.parseInt(waterTimeMinsMsg) * 60 +
+                        Integer.parseInt(waterTimeSecsMsg);
+
+                String waterMessage = String.valueOf(totalTime);
+
                 waterRoom.waterOn(equipmentCodes, WATERCONTROLLER, clientId, waterMessage);
                 showDialog("正在打开喷淋");
                 baseDialog.dismiss();
             }
         });
         //设置dialog显示的标题
-        baseDialog.setTitle(equipmentCodes+"");
-        baseDialog.setIcon(R.drawable.icon_water_on);
+        baseDialog.setTitle(equipmentCodes + "");
+        baseDialog.setIcon(R.drawable.icon_water_on_dialog);
         //设置contentView在dialog中显示的布局参数
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         //匹配dialog与contentView
-        baseDialog.setContentView(contentView,contentLp);
+        baseDialog.setContentView(contentView, contentLp);
     }
 
     //正在浇水，点亮图片
@@ -1086,10 +1122,10 @@ public class SchemeDefaultFragment extends BaseFragment {
     private void lqcListView(ListView listView, String[] itemString, int[] itemColor) {
         List<Map<String, Object>> listItems = new ArrayList<>();
         //光质比的图标和说明
-        for (int i=0;i<itemString.length;i++){
+        for (int i = 0; i < itemString.length; i++) {
             Map<String, Object> listItem = new HashMap<>();
-            listItem.put("lqc_item_imageview",itemColor[i]);
-            listItem.put("lqc_item_textview",itemString[i]);
+            listItem.put("lqc_item_imageview", itemColor[i]);
+            listItem.put("lqc_item_textview", itemString[i]);
             listItems.add(listItem);
         }
         //自定义的图标和说明
@@ -1098,8 +1134,8 @@ public class SchemeDefaultFragment extends BaseFragment {
         listItem.put("lqc_item_textview", "自定义");
         listItems.add(listItem);
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(activity,listItems,R.layout.fragment_scheme_new_parameter_lqc_item,
-                new String[]{"lqc_item_imageview","lqc_item_textview"},new int[]{R.id.lqc_item_iamgeview, R.id.lqc_item_textview});
+        SimpleAdapter simpleAdapter = new SimpleAdapter(activity, listItems, R.layout.fragment_scheme_new_parameter_lqc_item,
+                new String[]{"lqc_item_imageview", "lqc_item_textview"}, new int[]{R.id.lqc_item_iamgeview, R.id.lqc_item_textview});
         listView.setAdapter(simpleAdapter);
     }
 
@@ -1114,7 +1150,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     //上传控制方案
     private void uploadScheme(String indicator) {
-        if (fillingParams(indicator)){
+        if (fillingParams(indicator)) {
             fillingTime();
         }
     }
@@ -1125,10 +1161,10 @@ public class SchemeDefaultFragment extends BaseFragment {
         startTime = "";
         endTime = "";
         //获取摆放到dialog中的listView
-        View contentView = View.inflate(activity,R.layout.dialog_water_choose_time,null);
+        View contentView = View.inflate(activity, R.layout.dialog_water_choose_time, null);
         ListView listTime = (ListView) contentView.findViewById(R.id.id_dialog_water_choose_time_list);
         //设置listView的adapter
-        final DialogTimeListAdapter adapter = new DialogTimeListAdapter(activity,items);
+        final DialogTimeListAdapter adapter = new DialogTimeListAdapter(activity, items);
         listTime.setAdapter(adapter);
         //为listView的item设置点击时换图片
         listTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -1138,15 +1174,15 @@ public class SchemeDefaultFragment extends BaseFragment {
                 //先清空所有的图片
                 adapter.removeAllViews();
                 //再设置点击的item的图片变化
-                ((ImageView)view.findViewById(R.id.id_water_choose_time_list_img)).setImageResource(R.drawable.dialog_img_select);
+                ((ImageView) view.findViewById(R.id.id_water_choose_time_list_img)).setImageResource(R.drawable.dialog_img_select);
                 countTime(position);
-           }
+            }
         });
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.65f);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.65f);
+        baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1162,9 +1198,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         });
         baseDialog.setTitle("请选择持续时间");
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        contentLp.setMargins(0,45,0,0);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView,contentLp);
+        contentLp.setMargins(0, 80, 0, 0);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView, contentLp);
     }
 
     //计算时间
@@ -1253,10 +1289,10 @@ public class SchemeDefaultFragment extends BaseFragment {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        try{
+                        try {
                             startTime = customTimeFormatter(startTimeTextview.getText().toString());
                             endTime = customTimeFormatter(endTimeTextview.getText().toString());
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                             startTime = startTimeTextview.getText().toString();
                             endTime = endTimeTextview.getText().toString();
@@ -1273,31 +1309,31 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     //耦合性很强，且没有错误检查的针对本应用的String到yyyy-MM-dd hh:MM:ss的方法
     //耦合性，模块之间的依赖关系
-    private  String customTimeFormatter(String orginalTime){
+    private String customTimeFormatter(String orginalTime) {
         String time = orginalTime;
-        String year = time.substring(0,time.indexOf("-"));
-        time = time.substring(time.indexOf("-")+1);
-        String month = time.substring(0,time.indexOf("-"));
-        if (Integer.parseInt(month)<10){
-            month = "0"+month;
+        String year = time.substring(0, time.indexOf("-"));
+        time = time.substring(time.indexOf("-") + 1);
+        String month = time.substring(0, time.indexOf("-"));
+        if (Integer.parseInt(month) < 10) {
+            month = "0" + month;
         }
-        time = time.substring(time.indexOf("-")+1);
-        String day = time.substring(0,time.indexOf(" "));
-        if (Integer.parseInt(day)<10){
-            day = "0"+day;
+        time = time.substring(time.indexOf("-") + 1);
+        String day = time.substring(0, time.indexOf(" "));
+        if (Integer.parseInt(day) < 10) {
+            day = "0" + day;
         }
-        time = time.substring(time.indexOf(" ")+1);
-        String hour = time.substring(0,time.indexOf(":"));
-        if (Integer.parseInt(hour)<10){
-            hour = "0"+hour;
+        time = time.substring(time.indexOf(" ") + 1);
+        String hour = time.substring(0, time.indexOf(":"));
+        if (Integer.parseInt(hour) < 10) {
+            hour = "0" + hour;
         }
-        time = time.substring(time.indexOf(":")+1);
+        time = time.substring(time.indexOf(":") + 1);
         String minute = time;
-        if (Integer.parseInt(minute)<10){
-            minute = "0"+minute;
+        if (Integer.parseInt(minute) < 10) {
+            minute = "0" + minute;
         }
         String second = "00";
-        String result = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+        String result = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
         return result;
     }
 
@@ -1331,12 +1367,12 @@ public class SchemeDefaultFragment extends BaseFragment {
             lower = lowerTextView.getText().toString();
 
 
-            if (Integer.parseInt(target)>Integer.parseInt(upper)){
-                toast.showShort(activity,"目标值不能大于上限值");
+            if (Integer.parseInt(target) > Integer.parseInt(upper)) {
+                toast.showShort(activity, "目标值不能大于上限值");
                 return false;
             }
-            if (Integer.parseInt(lower)>Integer.parseInt(target)){
-                toast.showShort(activity,"目标值不能小于上限值");
+            if (Integer.parseInt(lower) > Integer.parseInt(target)) {
+                toast.showShort(activity, "目标值不能小于上限值");
                 return false;
             }
         }
@@ -1344,7 +1380,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     //检查光质比输入是否合法
-    private boolean checkIslqcInputValid(String lqc){
+    private boolean checkIslqcInputValid(String lqc) {
         String reg = "[0-9]:[0-9]:[0-9]";
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(lqc);
@@ -1379,7 +1415,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     //光质控制输入合法后上传
     private void uploadAfterChecked() {
         if (checkedIsValid(target, upper, lower, startTime, endTime)) {
-            System.out.println("开始时间:"+startTime+"  结束时间:"+endTime);
+            System.out.println("开始时间:" + startTime + "  结束时间:" + endTime);
             uploadAndDownloadScheme.interveneObservable(equipmentCodes,
                     startTime, endTime, indicatorKeys.get(currentIndex), target, upper, lower);
         }
