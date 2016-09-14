@@ -178,7 +178,7 @@ public class OverviewFragment extends BaseFragment {
             if (bean.getIsAlarm().get(0) == 1) {
                 valueTV.setTextColor(getResources().getColor(R.color.red_2));
             } else {
-                valueTV.setTextColor(getResources().getColor(R.color.green_1));
+                valueTV.setTextColor(getResources().getColor(R.color.green_2));
             }
             valueNameTV.setText(cutSensorName(name));
             valueTV.setText(value);

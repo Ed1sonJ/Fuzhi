@@ -9,7 +9,7 @@
         android:id="@+id/id_dialog_about_title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="关于富智"
+        android:text="关于自然一号"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:textSize="23sp"
@@ -23,10 +23,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scrollbars="none"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
             >
             <TextView
                 android:id="@+id/id_dialog_about_content"
@@ -34,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:textSize="18sp"
                 android:lineSpacingExtra="3dp"
+                android:padding="10dp"
                 />
         </ScrollView>
         <Button

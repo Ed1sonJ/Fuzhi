@@ -570,15 +570,15 @@ public class EquipmentListFragment extends BaseFragment {
 //            }
 //        });
 
-        View contentView = View.inflate(activity,R.layout.delete_layout_new,null);
+        View contentView = View.inflate(activity,R.layout.delete_layout,null);
         TextView title=(TextView)contentView.findViewById(R.id.delete_title);
-        title.setText("确定删除设备：" + Equipment.getEquipmentName(activity, equipmentCode) + "?");
-        RelativeLayout positiveBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_sure);
-        RelativeLayout negativeBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_cancel);
+        title.setText("删除设备：" + Equipment.getEquipmentName(activity, equipmentCode));
+        TextView positiveBtn=(TextView)contentView.findViewById(R.id.delete_dialog_sure);
+        TextView negativeBtn=(TextView)contentView.findViewById(R.id.delete_dialog_cancel);
 
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.17f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
         baseDialog.setContentView(contentView);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -633,12 +633,12 @@ public class EquipmentListFragment extends BaseFragment {
 //            }
 //        });
 
-        View contentView = View.inflate(activity,R.layout.delete_layout_new,null);
+        View contentView = View.inflate(activity,R.layout.delete_layout,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         TextView title=(TextView)contentView.findViewById(R.id.delete_title);
-        title.setText("确定删除分组：" + groupName + "?");
-        RelativeLayout positiveBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_sure);
-        RelativeLayout negativeBtn=(RelativeLayout)contentView.findViewById(R.id.delete_dialog_cancel);
+        title.setText("删除分组：" + groupName);
+        TextView positiveBtn=(TextView)contentView.findViewById(R.id.delete_dialog_sure);
+        TextView negativeBtn=(TextView)contentView.findViewById(R.id.delete_dialog_cancel);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -659,7 +659,7 @@ public class EquipmentListFragment extends BaseFragment {
             }
         });
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.17f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
         baseDialog.setContentView(contentView);
     }
 
@@ -708,7 +708,6 @@ public class EquipmentListFragment extends BaseFragment {
 //            }
 //        });
 
-        // TODO: 2016/9/10 可能存在问题
         View contentView = View.inflate(activity,R.layout.add_to_group_list,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         ListView lstView = (ListView) contentView.findViewById(R.id.add_to_group_dialog_list);
@@ -742,7 +741,17 @@ public class EquipmentListFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
+
+        //item的高度为0.08或者0.07
+        //title的高度为0.09
+
+        //判断group.size（）大小，大于4个则固定大小
+        if(groups.size()>=4){
+            baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
+        }
+        else {
+            baseDialog.setWidthAndHeightRadio(0.8f, (float) (0.09f+groups.size()*0.07));
+        }
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);
     }

@@ -373,8 +373,8 @@ public class SchemeDefaultFragment extends BaseFragment {
         final NumberPickerView ledBlue = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_blue);
         final NumberPickerView ledWhite = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_white);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.6f);
-        baseDialog.setTitle("自定义光质比");
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.65f);
+        baseDialog.setTitle("自定义光强比");
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -389,7 +389,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         baseDialog.setContentView(contentView, contentLp);
     }
