@@ -19,6 +19,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * 用于更新的类
@@ -77,6 +78,9 @@ public class UpdateManager {
 						}
 						//将读入的buff转换成String类型
 						String strJson = new String(buff);
+
+						Log.d("updateManager","strJson:"+strJson);
+
 						//将String转换成json
 						JSONObject json = new JSONObject(strJson);
 						int lastestVersion = json.getJSONObject(
