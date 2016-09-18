@@ -104,7 +104,7 @@ public class MainActivityNew extends BaseActivity {
         ft.commit();
         currentPressedBtn = "list";
 
-
+        //一进来就检测更新
         UpdateManager updateManager = UpdateManager.getInstance(this);
         updateManager.checkUpdate(new OnCheckUpdateListener());
     }

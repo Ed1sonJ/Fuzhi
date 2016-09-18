@@ -261,12 +261,21 @@ public class CaptureActivity extends Activity implements Callback {
 		popupWindow.setContentView(view);
 		popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
 		popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+<<<<<<< HEAD
 		// ĞèÒªÉèÖÃÒ»ÏÂ´Ë²ÎÊı£¬µã»÷Íâ±ß¿ÉÏûÊ§
 		popupWindow.setBackgroundDrawable(new ColorDrawable(
 				android.graphics.Color.BLACK));
 		// ÉèÖÃµã»÷´°¿ÚÍâ±ß´°¿ÚÏûÊ§
 		popupWindow.setOutsideTouchable(true);
 		// ÉèÖÃ´Ë²ÎÊı»ñµÃ½¹µã£¬·ñÔòÎŞ·¨µã»÷
+=======
+		//è®¾ç½®èƒŒæ™¯é¢œè‰²ä¸ºé»‘è‰²
+		popupWindow.setBackgroundDrawable(new ColorDrawable(
+				android.graphics.Color.BLACK));
+		//è®¾ç½®ç‚¹å‡»popWinæ—è¾¹å¯ä»¥éšè—
+		popupWindow.setOutsideTouchable(true);
+		//è®¾ç½®è·å¾—ç„¦ç‚¹
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 		popupWindow.setFocusable(true);
 		// popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
 		// Gravity.LEFT|Gravity.BOTTOM, 0, 0);
@@ -276,7 +285,11 @@ public class CaptureActivity extends Activity implements Callback {
 		qr.setOnClickListener(new QrClickListener());
 		light.setOnClickListener(new LightClickListener());
 	}
+<<<<<<< HEAD
 	//´ò¿ªÉÁ¹âµÆ
+=======
+	//æ‰“å¼€é—ªå…‰ç¯
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 	private class LightClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
@@ -295,14 +308,22 @@ public class CaptureActivity extends Activity implements Callback {
 			isOpenLight=false;
 		}
 	}
+<<<<<<< HEAD
 	//´ò¿ªÏà²áÖĞµÄ¶şÎ¬Âë
+=======
+	//ä»å›¾åº“ä¸­è¯†åˆ«äºŒç»´ç 
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 	private class QrClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
 			// ´ò¿ªÊÖ»úÖĞµÄÏà²á
 			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
 			innerIntent.setType("image/*");
+<<<<<<< HEAD
 			Intent wrapperIntent = Intent.createChooser(innerIntent, "Ñ¡Ôñ¶şÎ¬ÂëÍ¼Æ¬");
+=======
+			Intent wrapperIntent = Intent.createChooser(innerIntent, "é€‰æ‹©äºŒç»´ç å›¾ç‰‡");
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 			startActivityForResult(wrapperIntent, 1);
 		}
 	}
@@ -355,6 +376,7 @@ public class CaptureActivity extends Activity implements Callback {
 					try {
 						Uri uri = data.getData();
 						if (!TextUtils.isEmpty(uri.getAuthority())) {
+							//è·å–é€‰ä¸­å›¾ç‰‡çš„è·¯å¾„
 							Cursor cursor = getContentResolver().query(uri,
 									new String[] { MediaStore.Images.Media.DATA },
 									null, null, null);
@@ -425,9 +447,15 @@ public class CaptureActivity extends Activity implements Callback {
 		hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); // ÉèÖÃ¶şÎ¬ÂëÄÚÈİµÄ±àÂë
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
+<<<<<<< HEAD
 		options.inJustDecodeBounds = true; // ÏÈ»ñÈ¡Ô­´óĞ¡
 		scanBitmap = BitmapFactory.decodeFile(path, options);
 		options.inJustDecodeBounds = false; // »ñÈ¡ĞÂµÄ´óĞ¡
+=======
+		options.inJustDecodeBounds = true; //è®¾ç½®ä¸åŠ è½½åˆ°å†…å­˜ï¼Œæ–¹ä¾¿å‹ç¼©
+		scanBitmap = BitmapFactory.decodeFile(path, options);
+		options.inJustDecodeBounds = false; //è®¾ç½®åŠ è½½åˆ°å†…å­˜ï¼ŒåŠ è½½çš„æ˜¯å‹ç¼©åçš„ç…§ç‰‡
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 		int sampleSize = (int) (options.outHeight / (float) 100);
 		if (sampleSize <= 0)
 			sampleSize = 1;

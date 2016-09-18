@@ -8,6 +8,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+<<<<<<< HEAD
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smartfarm.bean.UpdateBean;
@@ -20,22 +21,43 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+=======
+/**
+ * 用于更新的类
+ */
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 public class UpdateManager {
-	static private UpdateManager instance;
+	private static UpdateManager instance;
 
 	private Activity context;
 
-	static public synchronized UpdateManager getInstance(Activity ctx) {
-		if (instance == null) {
-			instance = new UpdateManager(ctx);
-		}
-		return instance;
-	}
+//	static public synchronized UpdateManager getInstance(Activity ctx) {
+//		if (instance == null) {
+//			instance = new UpdateManager(ctx);
+//		}
+//		return instance;
+//	}
 
 	private UpdateManager(Activity ctx) {
 		context = ctx;
 	}
 
+	public static UpdateManager getInstance(Activity context){
+		//提高效率
+		if(instance == null){
+			synchronized (UpdateManager.class){
+				if(instance == null){
+					instance = new UpdateManager( context );
+				}
+			}
+		}
+		return instance;
+	}
+
+	/**
+	 * 检测更新的方法，检测服务器存在的update.json文件
+	 * @param callback
+     */
 	public void checkUpdate(final CheckUpdateCallback callback) {
 		final int currentVersion = getCurrentVersion();
 		new Thread(new Runnable() {
@@ -56,7 +78,9 @@ public class UpdateManager {
 						while (count < length) {
 							count += in.read(buff);
 						}
+						//将读入的buff转换成String类型
 						String strJson = new String(buff);
+<<<<<<< HEAD
 						Gson gson = new Gson();
 						UpdateBean updateBean=gson.fromJson(strJson, new TypeToken<UpdateBean>() {}.getType());
 						int lastestVersion = updateBean.getVersion();
@@ -67,6 +91,18 @@ public class UpdateManager {
 						System.out.println(lastestVersion+","+apkUrl+","+date+","+note);
 
 
+=======
+						//将String转换成json
+						JSONObject json = new JSONObject(strJson);
+						int lastestVersion = json.getJSONObject(
+								context.getPackageName()).getInt("version");
+						String apkUrl = json.getJSONObject(
+								context.getPackageName()).getString("url");
+						String date = json.getJSONObject(
+								context.getPackageName()).getString("date");
+						String note = json.getJSONObject(
+								context.getPackageName()).getString("note");
+>>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 						callback.onCheckUpdateFinished(currentVersion,
 								lastestVersion, apkUrl, date, note);
 					}
@@ -80,6 +116,10 @@ public class UpdateManager {
 		}).start();
 	}
 
+	/**
+	 * 获取当前的版本号
+	 * @return
+     */
 	public int getCurrentVersion() {
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
@@ -92,6 +132,10 @@ public class UpdateManager {
 		}
 	}
 
+	/**
+	 * 获取当前的版本名
+	 * @return
+     */
 	public String getCurrentVersionName() {
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
@@ -104,6 +148,10 @@ public class UpdateManager {
 		}
 	}
 
+	/**
+	 * 连接url下载apk
+	 * @param url
+     */
 	public void downloadAndInstall(String url) {
 		DownloadAndInstallTask task = new DownloadAndInstallTask();
 		task.execute(url);
@@ -140,8 +188,10 @@ public class UpdateManager {
 					int count = 0;
 					int progress = 0;
 					while ((count = bin.read(buffer)) != -1) {
+						//写进文件里面
 						fout.write(buffer, 0, count);
 						progress += count;
+						//更新进度条
 						publishProgress((int) (1.0f * progress / len * 100));
 					}
 					bin.close();

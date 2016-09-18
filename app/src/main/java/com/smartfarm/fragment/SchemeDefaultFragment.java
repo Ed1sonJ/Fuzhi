@@ -1003,6 +1003,25 @@ public class SchemeDefaultFragment extends BaseFragment {
     private void setWaterTimes() {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final View contentView = View.inflate(activity, R.layout.view_water_button, null);
+
+        final EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
+        final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
+        final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
+//        EditText testEditText = (EditText) contentView.findViewById(R.id.id_test_et);
+
+        //设置光标的位置为文本末尾
+        waterTimeHours.setText("00");
+        waterTimeMins.setText("00");
+        waterTimeSecs.setText("00");
+//
+//        testEditText.setText("00");
+//        testEditText.setSelection(testEditText.getText().length());
+
+        waterTimeHours.setSelection(waterTimeHours.getText().length());
+        waterTimeMins.setSelection(waterTimeMins.getText().length());
+        waterTimeSecs.setSelection(waterTimeSecs.getText().length());
+
+
         //设置在屏幕中的显示的比例
         baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
         //设置居中显示dialog并不设置偏移量
@@ -1016,19 +1035,16 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
-                EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
-                EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
-                waterTimeSecs.requestFocus();
 
                 String waterTimeHoursMsg = waterTimeHours.getText().toString();
                 String waterTimeMinsMsg = waterTimeMins.getText().toString();
                 String waterTimeSecsMsg = waterTimeSecs.getText().toString();
 
                 //只需要判空
-                if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null ||
-                        waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null
-                        || waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null) {
+                if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null
+//                        || waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null
+//                        || waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null
+                        ) {
                     ToastUtil.showShort(activity, "请输入时长");
                     return;
                 }

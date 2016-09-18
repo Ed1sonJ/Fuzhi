@@ -19,7 +19,7 @@ public class LoginObservable {
 		String token = null;
 		String data = username + "#" + password;
 		try {
-			//加密
+			//使用Des加密
 			token = Base64Util.encode(DesUtil.encrypt(data.getBytes() , Protocol.key));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -31,7 +31,7 @@ public class LoginObservable {
 		String token = getToken(userName, passWord);
 		Log.d("token", token);
 		try {
-			//URL加密，解码是要对应编码utf-8
+			//url加密，解码是要对应编码utf-8(因为协议内容是用UTF-8编码的Json格式)
 			return "data="+URLEncoder.encode("{\"token\":\"" + token + "\"}", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
