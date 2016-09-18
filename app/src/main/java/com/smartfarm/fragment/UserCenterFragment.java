@@ -127,6 +127,9 @@ public class UserCenterFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 根据点击的按钮实现不同的点击事件
+     */
     private class choiceListener implements OnClickListener {
         String tag = "";
 
@@ -191,6 +194,9 @@ public class UserCenterFragment extends BaseFragment {
         activity.finish();
     }
 
+    /**
+     * 点击检测更新回调的方法
+     */
     private void updateMethod() {
         UpdateManager updateManager = UpdateManager
                 .getInstance(activity);

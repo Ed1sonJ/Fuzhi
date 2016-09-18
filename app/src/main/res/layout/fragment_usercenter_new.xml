@@ -16,7 +16,7 @@
             android:layout_height="@dimen/title_logo_height"
             android:id="@+id/usercenter_logo_imageview"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/icon"
+            android:src="@drawable/icon_titlebar"
             android:layout_marginLeft="@dimen/title_logo_left"
             android:layout_centerVertical="true" />
 

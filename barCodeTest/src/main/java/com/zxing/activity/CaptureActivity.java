@@ -260,12 +260,12 @@ public class CaptureActivity extends Activity implements Callback {
 		popupWindow.setContentView(view);
 		popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
 		popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-		// ��Ҫ����һ�´˲����������߿���ʧ
+		//设置背景颜色为黑色
 		popupWindow.setBackgroundDrawable(new ColorDrawable(
 				android.graphics.Color.BLACK));
-		// ���õ��������ߴ�����ʧ
+		//设置点击popWin旁边可以隐藏
 		popupWindow.setOutsideTouchable(true);
-		// ���ô˲�����ý��㣬�����޷����
+		//设置获得焦点
 		popupWindow.setFocusable(true);
 		// popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
 		// Gravity.LEFT|Gravity.BOTTOM, 0, 0);
@@ -275,7 +275,7 @@ public class CaptureActivity extends Activity implements Callback {
 		qr.setOnClickListener(new QrClickListener());
 		light.setOnClickListener(new LightClickListener());
 	}
-	//�������
+	//打开闪光灯
 	private class LightClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
@@ -294,14 +294,14 @@ public class CaptureActivity extends Activity implements Callback {
 			isOpenLight=false;
 		}
 	}
-	//������еĶ�ά��
+	//从图库中识别二维码
 	private class QrClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
 			// ���ֻ��е����
 			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
 			innerIntent.setType("image/*");
-			Intent wrapperIntent = Intent.createChooser(innerIntent, "ѡ���ά��ͼƬ");
+			Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
 			startActivityForResult(wrapperIntent, 1);
 		}
 	}
@@ -354,6 +354,7 @@ public class CaptureActivity extends Activity implements Callback {
 					try {
 						Uri uri = data.getData();
 						if (!TextUtils.isEmpty(uri.getAuthority())) {
+							//获取选中图片的路径
 							Cursor cursor = getContentResolver().query(uri,
 									new String[] { MediaStore.Images.Media.DATA },
 									null, null, null);
@@ -424,9 +425,9 @@ public class CaptureActivity extends Activity implements Callback {
 		hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); // ���ö�ά�����ݵı���
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true; // �Ȼ�ȡԭ��С
+		options.inJustDecodeBounds = true; //设置不加载到内存，方便压缩
 		scanBitmap = BitmapFactory.decodeFile(path, options);
-		options.inJustDecodeBounds = false; // ��ȡ�µĴ�С
+		options.inJustDecodeBounds = false; //设置加载到内存，加载的是压缩后的照片
 		int sampleSize = (int) (options.outHeight / (float) 100);
 		if (sampleSize <= 0)
 			sampleSize = 1;

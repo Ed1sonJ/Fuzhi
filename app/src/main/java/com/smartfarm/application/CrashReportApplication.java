@@ -13,7 +13,7 @@ import org.acra.annotation.ReportsCrashes;
 @ReportsCrashes(formUri = "http://app.gzfuzhi.com:8222/py/error_report.py", logcatArguments = {
         "-t", "50", "ActivityManager:I", "gzfuzhi:V", "*:S"}, socketTimeout = 20000)
 public class CrashReportApplication extends Application {
-    public static String APP_KEY = "04ebcf745c5f402f801a68695c27087f";
+    public static String APP_KEY = "d553cd512a8840168f079aab76cc3cae";
     @Override
     public void onCreate() {
         super.onCreate();

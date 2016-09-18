@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 
+/**
+ * 进度对话框的包装类
+ */
 public class BaseProgressDialog {
 	private Activity activity;
 	private ProgressDialog progressDialog;

@@ -27,7 +27,7 @@
             android:layout_marginLeft="10dp"
             android:text="title"
             android:textStyle="bold"
-            android:textSize="23sp"
+            android:textSize="20sp"
             android:textColor="@color/white"
             />
     </LinearLayout>

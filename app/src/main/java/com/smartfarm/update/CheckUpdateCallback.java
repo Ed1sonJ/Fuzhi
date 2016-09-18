@@ -1,6 +1,9 @@
 package com.smartfarm.update;
 
+/**
+ * 用于检测更新的回调接口
+ */
 public interface CheckUpdateCallback {
-	public void onCheckingUpdate();
-	public void onCheckUpdateFinished(int currentVersion, int lastestVersion, String url, String date, String note);
+	void onCheckingUpdate();
+	void onCheckUpdateFinished(int currentVersion, int lastestVersion, String url, String date, String note);
 }
