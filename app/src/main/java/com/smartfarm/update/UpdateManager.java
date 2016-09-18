@@ -19,8 +19,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.smartfarm.bean.UpdateBean;
+import com.smartfarm.util.BaseProgressDialog;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 /**
  * 用于更新的类
  */
@@ -55,7 +64,7 @@ public class UpdateManager {
 	/**
 	 * 检测更新的方法，检测服务器存在的update.json文件
 	 * @param callback
-     */
+	 */
 	public void checkUpdate(final CheckUpdateCallback callback) {
 		final int currentVersion = getCurrentVersion();
 		new Thread(new Runnable() {
@@ -64,7 +73,7 @@ public class UpdateManager {
 				callback.onCheckingUpdate();
 				StringBuffer sb = new StringBuffer();
 				try {
-					URL url = new URL("http://app.gzfuzhi.com/app/update.json");
+					URL url = new URL("http://app.gzfuzhi.com/downloads/update.json");
 					HttpURLConnection urlConnection = (HttpURLConnection) url
 							.openConnection();
 					int length = urlConnection.getContentLength();
@@ -78,19 +87,12 @@ public class UpdateManager {
 						}
 						//将读入的buff转换成String类型
 						String strJson = new String(buff);
-
-						Log.d("updateManager","strJson:"+strJson);
-
-						//将String转换成json
-						JSONObject json = new JSONObject(strJson);
-						int lastestVersion = json.getJSONObject(
-								context.getPackageName()).getInt("version");
-						String apkUrl = json.getJSONObject(
-								context.getPackageName()).getString("url");
-						String date = json.getJSONObject(
-								context.getPackageName()).getString("date");
-						String note = json.getJSONObject(
-								context.getPackageName()).getString("note");
+						Gson gson = new Gson();
+						UpdateBean updateBean=gson.fromJson(strJson, new TypeToken<UpdateBean>() {}.getType());
+						int lastestVersion = updateBean.getVersion();
+						String apkUrl = updateBean.getUrl();
+						String date = updateBean.getDate();
+						String note = updateBean.getNote();
 						callback.onCheckUpdateFinished(currentVersion,
 								lastestVersion, apkUrl, date, note);
 					}
@@ -107,7 +109,7 @@ public class UpdateManager {
 	/**
 	 * 获取当前的版本号
 	 * @return
-     */
+	 */
 	public int getCurrentVersion() {
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
@@ -123,7 +125,7 @@ public class UpdateManager {
 	/**
 	 * 获取当前的版本名
 	 * @return
-     */
+	 */
 	public String getCurrentVersionName() {
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(
@@ -139,7 +141,7 @@ public class UpdateManager {
 	/**
 	 * 连接url下载apk
 	 * @param url
-     */
+	 */
 	public void downloadAndInstall(String url) {
 		DownloadAndInstallTask task = new DownloadAndInstallTask();
 		task.execute(url);
