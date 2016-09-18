@@ -261,14 +261,12 @@ public class CaptureActivity extends Activity implements Callback {
 		popupWindow.setContentView(view);
 		popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
 		popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-
 		// 需要设置一下此参数，点击外边可消失
 		popupWindow.setBackgroundDrawable(new ColorDrawable(
 				android.graphics.Color.BLACK));
 		// 设置点击窗口外边窗口消失
 		popupWindow.setOutsideTouchable(true);
 		// 设置此参数获得焦点，否则无法点击
-
 		popupWindow.setFocusable(true);
 		// popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
 		// Gravity.LEFT|Gravity.BOTTOM, 0, 0);
@@ -278,7 +276,6 @@ public class CaptureActivity extends Activity implements Callback {
 		qr.setOnClickListener(new QrClickListener());
 		light.setOnClickListener(new LightClickListener());
 	}
-
 	//打开闪光灯
 	private class LightClickListener implements OnClickListener{
 		@Override
@@ -298,7 +295,6 @@ public class CaptureActivity extends Activity implements Callback {
 			isOpenLight=false;
 		}
 	}
-
 	//打开相册中的二维码
 	private class QrClickListener implements OnClickListener{
 		@Override
@@ -306,7 +302,6 @@ public class CaptureActivity extends Activity implements Callback {
 			// 打开手机中的相册
 			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
 			innerIntent.setType("image/*");
-
 			Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
 			startActivityForResult(wrapperIntent, 1);
 		}
@@ -360,7 +355,6 @@ public class CaptureActivity extends Activity implements Callback {
 					try {
 						Uri uri = data.getData();
 						if (!TextUtils.isEmpty(uri.getAuthority())) {
-							//鑾峰彇閫変腑鍥剧墖鐨勮矾寰?
 							Cursor cursor = getContentResolver().query(uri,
 									new String[] { MediaStore.Images.Media.DATA },
 									null, null, null);
@@ -431,11 +425,9 @@ public class CaptureActivity extends Activity implements Callback {
 		hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); // 设置二维码内容的编码
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
-
 		options.inJustDecodeBounds = true; // 先获取原大小
 		scanBitmap = BitmapFactory.decodeFile(path, options);
 		options.inJustDecodeBounds = false; // 获取新的大小
-
 		int sampleSize = (int) (options.outHeight / (float) 100);
 		if (sampleSize <= 0)
 			sampleSize = 1;
