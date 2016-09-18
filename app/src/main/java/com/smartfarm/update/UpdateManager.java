@@ -8,7 +8,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-<<<<<<< HEAD
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smartfarm.bean.UpdateBean;
@@ -21,11 +20,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-=======
-/**
- * 用于更新的类
- */
->>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 public class UpdateManager {
 	private static UpdateManager instance;
 
@@ -80,29 +74,12 @@ public class UpdateManager {
 						}
 						//将读入的buff转换成String类型
 						String strJson = new String(buff);
-<<<<<<< HEAD
 						Gson gson = new Gson();
 						UpdateBean updateBean=gson.fromJson(strJson, new TypeToken<UpdateBean>() {}.getType());
 						int lastestVersion = updateBean.getVersion();
 						String apkUrl = updateBean.getUrl();
 						String date = updateBean.getDate();
 						String note = updateBean.getNote();
-
-						System.out.println(lastestVersion+","+apkUrl+","+date+","+note);
-
-
-=======
-						//将String转换成json
-						JSONObject json = new JSONObject(strJson);
-						int lastestVersion = json.getJSONObject(
-								context.getPackageName()).getInt("version");
-						String apkUrl = json.getJSONObject(
-								context.getPackageName()).getString("url");
-						String date = json.getJSONObject(
-								context.getPackageName()).getString("date");
-						String note = json.getJSONObject(
-								context.getPackageName()).getString("note");
->>>>>>> a5941f52e66153da3adc5249e8a7623c1909da04
 						callback.onCheckUpdateFinished(currentVersion,
 								lastestVersion, apkUrl, date, note);
 					}
