@@ -1,4 +1,5 @@
 package com.zxing.activity;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -103,10 +104,10 @@ public class CaptureActivity extends Activity implements Callback {
 		}
 		initBeepSound();
 		vibrate = true;
-		
+
 		//quit the scan view
 		cancelScanButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				CaptureActivity.this.finish();
@@ -129,7 +130,7 @@ public class CaptureActivity extends Activity implements Callback {
 		inactivityTimer.shutdown();
 		super.onDestroy();
 	}
-	
+
 	/**
 	 * Handler scan result
 	 * @param result
@@ -152,7 +153,7 @@ public class CaptureActivity extends Activity implements Callback {
 		}
 		CaptureActivity.this.finish();
 	}
-	
+
 	private void initCamera(SurfaceHolder surfaceHolder) {
 		try {
 			CameraManager.get().openDriver(surfaceHolder);
@@ -169,7 +170,7 @@ public class CaptureActivity extends Activity implements Callback {
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+							   int height) {
 
 	}
 
@@ -260,12 +261,12 @@ public class CaptureActivity extends Activity implements Callback {
 		popupWindow.setContentView(view);
 		popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
 		popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-		// ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â´Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½Ê§
+		// ÐèÒªÉèÖÃÒ»ÏÂ´Ë²ÎÊý£¬µã»÷Íâ±ß¿ÉÏûÊ§
 		popupWindow.setBackgroundDrawable(new ColorDrawable(
 				android.graphics.Color.BLACK));
-		// ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ï¿½ï¿½ï¿½ï¿½Ê§
+		// ÉèÖÃµã»÷´°¿ÚÍâ±ß´°¿ÚÏûÊ§
 		popupWindow.setOutsideTouchable(true);
-		// ï¿½ï¿½ï¿½Ã´Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½
+		// ÉèÖÃ´Ë²ÎÊý»ñµÃ½¹µã£¬·ñÔòÎÞ·¨µã»÷
 		popupWindow.setFocusable(true);
 		// popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
 		// Gravity.LEFT|Gravity.BOTTOM, 0, 0);
@@ -275,7 +276,7 @@ public class CaptureActivity extends Activity implements Callback {
 		qr.setOnClickListener(new QrClickListener());
 		light.setOnClickListener(new LightClickListener());
 	}
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//´ò¿ªÉÁ¹âµÆ
 	private class LightClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
@@ -294,14 +295,14 @@ public class CaptureActivity extends Activity implements Callback {
 			isOpenLight=false;
 		}
 	}
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¶ï¿½Î¬ï¿½ï¿½
+	//´ò¿ªÏà²áÖÐµÄ¶þÎ¬Âë
 	private class QrClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
-			// ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½
+			// ´ò¿ªÊÖ»úÖÐµÄÏà²á
 			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
 			innerIntent.setType("image/*");
-			Intent wrapperIntent = Intent.createChooser(innerIntent, "Ñ¡ï¿½ï¿½ï¿½Î¬ï¿½ï¿½Í¼Æ¬");
+			Intent wrapperIntent = Intent.createChooser(innerIntent, "Ñ¡Ôñ¶þÎ¬ÂëÍ¼Æ¬");
 			startActivityForResult(wrapperIntent, 1);
 		}
 	}
@@ -316,7 +317,7 @@ public class CaptureActivity extends Activity implements Callback {
 					mProgress.dismiss();
 					String resultString = msg.obj.toString();
 					if (resultString.equals("")) {
-						Toast.makeText(CaptureActivity.this, "É¨ï¿½ï¿½Ê§ï¿½ï¿½!",
+						Toast.makeText(CaptureActivity.this, "É¨ÃèÊ§°Ü!",
 								Toast.LENGTH_SHORT).show();
 					} else {
 						// System.out.println("Result:"+resultString);
@@ -332,7 +333,7 @@ public class CaptureActivity extends Activity implements Callback {
 
 				case 2:
 					mProgress.dismiss();
-					Toast.makeText(CaptureActivity.this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_LONG)
+					Toast.makeText(CaptureActivity.this, "½âÎö´íÎó£¡", Toast.LENGTH_LONG)
 							.show();
 
 					break;
@@ -358,7 +359,7 @@ public class CaptureActivity extends Activity implements Callback {
 									new String[] { MediaStore.Images.Media.DATA },
 									null, null, null);
 							if (null == cursor) {
-								Toast.makeText(this, "Í¼Æ¬Ã»ï¿½Òµï¿½", Toast.LENGTH_SHORT)
+								Toast.makeText(this, "Í¼Æ¬Ã»ÕÒµ½", Toast.LENGTH_SHORT)
 										.show();
 								return;
 							}
@@ -370,7 +371,7 @@ public class CaptureActivity extends Activity implements Callback {
 							photo_path = data.getData().getPath();
 						}
 						mProgress = new ProgressDialog(CaptureActivity.this);
-						mProgress.setMessage("ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½...");
+						mProgress.setMessage("ÕýÔÚÉ¨Ãè...");
 						mProgress.setCancelable(false);
 						mProgress.show();
 
@@ -394,7 +395,7 @@ public class CaptureActivity extends Activity implements Callback {
 							}
 						}).start();
 					} catch (Exception e) {
-						Toast.makeText(CaptureActivity.this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
+						Toast.makeText(CaptureActivity.this, "½âÎö´íÎó£¡",
 								Toast.LENGTH_LONG).show();
 					}
 
@@ -409,9 +410,9 @@ public class CaptureActivity extends Activity implements Callback {
 	}
 
 	/**
-	 * É¨ï¿½ï¿½ï¿½Î¬ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
+	 * É¨Ãè¶þÎ¬ÂëÍ¼Æ¬µÄ·½·¨
 	 *
-	 * Ä¿Ç°Ê¶ï¿½ï¿½È²ï¿½ï¿½ß£ï¿½ï¿½Ð´ï¿½ï¿½Ä½ï¿½
+	 * Ä¿Ç°Ê¶±ð¶È²»¸ß£¬ÓÐ´ý¸Ä½ø
 	 *
 	 * @param path
 	 * @return
@@ -421,12 +422,12 @@ public class CaptureActivity extends Activity implements Callback {
 			return null;
 		}
 		Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
-		hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); // ï¿½ï¿½ï¿½Ã¶ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ÝµÄ±ï¿½ï¿½ï¿½
+		hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); // ÉèÖÃ¶þÎ¬ÂëÄÚÈÝµÄ±àÂë
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true; // ï¿½È»ï¿½È¡Ô­ï¿½ï¿½Ð¡
+		options.inJustDecodeBounds = true; // ÏÈ»ñÈ¡Ô­´óÐ¡
 		scanBitmap = BitmapFactory.decodeFile(path, options);
-		options.inJustDecodeBounds = false; // ï¿½ï¿½È¡ï¿½ÂµÄ´ï¿½Ð¡
+		options.inJustDecodeBounds = false; // »ñÈ¡ÐÂµÄ´óÐ¡
 		int sampleSize = (int) (options.outHeight / (float) 100);
 		if (sampleSize <= 0)
 			sampleSize = 1;

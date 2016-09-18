@@ -1,24 +1,24 @@
 package com.smartfarm.update;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.smartfarm.bean.UpdateBean;
+import com.smartfarm.util.BaseProgressDialog;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import org.json.JSONObject;
-
-import com.smartfarm.util.BaseProgressDialog;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 public class UpdateManager {
 	static private UpdateManager instance;
@@ -44,7 +44,7 @@ public class UpdateManager {
 				callback.onCheckingUpdate();
 				StringBuffer sb = new StringBuffer();
 				try {
-					URL url = new URL("http://app.gzfuzhi.com/app/update.json");
+					URL url = new URL("http://app.gzfuzhi.com/downloads/update.json");
 					HttpURLConnection urlConnection = (HttpURLConnection) url
 							.openConnection();
 					int length = urlConnection.getContentLength();
@@ -57,15 +57,16 @@ public class UpdateManager {
 							count += in.read(buff);
 						}
 						String strJson = new String(buff);
-						JSONObject json = new JSONObject(strJson);
-						int lastestVersion = json.getJSONObject(
-								context.getPackageName()).getInt("version");
-						String apkUrl = json.getJSONObject(
-								context.getPackageName()).getString("url");
-						String date = json.getJSONObject(
-								context.getPackageName()).getString("date");
-						String note = json.getJSONObject(
-								context.getPackageName()).getString("note");
+						Gson gson = new Gson();
+						UpdateBean updateBean=gson.fromJson(strJson, new TypeToken<UpdateBean>() {}.getType());
+						int lastestVersion = updateBean.getVersion();
+						String apkUrl = updateBean.getUrl();
+						String date = updateBean.getDate();
+						String note = updateBean.getNote();
+
+						System.out.println(lastestVersion+","+apkUrl+","+date+","+note);
+
+
 						callback.onCheckUpdateFinished(currentVersion,
 								lastestVersion, apkUrl, date, note);
 					}

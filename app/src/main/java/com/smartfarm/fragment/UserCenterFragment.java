@@ -146,6 +146,7 @@ public class UserCenterFragment extends BaseFragment {
                 exitMethod();
             }
             else if (tag.equals("update")) {
+                //¸üÐÂ
                 updateMethod();
             }
         }
