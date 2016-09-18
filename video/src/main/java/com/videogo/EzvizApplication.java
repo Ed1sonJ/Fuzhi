@@ -27,7 +27,7 @@ import com.videogo.openapi.EZOpenSDK;
 public class EzvizApplication extends Application {
 	// 开放平台申请的APP key & secret key
 	// open
-    public static String APP_KEY = "7d29c71eae264e17a77c1617d29d8804"; // 2015/10/29
+    public static String APP_KEY = "d553cd512a8840168f079aab76cc3cae"; // 2015/10/29
 
 
 	@Override
