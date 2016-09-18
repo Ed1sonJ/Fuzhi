@@ -1,13 +1,24 @@
 package com.smartfarm.update;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
+
+import com.smartfarm.util.BaseProgressDialog;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smartfarm.bean.UpdateBean;
@@ -19,7 +30,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+/**
+ * 用于更新的类
+ */
 public class UpdateManager {
 	private static UpdateManager instance;
 
