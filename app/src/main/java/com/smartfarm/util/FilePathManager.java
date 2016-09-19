@@ -6,7 +6,7 @@ import android.os.Environment;
 import java.io.File;
 
 public class FilePathManager {
-	private static final String APP_FOLDER_NAME = "SmartFarm";
+	private static final String APP_FOLDER_NAME = "/SmartFarm/";
 	private static FilePathManager instance;
 	private File appFolderFile;
 	private Context ctx;
