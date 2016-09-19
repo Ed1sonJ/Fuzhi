@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smartfarm.activity"
 
-    android:versionCode="2"
-    android:versionName="1.0.1">
+    android:versionCode="1"
+    android:versionName="1.0.0">
 
     <!--内部开发版本
     android:versionCode="29"
