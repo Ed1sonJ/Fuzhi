@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.os.Environment;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -275,7 +276,7 @@ public class OverviewFragment extends BaseFragment {
     public void loadEquipmentName() {
         equipmentNameText.setText(Equipment.getEquipmentName(activity, selectedEquipmentCode));
     }
-    //拍完照之后的结果
+    //刷新照片
     public void loadEquipmentImage() {
         try {
             File equimentImageFile = getEquipmentImageFile();
@@ -481,7 +482,7 @@ public class OverviewFragment extends BaseFragment {
     }
 
     protected void showTakePictureDialog() {
-        new AlertDialog.Builder(activity)
+        new Builder(activity)
                 .setTitle("选择图片")
                 .setItems(new String[]{"本地相册", "拍照"},
                         new DialogInterface.OnClickListener() {
@@ -492,13 +493,18 @@ public class OverviewFragment extends BaseFragment {
                                     case 0:
                                         try {
                                             //打开图片
-                                            Intent gallery = new Intent(
-                                                    Intent.ACTION_PICK);
-                                            gallery.setType("image/*");
-                                            //startActivityForResult，根据resultCode区分不同的activity
-                                            activity.startActivityForResult(
-                                                    gallery,
-                                                    IntentUtil.PICTURE_FROM_GALLERY);
+//                                            Intent gallery = new Intent(
+//                                                    Intent.ACTION_PICK);
+//                                            gallery.setType("image/*");
+//                                            //startActivityForResult，根据resultCode区分不同的activity
+//                                            activity.startActivityForResult(
+//                                                    gallery,
+//                                                    IntentUtil.PICTURE_FROM_GALLERY);
+                                            // TODO: 2016/9/19 测试
+                                            Intent intentGallery = new Intent(Intent.ACTION_PICK,
+                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                            startActivityForResult(intentGallery,IntentUtil.PICTURE_FROM_GALLERY);
+
                                         } catch (Exception e) {
                                             ToastUtil.showLong(activity, "打开图库失败");
                                         }

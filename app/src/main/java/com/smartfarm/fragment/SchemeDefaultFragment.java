@@ -43,6 +43,7 @@ import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.ToastUtil;
 import com.smartfarm.util.WaterRoom;
 import com.smartfarm.view.NumberPickerView;
+import com.videogo.universalimageloader.utils.L;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -435,33 +436,65 @@ public class SchemeDefaultFragment extends BaseFragment {
     private class paramTextViewListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LinearLayout paramAdjustment = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_adjustment, null);
-            final EditText target = (EditText) paramAdjustment.findViewById(R.id.param_target);
-            final EditText upper = (EditText) paramAdjustment.findViewById(R.id.param_upper);
-            final EditText lower = (EditText) paramAdjustment.findViewById(R.id.param_lower);
-            new AlertDialog.Builder(activity)
-                    .setTitle("参数调整")
-                    .setView(paramAdjustment)
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            int targetTmp = getValidAdjustment(target);
-                            int upperTmp = getValidAdjustment(upper);
-                            int lowerTmp = getValidAdjustment(lower);
-                            if (targetTmp != -1)
-                                targetSeekBar.setProgress(targetTmp);
-                            if (upperTmp != -1)
-                                upperSeekBar.setProgress(upperTmp);
-                            if (lowerTmp != -1)
-                                lowerSeekBar.setProgress(lowerTmp);
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//            LinearLayout paramAdjustment = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_adjustment, null);
+//            final EditText target = (EditText) paramAdjustment.findViewById(R.id.param_target);
+//            final EditText upper = (EditText) paramAdjustment.findViewById(R.id.param_upper);
+//            final EditText lower = (EditText) paramAdjustment.findViewById(R.id.param_lower);
+//            new AlertDialog.Builder(activity)
+//                    .setTitle("参数调整")
+//                    .setView(paramAdjustment)
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            int targetTmp = getValidAdjustment(target);
+//                            int upperTmp = getValidAdjustment(upper);
+//                            int lowerTmp = getValidAdjustment(lower);
+//                            if (targetTmp != -1)
+//                                targetSeekBar.setProgress(targetTmp);
+//                            if (upperTmp != -1)
+//                                upperSeekBar.setProgress(upperTmp);
+//                            if (lowerTmp != -1)
+//                                lowerSeekBar.setProgress(lowerTmp);
+//                        }
+//                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                }
+//            }).create()
+//                    .show();
+            // TODO: 2016/9/19 测试一下界面
+            View contentView = View.inflate(activity,R.layout.fragment_scheme_new_parameter_adjustment,null);
+            final EditText target = (EditText) contentView.findViewById(R.id.param_target);
+            final EditText upper = (EditText) contentView.findViewById(R.id.param_upper);
+            final EditText lower = (EditText) contentView.findViewById(R.id.param_lower);
+            final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+            baseDialog.setLocation(Gravity.CENTER,0,0);
+            baseDialog.setTitle("参数调整");
+            baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
+            baseDialog.setNegativeBtnListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-
+                public void onClick(View v) {
+                    baseDialog.dismiss();
                 }
-            }).create()
-                    .show();
+            });
+            baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int targetTmp = getValidAdjustment(target);
+                    int upperTmp = getValidAdjustment(upper);
+                    int lowerTmp = getValidAdjustment(lower);
+                    if (targetTmp != -1)
+                        targetSeekBar.setProgress(targetTmp);
+                    if (upperTmp != -1)
+                        upperSeekBar.setProgress(upperTmp);
+                    if (lowerTmp != -1)
+                        lowerSeekBar.setProgress(lowerTmp);
+                }
+            });
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+            baseDialog.setContentView(contentView,lp);
         }
     }
 
@@ -1197,7 +1230,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.65f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.6f);
         baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
@@ -1214,7 +1247,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         });
         baseDialog.setTitle("请选择持续时间");
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        contentLp.setMargins(0, 80, 0, 0);
+        contentLp.setMargins(0, 70, 0, 0);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         baseDialog.setContentView(contentView, contentLp);
     }

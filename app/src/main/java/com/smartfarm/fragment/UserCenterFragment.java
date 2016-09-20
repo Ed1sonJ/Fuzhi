@@ -167,9 +167,11 @@ public class UserCenterFragment extends BaseFragment {
         View contentView = View.inflate(activity,R.layout.dialog_about,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         TextView tvContent = (TextView) contentView.findViewById(R.id.id_dialog_about_content);
-        tvContent.setText("\t\t广州富智信息科技有限公司位于广州市天河区华南理工大学国家大学科技园，精准智慧农业照明联合实验室位于华南农业大学农学院。依托IT、嵌入式硬件、智能LED照明、自动控制等技术团队，主要建设基于实时监测、自动控制的现代农业物联网系统，已开发具有自主知识产权的富智精准智慧农业系统。\n" +
-                "\t\t系统可实时采集、控制系统环境内的空气或土壤温/湿度、二氧化碳、光照强度/光质比、土壤或培养液PH值/EC值等环境因子，尤其在智能LED调光方面拥有业内领先的核心技术。系统设立农技专家、设备管理员等帐户，专家技术方案与设施管理方案自动匹配，实现一个专家、服务多边的技术服务目标。系统可广泛应用于植物工厂、植物照明、大棚农业、精准滴灌/施肥/用药、地理信息采集等领域。\n" +
-                "\t\t通过建设基于实时监测、自动控制的现代农业物联网，公司将逐步建设一个开放包容、服务多边、多边共赢的现代农业服务平台，推动精准生产、产销一体、综合金融服务的现代农业产业链的发展。");
+        tvContent.setText("\t\t自然一号是富智精准智慧农业物联网采控终端。\n" +
+                "\t\t可实时采集空气或土壤的温/湿度，空气CO2浓度、光照强度、土壤/水质PH、土壤EC值、溶解氧等环境因子。\n" +
+                "\t\t可对智能LED植物照明 、滴灌、喷淋、水泵、风机等设备进行智能控制。\n"+
+                "\t\t系统设立专家帐户，专家设置的技术方案与设施管理方案可自动匹配，智能运行。");
+
         Button btnBack = (Button) contentView.findViewById(R.id.id_dialog_about_btn);
         btnBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -177,7 +179,7 @@ public class UserCenterFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.8f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.65f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);
 
