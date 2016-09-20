@@ -167,10 +167,10 @@ public class UserCenterFragment extends BaseFragment {
         View contentView = View.inflate(activity,R.layout.dialog_about,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         TextView tvContent = (TextView) contentView.findViewById(R.id.id_dialog_about_content);
-        tvContent.setText("\t\t自然一号是富智精准智慧农业物联网采控终端。\n" +
-                "\t\t可实时采集空气或土壤的温/湿度，空气CO2浓度、光照强度、土壤/水质PH、土壤EC值、溶解氧等环境因子。\n" +
-                "\t\t可对智能LED植物照明 、滴灌、喷淋、水泵、风机等设备进行智能控制。\n" +
-                "\t\t系统设立专家帐户，专家设置的技术方案与设施管理方案可自动匹配，智能运行。");
+        tvContent.setText("\u3000\u3000自然一号是富智精准智慧农业物联网采控终端。\n" +
+                "\u3000\u3000可实时采集空气或土壤的温湿度，空气CO2浓度、光照强度、土壤/水质PH、土壤EC值、溶解氧等环境因子。\n" +
+                "\u3000\u3000可对智能LED植物照明、滴灌、喷淋、水泵、风机等设备进行智能控制。\n" +
+                "\u3000\u3000系统设立专家帐户，专家设置的技术方案与设施管理方案可自动匹配，智能运行。");
 
         Button btnBack = (Button) contentView.findViewById(R.id.id_dialog_about_btn);
         btnBack.setOnClickListener(new OnClickListener() {

@@ -493,17 +493,17 @@ public class OverviewFragment extends BaseFragment {
                                     case 0:
                                         try {
                                             //打开图片
-//                                            Intent gallery = new Intent(
-//                                                    Intent.ACTION_PICK);
-//                                            gallery.setType("image/*");
-//                                            //startActivityForResult，根据resultCode区分不同的activity
-//                                            activity.startActivityForResult(
-//                                                    gallery,
-//                                                    IntentUtil.PICTURE_FROM_GALLERY);
+                                            Intent gallery = new Intent(
+                                                    Intent.ACTION_PICK);
+                                            gallery.setType("image/*");
+                                            //startActivityForResult，根据resultCode区分不同的activity
+                                            activity.startActivityForResult(
+                                                    gallery,
+                                                    IntentUtil.PICTURE_FROM_GALLERY);
                                             // TODO: 2016/9/19 测试
-                                            Intent intentGallery = new Intent(Intent.ACTION_PICK,
-                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                            startActivityForResult(intentGallery,IntentUtil.PICTURE_FROM_GALLERY);
+//                                            Intent intentGallery = new Intent(Intent.ACTION_PICK,
+//                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                                            startActivityForResult(intentGallery,IntentUtil.PICTURE_FROM_GALLERY);
 
                                         } catch (Exception e) {
                                             ToastUtil.showLong(activity, "打开图库失败");
@@ -544,7 +544,7 @@ public class OverviewFragment extends BaseFragment {
         public void onClick(View v) {
 //            Intent intent = new Intent(activity, VideoActivity.class);
 //            startActivity(intent);
-              EZOpenSDK.getInstance().openLoginPage();
+            EZOpenSDK.getInstance().openLoginPage();
         }
     }
 

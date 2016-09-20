@@ -1072,14 +1072,30 @@ public class SchemeDefaultFragment extends BaseFragment {
                 String waterTimeMinsMsg = waterTimeMins.getText().toString();
                 String waterTimeSecsMsg = waterTimeSecs.getText().toString();
 
-                //只需要判空
-                if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null
-//                        || waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null
-//                        || waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null
-                        ) {
+                //三者为空则提示输入时长
+                if((waterTimeHoursMsg.equals("")||waterTimeHoursMsg == null)
+                        &&(waterTimeMinsMsg.equals("")||waterTimeMinsMsg==null)
+                        &&(waterTimeSecsMsg.equals("")||waterTimeSecsMsg==null)){
                     ToastUtil.showShort(activity, "请输入时长");
-                    return;
+                    return ;
                 }
+                //以下情况是有其中没有输入时自动补零的情况
+                else
+                {
+                    if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null)
+                    {
+                        waterTimeSecsMsg="00";
+                    }
+
+                    if (waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null){
+                        waterTimeMinsMsg="00";
+                    }
+
+                    if(waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null) {
+                        waterTimeHoursMsg = "00";
+                    }
+                }
+
 
                 int totalTime = Integer.parseInt(waterTimeHoursMsg) * 3600 +
                         Integer.parseInt(waterTimeMinsMsg) * 60 +

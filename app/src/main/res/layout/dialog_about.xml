@@ -8,11 +8,11 @@
     <TextView
         android:id="@+id/id_dialog_about_title"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/baseDialog_layout_height"
         android:text="关于自然一号"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:textSize="23sp"
+        android:textSize="@dimen/baseDialog_title_textSize"
         android:textColor="@color/white"
         android:background="@color/green_1"
         android:textStyle="bold"
@@ -30,7 +30,10 @@
                 android:layout_height="match_parent"
                 android:textSize="18sp"
                 android:lineSpacingExtra="3dp"
-                android:padding="10dp"
+                android:gravity="left"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="7dp"
                 />
         </ScrollView>
         <Button

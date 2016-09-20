@@ -502,9 +502,9 @@ public class EquipmentListFragment extends BaseFragment {
         final EditText renameEditText = (EditText)contentView.findViewById(R.id.equipment_add_group_edittext);
         Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
         Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
-        renameEditText.setText(groupName);
+//        renameEditText.setText(groupName);
         //设置光标的位置
-        renameEditText.setSelection(renameEditText.getText().length());
+//        renameEditText.setSelection(renameEditText.getText().length());
         icon.setImageResource(R.drawable.rename_group_title);
         icon.setVisibility(View.VISIBLE);
         title.setText("分组:"+groupName);
@@ -754,7 +754,7 @@ public class EquipmentListFragment extends BaseFragment {
             baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
         }
         else {
-            baseDialog.setWidthAndHeightRadio(0.8f, (float) (0.09f+groups.size()*0.07));
+            baseDialog.setWidthAndHeightRadio(0.8f, (float) (0.08f+groups.size()*0.07));
         }
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);
