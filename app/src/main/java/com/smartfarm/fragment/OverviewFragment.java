@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.os.Environment;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -88,7 +89,8 @@ public class OverviewFragment extends BaseFragment {
     protected ImageView realTimeBtn;
 
     protected EventHandler eventHandler;
-
+    //图片保存的文件夹
+    private static final String APP_FOLDER_NAME = "/SmartFarm/";
     protected void findView() {
         buttonGroup = (TableLayout) activity
                 .findViewById(R.id.overview_btn_group);
@@ -324,10 +326,16 @@ public class OverviewFragment extends BaseFragment {
                 BufferedInputStream bin = new BufferedInputStream(
                         new FileInputStream(img));
                 //与拍照保存的图片名字一样，覆盖原来的图片
-                File equipmentImageFile = getEquipmentImageFile();
+                //用FilePathManager创建不了文件夹
+                //改用以下方式可以创建
+                File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName());
+                if (!file.getParentFile().exists())
+                {
+                    file.getParentFile().mkdirs();
+                }
                 //BufferedOutputStream是带缓冲区的输出流，能够提高文件的写入效率。
                 BufferedOutputStream bout = new BufferedOutputStream(
-                        new FileOutputStream(equipmentImageFile));
+                        new FileOutputStream(file));
 
 
                 int c = bin.read();
@@ -353,14 +361,20 @@ public class OverviewFragment extends BaseFragment {
             return;
         }
         try {
-            File equipmentImageFile = getEquipmentImageFile();
+            //用FilePathManager创建不了文件夹
+            //改用以下方式可以创建
+            File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName());
+            if (!file.getParentFile().exists())
+            {
+                file.getParentFile().mkdirs();
+            }
             // 构造一个Intent对象，并将这个Intent的action指定为android.media.action.IMAGE_CAPTURE
             //再调用Intent的putExtra()方法指定图片的输出地址，这里填入刚刚得到的Uri对象，
             // 最后调用startActivityForResult()来启动活动。
             // 由于使用的是一个隐式Intent，系统会找出能够响应这个Intent的活动去启动，
             // 这样照相机程序就会被打开，拍下照片就会输出到out_image.jpg中。
             Intent localIntent = new Intent("android.media.action.IMAGE_CAPTURE");
-            localIntent.putExtra("output", Uri.fromFile(equipmentImageFile));
+            localIntent.putExtra("output", Uri.fromFile(file));
             imageChange();
             activity.startActivityForResult(localIntent,
                     IntentUtil.CAMERA_WITH_DATA);
