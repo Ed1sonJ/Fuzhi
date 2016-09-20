@@ -2,6 +2,7 @@ package com.smartfarm.model;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Environment;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
@@ -11,7 +12,6 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.smartfarm.activity.R;
 import com.smartfarm.util.Config;
-import com.smartfarm.util.FilePathManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,8 @@ import java.io.PrintStream;
  * Created by june_qijun on 16/1/4.
  */
 public class Equipment {
+    //图片保存的文件夹
+    private static final String APP_FOLDER_NAME = "/SmartFarm/";
     public static String getEquipmentName(Activity activity, String equipmentCode) {
         try {
             Config config = new Config(activity);
@@ -91,7 +93,11 @@ public class Equipment {
     }
 
     protected static File getEquipmentImageFile(Activity activity,String code) throws Exception {
-        FilePathManager fpm = FilePathManager.getInstance(activity);
-        return fpm.getFile(getEquipmentImageName(activity,code));
+        File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName(activity,code));
+        if (!file.getParentFile().exists())
+        {
+            file.getParentFile().mkdirs();
+        }
+        return file;
     }
 }
