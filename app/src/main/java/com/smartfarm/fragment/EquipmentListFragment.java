@@ -407,10 +407,14 @@ public class EquipmentListFragment extends BaseFragment {
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
         icon.setImageResource(R.drawable.rename_group_title);
         icon.setVisibility(View.VISIBLE);
+//        //请求焦点
+//        renameEditText.requestFocus();
+//        baseDialog.onShow(renameEditText);
+
         final String name=Equipment.getEquipmentName(activity, equipmentCode);
-        renameEditText.setText(name);
-        //设置光标的位置
-        renameEditText.setSelection(renameEditText.getText().length());
+//        renameEditText.setText(name);
+//        //设置光标的位置
+//        renameEditText.setSelection(renameEditText.getText().length());
         title.setText("设备:" + name);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

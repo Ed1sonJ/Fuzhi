@@ -1040,12 +1040,11 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
         final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
-//        EditText testEditText = (EditText) contentView.findViewById(R.id.id_test_et);
 
         //设置光标的位置为文本末尾
-        waterTimeHours.setText("00");
-        waterTimeMins.setText("00");
-        waterTimeSecs.setText("00");
+//        waterTimeHours.setText("00");
+//        waterTimeMins.setText("00");
+//        waterTimeSecs.setText("00");
 //
 //        testEditText.setText("00");
 //        testEditText.setSelection(testEditText.getText().length());

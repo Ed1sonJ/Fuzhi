@@ -2,11 +2,14 @@ package com.smartfarm.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.baidu.platform.comapi.map.I;
 import com.smartfarm.util.BaseUtil;
 
 /**
@@ -15,7 +18,7 @@ import com.smartfarm.util.BaseUtil;
  * 封装了最底层的dialog
  * 提供设置dialog的基本样式：显示的位置、透明度、显示的View等
  */
-public class BaseAlterDialogUtil {
+public class BaseAlterDialogUtil{
     private AlertDialog baseDialog;
     private Context mContext;
     /**
@@ -36,15 +39,17 @@ public class BaseAlterDialogUtil {
         //设置点击dialog外面dismiss dialog
         baseDialog.setCanceledOnTouchOutside(true);
         baseDialog.setView(new EditText(context));
+
         //必须写在获取属性之前
         baseDialog.show();
+
     }
 
     /**
      * 设置宽高在屏幕中的比例
      */
-    public void setWidthAndHeightRadio(float widthRaido, float heightRadio) {
-        params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRaido);
+    public void setWidthAndHeightRadio(float widthRadio, float heightRadio) {
+        params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRadio);
         params.height = (int) (BaseUtil.getScreenHeight(mContext) * heightRadio);
         dialogWindow.setAttributes(params);
     }
@@ -95,5 +100,17 @@ public class BaseAlterDialogUtil {
      */
     public void setContentView(View view) {
         dialogWindow.setContentView(view);
+
+
     }
+
+//    public void onShow(final EditText view) {
+//        baseDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(DialogInterface dialog) {
+//                InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+//            }
+//        });
+//    }
 }

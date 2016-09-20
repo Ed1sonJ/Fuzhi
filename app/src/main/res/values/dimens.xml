@@ -43,4 +43,9 @@
     <dimen name="popwin_layout_size_width">200dp</dimen>
     <dimen name="popwin_layout_size_height">45dp</dimen>
     <dimen name="popwin_text_size">18dp</dimen>
+
+    <!--baseDialog-->
+    <dimen name="baseDialog_layout_height">55dp</dimen>
+    <dimen name="baseDialog_title_textSize">20sp</dimen>
+
 </resources>
