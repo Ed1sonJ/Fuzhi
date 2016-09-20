@@ -49,7 +49,6 @@ import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.Common;
 import com.smartfarm.util.Config;
 import com.smartfarm.util.DateUtil;
-import com.smartfarm.util.FilePathManager;
 import com.smartfarm.util.IntentUtil;
 import com.smartfarm.util.ToastUtil;
 import com.videogo.openapi.EZOpenSDK;
@@ -266,8 +265,12 @@ public class OverviewFragment extends BaseFragment {
     }
     //获取图片的文件
     protected File getEquipmentImageFile() throws Exception {
-        FilePathManager fpm = FilePathManager.getInstance(activity);
-        return fpm.getFile(getEquipmentImageName());
+        File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName());
+        if (!file.getParentFile().exists())
+        {
+            file.getParentFile().mkdirs();
+        }
+        return file;
     }
 
     public void loadEquipmentName() {
@@ -328,11 +331,7 @@ public class OverviewFragment extends BaseFragment {
                 //与拍照保存的图片名字一样，覆盖原来的图片
                 //用FilePathManager创建不了文件夹
                 //改用以下方式可以创建
-                File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName());
-                if (!file.getParentFile().exists())
-                {
-                    file.getParentFile().mkdirs();
-                }
+                File file=getEquipmentImageFile();
                 //BufferedOutputStream是带缓冲区的输出流，能够提高文件的写入效率。
                 BufferedOutputStream bout = new BufferedOutputStream(
                         new FileOutputStream(file));
@@ -363,11 +362,7 @@ public class OverviewFragment extends BaseFragment {
         try {
             //用FilePathManager创建不了文件夹
             //改用以下方式可以创建
-            File file=new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME+getEquipmentImageName());
-            if (!file.getParentFile().exists())
-            {
-                file.getParentFile().mkdirs();
-            }
+            File file=getEquipmentImageFile();
             // 构造一个Intent对象，并将这个Intent的action指定为android.media.action.IMAGE_CAPTURE
             //再调用Intent的putExtra()方法指定图片的输出地址，这里填入刚刚得到的Uri对象，
             // 最后调用startActivityForResult()来启动活动。
