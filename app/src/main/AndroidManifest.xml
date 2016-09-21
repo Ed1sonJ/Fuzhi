@@ -56,7 +56,7 @@
         <activity android:name=".IdentifyingCode" />
         <activity android:name=".RegisterNew" />
         <activity android:name=".QR" />
-        <activity android:name=".AutoLogin">
+        <activity android:name=".AutoLogin">i
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,10 +71,10 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivityNew"
-            android:configChanges="layoutDirection"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ManagerEquipment"
             android:configChanges="layoutDirection"

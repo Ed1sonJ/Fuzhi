@@ -140,7 +140,7 @@ public class MainActivityNew extends BaseActivity {
                 break;
             //±æµÿ’’∆¨
             case IntentUtil.PICTURE_FROM_GALLERY:
-                overviewFragment.loadPictureFromGallery(data.getData());
+                overviewFragment.loadPictureFromGallery(data);
                 break;
         }
     }

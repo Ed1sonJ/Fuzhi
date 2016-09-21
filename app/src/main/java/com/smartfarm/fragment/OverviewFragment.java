@@ -10,11 +10,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.os.Environment;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -308,22 +308,37 @@ public class OverviewFragment extends BaseFragment {
         }
     }
     //本地加载图片时出错，创建不了文件夹
-    public void loadPictureFromGallery(Uri uri) {
-        if (uri != null) {
-            try {
-                //获取有图片，返回的内容是图片
+    public void loadPictureFromGallery(Intent data) {
+
+        if (data != null)
+        {
+            Uri uri = data.getData();
+            String picturePath;
+            if (!TextUtils.isEmpty(uri.getAuthority()))
+            {
                 String[] filePathColumn = {MediaColumns.DATA};
                 // 用cursor进行数据检索，保存返回的结果
                 Cursor cursor = activity.getContentResolver().query(uri,
                         filePathColumn, null, null, null);
+                if (null == cursor)
+                {
+                    ToastUtil.showShort(activity,"图片没找到");
+                    return;
+                }
                 //移动光标到第一行，这个很重要，不小心很容易引起越界
                 cursor.moveToFirst();
                 //获得用户选择的图片的索引值
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 //获得图片的路径
-                String picturePath = cursor.getString(columnIndex);
+                picturePath= cursor.getString(columnIndex);
                 cursor.close();
-
+            }
+            else
+            {
+                picturePath = uri.getPath();
+            }
+            try
+            {
                 File img = new File(picturePath);
                 //BufferedInputStream是带缓冲区的输入流，默认缓冲区大小是8M，能够减少访问磁盘的次数，提高文件读取性能；
                 BufferedInputStream bin = new BufferedInputStream(
@@ -348,11 +363,19 @@ public class OverviewFragment extends BaseFragment {
                 imageChange();
                 loadEquipmentImage();
                 System.out.println("没错");
-            } catch (Exception e) {
-                System.out.println("出错"+e.getMessage());
-                e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+            System.out.println("出错"+e.getMessage());
+            e.printStackTrace();
             }
         }
+        else
+        {
+            ToastUtil.showShort(activity,"图片没找到");
+            return;
+        }
+
     }
 
     protected void takePicture() {
