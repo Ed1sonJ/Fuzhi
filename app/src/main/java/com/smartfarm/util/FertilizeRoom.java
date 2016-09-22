@@ -29,8 +29,8 @@ public class FertilizeRoom {
      */
     public interface FertilizeInterface{
         void FertilizeFailed();
-        void Fertilizing(String code);
-        void FertilizeTimeOut(String code);
+        void Fertilizing(String equipmentCode,String controller);
+        void FertilizeTimeOut(String equipmentCode,String controller);
     }
 
     public FertilizeRoom(FertilizeInterface mFertilizeInterface) {
@@ -39,13 +39,13 @@ public class FertilizeRoom {
     }
 
     /**
-     * 发布施肥信息
-     * @param code 设备码
-     * @param controller 施肥器的controller标志
+     * 发布施肥信息,识别当前码设备为 equipmentCode+controller -> 003001/c/fc/1
+     * @param equipmentCode
+     * @param controller 施肥器的controller标志，识别fc，shc等不同设备
      * @param clientId 客户端的唯一标志
      * @param message 施肥的时间
      */
-    public void FertilizeOn(final String code,final String controller,final String clientId,final String message){
+    public void FertilizeOn(final String equipmentCode,final String controller,final String clientId,final String message){
         mPublishWC.request(new PublishWC.MyListeners() {
             @Override
             public void loading() {
@@ -69,65 +69,65 @@ public class FertilizeRoom {
                 //已经发布回调
                 if(Integer.parseInt(message) != 0){
                     //倒计时
-                    TimeCount timeCount = new TimeCount(code,
+                    TimeCount timeCount = new TimeCount(equipmentCode,
                             controller,clientId,Integer.parseInt(message)*1000, 1000);
                     timeCount.start();
-                    timeCountMap.put(code, timeCount);
+                    timeCountMap.put(equipmentCode, timeCount);
                     //回调到设备界面
-                    mFertilizeInterface.Fertilizing(code);
+                    mFertilizeInterface.Fertilizing(equipmentCode,controller);
                 }else{
                     //回调到设备界面
-                    mFertilizeInterface.FertilizeTimeOut(code);
+                    mFertilizeInterface.FertilizeTimeOut(equipmentCode,controller);
                 }
-                Log.d("gzfuzhi","成功发布信息："+code+"肥料："+message+"/s");
+                Log.d("gzfuzhi","成功发布信息："+equipmentCode+"肥料："+message+"/s");
             }
 
             @Override
             public void connectLostException() {
 
             }
-        },code + controller,clientId,message);
+        },equipmentCode + controller,clientId,message);
     }
 
     /**
      * 人工点击关闭施肥
-     * @param code
+     * @param equipmentCode
      * @param controller
      * @param clientId
      */
-    public void FertilizeOffByBtn(String code,String controller,String clientId){
+    public void FertilizeOffByBtn(String equipmentCode,String controller,String clientId){
         //timeCountMap统计各个水龙头的定时的时间，倒计时集合
-        if (timeCountMap.containsKey(code)&&timeCountMap.get(code)!=null){
-            timeCountMap.get(code).cancel();
-            timeCountMap.get(code).onFinish();
-            timeCountMap.remove(code);
+        if (timeCountMap.containsKey(equipmentCode)&&timeCountMap.get(equipmentCode)!=null){
+            timeCountMap.get(equipmentCode).cancel();
+            timeCountMap.get(equipmentCode).onFinish();
+            timeCountMap.remove(equipmentCode);
         }else{
-            FertilizeOff(code,controller,clientId,"0");
+            FertilizeOff(equipmentCode,controller,clientId,"0");
         }
     }
 
     /**
      * 关闭施肥
-     * @param code
+     * @param equipmentCode
      * @param controller
      * @param clientId
      * @param off
      */
-    public void FertilizeOff(String code ,String controller ,String clientId , String off){
-        FertilizeOn(code , controller,clientId,off);
+    public void FertilizeOff(String equipmentCode ,String controller ,String clientId , String off){
+        FertilizeOn(equipmentCode , controller,clientId,off);
     }
 
     /**
      * 用于计时的类，倒数施肥的时间
      */
     private class TimeCount extends CountDownTimer{
-        private String mCode;
+        private String mEquipmentCode;
         private String mController;
         private String mClientId;
 
-        public TimeCount(String code ,String controller,String clientId,long millisInFuture, long countDownInterval) {
+        public TimeCount(String equipmentCode ,String controller,String clientId,long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
-            this.mCode = code;
+            this.mEquipmentCode = equipmentCode;
             this.mController = controller;
             this.mClientId = clientId;
         }
@@ -146,7 +146,7 @@ public class FertilizeRoom {
         @Override
         public void onFinish() {
             //倒数结束时调用关闭施肥
-            FertilizeOff(mCode,mController,mClientId,"0");
+            FertilizeOff(mEquipmentCode,mController,mClientId,"0");
         }
     }
 }

@@ -26,12 +26,12 @@ public class  WaterRoom {
 	//浇水接口
 	public interface WaterInterface {
 		void waterFailed();
-		void watering(String code);
-		void waterTimeOut(String code);
+		void watering(String equipmentCode,String controller);
+		void waterTimeOut(String equipmentCode,String controller);
 	}
 
 	//发布浇水信息，code+controller，000021001/c/shc/1，这个就是topic，message：浇水的时间
-	public void waterOn(final String code,final String controller,final String clientId,final String message){
+	public void waterOn(final String equipmentCode,final String controller,final String clientId,final String message){
 
 //		if(!isNumeric(message)){
 //			return;
@@ -57,56 +57,56 @@ public class  WaterRoom {
 			public void hasPublish() {
 				if(Integer.parseInt(message) != 0){
 					//倒计时
-					TimeCount timeCount = new TimeCount(code,
+					TimeCount timeCount = new TimeCount(equipmentCode,
 							controller,clientId,Integer.parseInt(message)*1000, 1000);
 					timeCount.start();
-					timeCountMap.put(code, timeCount);
-					waterInterface.watering(code);
+					timeCountMap.put(equipmentCode, timeCount);
+					waterInterface.watering(equipmentCode,controller);
 				}else{
-					waterInterface.waterTimeOut(code);
+					waterInterface.waterTimeOut(equipmentCode,controller);
 				}
-				System.out.println("成功发布消息："+code+"开水："+message+"/s");
+				System.out.println("成功发布消息："+equipmentCode+"开水："+message+"/s");
 			}
 
 			@Override
 			public void connectLostException() {
 				System.out.println("尝试重连时发生exception");
 			}
-		}, code+controller, clientId, message);
+		}, equipmentCode+controller, clientId, message);
 	}
 
 	//关闭浇水
-	public void waterOffByBtn(String code,String controller,String clientId){
+	public void waterOffByBtn(String equipmentCode,String controller,String clientId){
 		//timeCountMap统计各个水龙头的定时的时间，倒计时集合
-		if(timeCountMap.containsKey(code) && timeCountMap.get(code) != null){
-			timeCountMap.get(code).cancel();
-			timeCountMap.get(code).onFinish();
-			timeCountMap.remove(code);
+		if(timeCountMap.containsKey(equipmentCode) && timeCountMap.get(equipmentCode) != null){
+			timeCountMap.get(equipmentCode).cancel();
+			timeCountMap.get(equipmentCode).onFinish();
+			timeCountMap.remove(equipmentCode);
 		}else{
 			//waterOn(code,controller,clientId,"0");
-			waterOff(code,controller,clientId,"0");
+			waterOff(equipmentCode,controller,clientId,"0");
 		}
 	}
 
 	//关水
-	private void waterOff(String code,String controller,String clientId,String off){
-		waterOn(code, controller, clientId, off);
+	private void waterOff(String equipmentCode,String controller,String clientId,String off){
+		waterOn(equipmentCode, controller, clientId, off);
 	}
 	
 	//计时，CountDownTimer倒计时
 	private class TimeCount extends CountDownTimer{
-		private String code = null;
-		private String controller;
-		private String clientId;
+		private String mEquipmentCode = null;
+		private String mController;
+		private String mClientId;
 
-		public TimeCount(String code,String controller,String clientId,long millisInFuture, long countDownInterval) {
+		public TimeCount(String equipmentCode,String controller,String clientId,long millisInFuture, long countDownInterval) {
 			//第一个参数表示总时间，第二个参数表示间隔时间。
 			//假设(10000, 1000)，意思就是每隔一秒会回调一次方法onTick，
 			//然后10秒之后会回调onFinish方法。
 			super(millisInFuture, countDownInterval);
-			this.code = code;
-			this.controller = controller;
-			this.clientId = clientId;
+			this.mEquipmentCode = equipmentCode;
+			this.mController = controller;
+			this.mClientId = clientId;
 		}
 		//每隔一段时间就回调一次方法onTick
 		@Override
@@ -115,7 +115,7 @@ public class  WaterRoom {
 
 		@Override
 		public void onFinish() {	
-			waterOff(code,controller,clientId,"0");
+			waterOff(mEquipmentCode,mController,mClientId,"0");
 		}
 		
 	}

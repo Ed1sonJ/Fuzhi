@@ -40,6 +40,7 @@ import com.smartfarm.event.GlobalEvent;
 import com.smartfarm.fragmentUtil.UploadAndDownloadScheme;
 import com.smartfarm.model.Equipment;
 import com.smartfarm.util.BaseProgressDialog;
+import com.smartfarm.util.FertilizeRoom;
 import com.smartfarm.util.ToastUtil;
 import com.smartfarm.util.WaterRoom;
 import com.smartfarm.view.NumberPickerView;
@@ -63,6 +64,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     private ToastUtil toast;
     private UploadAndDownloadScheme uploadAndDownloadScheme;
     private WaterRoom waterRoom;
+    private FertilizeRoom fertilizeRoom;
     private BaseProgressDialog dialog;
     //view
     private TextView equipmentsName;   //设备名字
@@ -151,7 +153,10 @@ public class SchemeDefaultFragment extends BaseFragment {
     private int timeDelay = 5;  //时间参数
     boolean isStartTime = true; //自定义时间用到的变量
     boolean isWater;    //浇水按钮是否按下
-    boolean isWatering; //正在浇水
+
+    // TODO: 2016/9/22 测试
+    boolean isFertilize;//施肥按钮是否按下
+
     /**
      * 浇水控制器信息
      */
@@ -187,7 +192,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         //获取可以干预的因素，喷淋，光质，光强等
         uploadAndDownloadScheme = new UploadAndDownloadScheme(activity);
         dialog = new BaseProgressDialog(activity);
-        //喷淋控制
+        //喷淋控制，以及回调
         waterRoom = new WaterRoom(new WaterRoom.WaterInterface() {
             @Override
             public void waterFailed() {
@@ -195,17 +200,39 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
 
             @Override
-            public void watering(String code) {
+            public void watering(String equipmentCode,String controller) {
                 //点亮图标
-                SchemeWatering(code);
+//                SchemeWatering(equipmentCode);
+                schemeAppointControllering(equipmentCode,controller);
             }
 
             @Override
-            public void waterTimeOut(String code) {
+            public void waterTimeOut(String equipmentCode,String controller) {
                 //熄灭图标
-                SchemeWaterTimeout(code);
+//                SchemeWaterTimeout(equipmentCode);
+                schemeAppointControllerTimeOut(equipmentCode, controller);
             }
         });
+        //施肥控制，以及回调
+        fertilizeRoom = new FertilizeRoom(new FertilizeRoom.FertilizeInterface() {
+            @Override
+            public void FertilizeFailed() {
+                dismissDialog();
+            }
+
+            @Override
+            public void Fertilizing(String equipmentCode,String controller) {
+                //点亮正在施肥的图标
+                schemeAppointControllering(equipmentCode, controller);
+            }
+
+            @Override
+            public void FertilizeTimeOut(String equipmentCode,String controller) {
+                //重置是施肥的图标
+                schemeAppointControllerTimeOut(equipmentCode, controller);
+            }
+        });
+
         GlobalEvent.bus.register(handler);
     }
 
@@ -640,7 +667,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         indicatorNames.clear();
         indicatorKeys.clear();
         /**
-         * 先将土壤湿度，光质，光强匹配，优先显示
+         * 先将土壤湿度，施肥、光质，光强匹配，优先显示
          */
         int i = findSpecialIndicator(sortNames, "^土壤湿度.*");
         if (i != -1) {
@@ -652,6 +679,17 @@ public class SchemeDefaultFragment extends BaseFragment {
             //sortKeys.remove(i)是为了与sortNames下标对应
             sortKeys.remove(i);
         }
+        //---------------------加入施肥控制器,排在了第二------------------------------
+        // TODO: 2016/9/22 要验证能否加入施肥控制器
+        i = findSpecialIndicator(sortNames,"^施肥.*");
+        if(i!=-1){
+            indicatorNames.add(sortNames.get(i));
+            indicatorKeys.add(sortKeys.get(i));
+            sortNames.remove(i);
+            sortKeys.remove(i);
+        }
+        //--------------------------------------------------------------------------
+
         i = findSpecialIndicator(sortNames, "^光质.*");
         if (i != -1) {
             indicatorNames.add("光强比控制器");
@@ -688,7 +726,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     /**
-     * 对布局进行初始化
+     * 对布局进行初始化，一个tableLayout下包含一个tableRow，包含多个LinearLayout
      * @param tableLayout 要摆放tableRow的布局
      * @param indicatorNames 已经排序好的控制器名称
      */
@@ -759,7 +797,14 @@ public class SchemeDefaultFragment extends BaseFragment {
     private void setIconWithType(ImageView iconIV, String type, boolean pressed) {
         if (type.matches("^喷淋.*")) {
             iconIV.setImageResource(R.drawable.icon_jiaoshui);
-        } else if (type.matches("^光质.*")) {
+        }
+        //---------------------加入施肥icon显示的判断----------------------
+        // TODO: 2016/9/22 检验是否正确
+        else if(type.matches("^施肥.*")){
+            iconIV.setImageResource(R.drawable.icon_shifei);
+        }
+        //因为将光质控制器改成了光强比控制器，所以这里也要更改
+        else if (type.matches("^光强比.*")) {
             if (!pressed) {
                 iconIV.setImageResource(R.drawable.icon_guangzhibi);
             } else {
@@ -870,7 +915,12 @@ public class SchemeDefaultFragment extends BaseFragment {
             } else if (choice < indicatorKeys.size()) {
                 if (indicatorKeys.get(choice).equals("shc")) {    //选中喷淋按钮
                     water();
-                } else {   //选中其它按钮，
+                }
+                else if(indicatorKeys.get(choice).equals("fc")){
+                    // TODO: 2016/9/22 测试，弹出施肥的dialog
+                    fertilize();
+                }
+                else {   //选中除喷淋、施肥、popupMenu的按钮
                     currentIndex = (int) v.getTag();
                     //显示相应的view
                     indicatorShow(currentIndex);
@@ -881,7 +931,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     }
 
     /**
-     * 点击不同的indicator显示不同的界面
+     * 点击不同的indicator显示不同的界面，设置单位
      * @param index 对应indicator的下标(已经排好序)
      */
     private void indicatorShow(int index) {
@@ -929,14 +979,13 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //按下控制器按钮时调用的方法，该方法鲁棒性有待增强
+    //按下控制器按钮时调用的方法，该方法鲁棒性有待增强（稳定性）
     //index,选中的功能的下标，size，一共有几种功能可选
     private void pressIndicatorMenu(int index, int size) {
         if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
-            //获取要显示的功能，喷淋，光质，等等
             TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
             if (tableRow.getChildAt(index) instanceof LinearLayout) {
-                //获取点击的功能，这个按钮由一张图和一个textview组成
+                //获取index下的item，方便更改图标和字体颜色
                 LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(index);
                 if (linearLayout.getChildAt(0) instanceof ImageView &&
                         linearLayout.getChildAt(1) instanceof TextView) {
@@ -1089,16 +1138,31 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 决定哪个tableRow被显示
+     * 设计扩展性不好，应该为每个item设置标签？，方便分类
      */
     private void paramFirstShow() {
+        /**
+         * 分3种情况
+         * 1：喷淋、施肥
+         * 2：喷淋
+         * 3：施肥
+         */
         if (indicatorKeys != null && !indicatorKeys.isEmpty()) {
             //第一项是土壤湿度控制器且控制器个数多于1时，显示第二项
             //因为喷淋那个是个dialog
-            if (indicatorKeys.get(0).equals("shc") && indicatorKeys.size() > 1) {
+            //情况1
+            if(indicatorKeys.get(0).equals("shc")&&indicatorKeys.get(1).equals("fc")&&indicatorKeys.size()>2){
+                indicatorShow(2);
+                currentIndex = 2;
+                pressIndicatorMenu(2,indicatorKeys.size());
+            }
+            //情况2、3
+            else if ((indicatorKeys.get(0).equals("shc") && indicatorKeys.size() > 1)||(indicatorKeys.get(0).equals("fc")&&indicatorKeys.size()>1)) {
                 indicatorShow(1);
                 currentIndex = 1;
                 pressIndicatorMenu(1, indicatorKeys.size());
-            } else {
+            }
+            else {
                 indicatorShow(0);
                 currentIndex = 0;
                 pressIndicatorMenu(0, indicatorKeys.size());
@@ -1126,10 +1190,10 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
         final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
-
-        waterTimeHours.setSelection(waterTimeHours.getText().length());
-        waterTimeMins.setSelection(waterTimeMins.getText().length());
-        waterTimeSecs.setSelection(waterTimeSecs.getText().length());
+//好像不需要设置光标
+//        waterTimeHours.setSelection(waterTimeHours.getText().length());
+//        waterTimeMins.setSelection(waterTimeMins.getText().length());
+//        waterTimeSecs.setSelection(waterTimeSecs.getText().length());
 
         //设置在屏幕中的显示的比例
         baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
@@ -1171,7 +1235,6 @@ public class SchemeDefaultFragment extends BaseFragment {
                     }
                 }
 
-
                 int totalTime = Integer.parseInt(waterTimeHoursMsg) * 3600 +
                         Integer.parseInt(waterTimeMinsMsg) * 60 +
                         Integer.parseInt(waterTimeSecsMsg);
@@ -1193,52 +1256,259 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setContentView(contentView, contentLp);
     }
 
-    //正在浇水，点亮图片
-    public void SchemeWatering(String code) {
-        if (indicatorKeys.get(0).equals("shc")) {
-            if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
-                TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
-                if (tableRow.getChildAt(0) instanceof LinearLayout) {
-                    LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
-                    if (linearLayout.getChildAt(0) instanceof ImageView) {
-                        ImageView imageView = (ImageView) linearLayout.getChildAt(0);
-                        imageView.setImageResource(R.drawable.icon_water_on);
+//    //正在浇水，点亮图片
+//    public void SchemeWatering(String equipmentCode) {
+//        if (indicatorKeys.get(0).equals("shc")) {
+//            if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+//                TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+//                if (tableRow.getChildAt(0) instanceof LinearLayout) {
+//                    LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+//                    if (linearLayout.getChildAt(0) instanceof ImageView) {
+//                        ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+//                        imageView.setImageResource(R.drawable.icon_water_on);
+//                    }
+//                }
+//            }
+//        }
+//        isWatering = true;
+//        reverseWaterBtn(equipmentCode);
+//        dismissDialog();
+//    }
+
+    /**
+     * 根据设备标志位fc、shc等来设置点亮的图片，设备编码没有用上
+     * @param equipmentCode 设备的编码
+     * @param controller /c/fc/1的样式
+     */
+    public void schemeAppointControllering(String equipmentCode,String controller){
+        //逻辑已经写好了浇水摆在第一个item的位置，施肥摆在了第(一)二个item的位置
+        if(controller.contains("shc")){
+            if (indicatorKeys.get(0).equals("shc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(0) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_water_on);
+                        }
                     }
                 }
             }
+            reverseControllerBtn(equipmentCode,"shc");
+            dismissDialog();
         }
-        isWatering = true;
-
-        reverseWaterBtn(code);
-
-        dismissDialog();
-    }
-
-    //浇水完成，熄灭图片
-    public void SchemeWaterTimeout(String code) {
-        if (indicatorKeys.get(0).equals("shc")) {
-            if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
-                TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
-                if (tableRow.getChildAt(0) instanceof LinearLayout) {
-                    LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
-                    if (linearLayout.getChildAt(0) instanceof ImageView) {
-                        ImageView imageView = (ImageView) linearLayout.getChildAt(0);
-                        imageView.setImageResource(R.drawable.icon_jiaoshui);
+        else if(controller.contains("fc")){
+            if (indicatorKeys.get(0).equals("fc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(0) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_fertilize_on);
+                        }
+                    }
+                }
+            }else if(indicatorKeys.get(1).equals("fc")){
+                if (schemeDefaultIndicatorLayout.getChildAt(1) instanceof TableRow){
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(1);
+                    if(tableRow.getChildAt(0) instanceof  LinearLayout){
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if(linearLayout.getChildAt(0) instanceof ImageView){
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_fertilize_on);
+                        }
                     }
                 }
             }
+            reverseControllerBtn(equipmentCode,"fc");
+            dismissDialog();
         }
-        isWatering = false;
-
-        reverseWaterBtn(code);
-
-        dismissDialog();
     }
 
-    //转换浇水按钮状态
-    private void reverseWaterBtn(String code) {
-        isWater = !isWater;
+    /**
+     * 根据设备标志位fc、shc等来设置熄灭的图片，设备编码没有用上
+     * @param equipmentCode
+     * @param controller
+     */
+    public void schemeAppointControllerTimeOut(String equipmentCode,String controller){
+        if (controller.contains("shc")){
+            //设置shc样式
+            if (indicatorKeys.get(0).equals("shc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(0) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_jiaoshui);
+                        }
+                    }
+                }
+            }
+            reverseControllerBtn(equipmentCode, "shc");
+            dismissDialog();
+        }
+        else if(controller.contains("fc")){
+            //设置fc的样式
+            if (indicatorKeys.get(0).equals("fc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(0) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_shifei);
+                        }
+                    }
+                }
+            }else if(indicatorKeys.get(1).equals("fc")){
+                if(schemeDefaultIndicatorLayout.getChildAt(1) instanceof TableRow){
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(1);
+                    if(tableRow.getChildAt(0) instanceof  LinearLayout){
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+                        if(linearLayout.getChildAt(0) instanceof  ImageView){
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+                            imageView.setImageResource(R.drawable.icon_shifei);
+                        }
+                    }
+                }
+            }
+            reverseControllerBtn(equipmentCode, "fc");
+            dismissDialog();
+        }
     }
+
+    /**
+     * 转换淋水和施肥的状态，方便以后增加
+     * @param equipmentCode
+     * @param controller
+     */
+    public void reverseControllerBtn(String equipmentCode,String controller){
+        switch (controller){
+            case "shc":
+                isWater = !isWater;
+                break;
+            case "fc":
+                isFertilize = !isFertilize;
+                break;
+        }
+    }
+//    //浇水完成，熄灭图片
+//    public void SchemeWaterTimeout(String equipmentCode) {
+//        if (indicatorKeys.get(0).equals("shc")) {
+//            if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+//                TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+//                if (tableRow.getChildAt(0) instanceof LinearLayout) {
+//                    LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
+//                    if (linearLayout.getChildAt(0) instanceof ImageView) {
+//                        ImageView imageView = (ImageView) linearLayout.getChildAt(0);
+//                        imageView.setImageResource(R.drawable.icon_jiaoshui);
+//                    }
+//                }
+//            }
+//        }
+//        isWatering = false;
+//
+//        reverseWaterBtn(equipmentCode);
+//
+//        dismissDialog();
+//    }
+//
+//    //转换浇水按钮状态
+//    private void reverseWaterBtn(String equipmentCode) {
+//        isWater = !isWater;
+//    }
+
+    /**
+     * 调用施肥
+     */
+    private void fertilize(){
+        if(!isFertilize){
+            setFertilizeTimes();
+        }else{
+            fertilizeRoom.FertilizeOffByBtn(equipmentCodes,FERTILIZECONTROLLER,clientId);
+            showDialog("正在关闭施肥");
+        }
+    }
+
+    /**
+     * 设置施肥时间
+     */
+    public void setFertilizeTimes(){
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        final View contentView = View.inflate(activity, R.layout.view_fertilize_button, null);
+
+        final EditText fertilizeTimeHours = (EditText) contentView.findViewById(R.id.et_fertilize_time_hours);
+        final EditText fertilizeTimeMins = (EditText) contentView.findViewById(R.id.et_fertilize_time_minutes);
+        final EditText fertilizeTimeSecs = (EditText) contentView.findViewById(R.id.et_fertilize_time_seconds);
+
+//        fertilizeTimeHours.setSelection(fertilizeTimeHours.getText().length());
+//        fertilizeTimeMins.setSelection(fertilizeTimeMins.getText().length());
+//        fertilizeTimeSecs.setSelection(fertilizeTimeSecs.getText().length());
+
+        //设置在屏幕中的显示的比例
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
+        //设置居中显示dialog并不设置偏移量
+        baseDialog.setLocation(Gravity.CENTER, 0, 0);
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseDialog.dismiss();
+            }
+        });
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String fertilizeTimeHoursMsg = fertilizeTimeHours.getText().toString();
+                String fertilizeTimeMinsMsg = fertilizeTimeMins.getText().toString();
+                String fertilizeTimeSecsMsg = fertilizeTimeSecs.getText().toString();
+
+                //三者为空则提示输入时长
+                if ((fertilizeTimeHoursMsg.equals("") || fertilizeTimeHoursMsg == null)
+                        && (fertilizeTimeMinsMsg.equals("") || fertilizeTimeMinsMsg == null)
+                        && (fertilizeTimeSecsMsg.equals("") || fertilizeTimeSecsMsg == null)) {
+                    ToastUtil.showShort(activity, "请输入时长");
+                    return;
+                }
+                //以下情况是有其中没有输入时自动补零的情况
+                else {
+                    if (fertilizeTimeSecsMsg.equals("") || fertilizeTimeSecsMsg == null) {
+                        fertilizeTimeSecsMsg = "00";
+                    }
+
+                    if (fertilizeTimeMinsMsg.equals("") || fertilizeTimeMinsMsg == null) {
+                        fertilizeTimeMinsMsg = "00";
+                    }
+
+                    if (fertilizeTimeHoursMsg.equals("") || fertilizeTimeHoursMsg == null) {
+                        fertilizeTimeHoursMsg = "00";
+                    }
+                }
+
+                int totalTime = Integer.parseInt(fertilizeTimeHoursMsg) * 3600 +
+                        Integer.parseInt(fertilizeTimeMinsMsg) * 60 +
+                        Integer.parseInt(fertilizeTimeSecsMsg);
+
+                String fertilizeMessage = String.valueOf(totalTime);
+                //发布施肥消息
+                fertilizeRoom.FertilizeOn(equipmentCodes,FERTILIZECONTROLLER,clientId,fertilizeMessage);
+                showDialog("正在打开施肥");
+                baseDialog.dismiss();
+            }
+        });
+        //设置dialog显示的标题
+        baseDialog.setTitle(equipmentCodes + "");
+        baseDialog.setIcon(R.drawable.icon_fertilize_on_dialog);
+        //设置contentView在dialog中显示的布局参数
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        //匹配dialog与contentView
+        baseDialog.setContentView(contentView, contentLp);
+    }
+
 
     //显示特定文本信息的对话框
     private void showDialog(String text) {
