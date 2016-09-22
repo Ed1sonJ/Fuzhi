@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
  >
     <ListView
         android:id="@+id/id_dialog_water_choose_time_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="255dp"
         android:divider="@null"
-        android:dividerHeight="15dp"
-                >
+        android:dividerHeight="15dp">
     </ListView>
-</FrameLayout>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="test"/>-->
+</LinearLayout>
 

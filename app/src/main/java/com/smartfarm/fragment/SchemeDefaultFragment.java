@@ -1292,6 +1292,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         upperSeekBar.setMax(theMaxValue);
         targetSeekBar.setMax(theMaxValue);
         lowerSeekBar.setMax(theMaxValue);
+//        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams()
         schemeDefaultParameterLayout.addView(othersParamLayout);
     }
 
@@ -1353,8 +1354,8 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
         });
         baseDialog.setTitle("请选择持续时间");
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        contentLp.setMargins(0, 70, 0, 0);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        contentLp.setMargins(0, 70, 0, 0);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         baseDialog.setContentView(contentView, contentLp);
     }

@@ -192,8 +192,8 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:id="@+id/upload_relate_layout"
                 android:layout_gravity="center_horizontal">
 
@@ -203,7 +203,7 @@
                     android:id="@+id/upload_image"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/icon_upload"
-                    android:layout_centerHorizontal="true" />
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"

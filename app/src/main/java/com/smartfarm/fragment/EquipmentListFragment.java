@@ -41,6 +41,7 @@ import com.smartfarm.adapter.SearchListAdapter;
 import com.smartfarm.bean.EquipmentBean;
 import com.smartfarm.bean.TopBean;
 import com.smartfarm.dialog.BaseAlterDialogUtil;
+import com.smartfarm.dialog.BaseCustomAlterDialog;
 import com.smartfarm.event.EquipmentGroupLongClickedEvent;
 import com.smartfarm.event.EquipmentImageEvent;
 import com.smartfarm.event.EquipmentItemConfigureClickedEvent;
@@ -394,29 +395,23 @@ public class EquipmentListFragment extends BaseFragment {
     }
 
     /**
-     * 点击list中的item的设置，重命名设备
+     * 点击list中的item的设置，重命名设备,适配了不同分辨率
      * @param equipmentCode
      */
     protected void showRenameEquipmentDialog(final String equipmentCode) {
-        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
-        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
-        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
-        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
-        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-        icon.setImageResource(R.drawable.rename_group_title);
-        icon.setVisibility(View.VISIBLE);
-//        //请求焦点
-//        renameEditText.requestFocus();
-//        baseDialog.onShow(renameEditText);
-
         final String name=Equipment.getEquipmentName(activity, equipmentCode);
-//        renameEditText.setText(name);
-//        //设置光标的位置
-//        renameEditText.setSelection(renameEditText.getText().length());
-        title.setText("设备:" + name);
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
+        baseDialog.setIcon(R.drawable.rename_group_title);
+        baseDialog.setTitle("设备:"+name);
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseDialog.dismiss();
+            }
+        });
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -435,32 +430,69 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        negativeBtn.setOnClickListener(new View.OnClickListener() {
+        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView,contentLp);
+    }
+
+    /**
+     * 显示添加分组的对话框
+     */
+    protected void showAddGroupDialog() {
+//        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
+//        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+//        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
+//        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
+//        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
+//        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
+//        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
+//        icon.setImageResource(R.drawable.add_group_img);
+//        icon.setVisibility(View.VISIBLE);
+//        title.setText("创建分组");
+//        positiveBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (renameEditText.length()>0)
+//                {
+//                    try {
+//                        new Group(activity, equipmentBeans).addGroup(renameEditText.getText().toString());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        ToastUtil.showLong(activity, "创建分组失败。");
+//                    }
+//                    reloadView();
+//                    baseDialog.dismiss();
+//                }
+//                else
+//                {
+//                    ToastUtil.showShort(activity,"请输入分组的名字");
+//                }
+//            }
+//        });
+//        negativeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                baseDialog.dismiss();
+//            }
+//        });
+//        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+//        baseDialog.setLocation(Gravity.CENTER,0,0);
+//        baseDialog.setContentView(contentView);
+        // TODO: 2016/9/22 适配不同分辨率，已经适配，在平板上跑看效果
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
+        baseDialog.setIcon(R.drawable.add_group_img);
+        baseDialog.setTitle("创建分组");
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setContentView(contentView);
-    }
-
-    /**
-     * 显示添加分组的对话框，已经修改完布局
-     */
-    protected void showAddGroupDialog() {
-        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
-        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
-        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
-        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
-        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
-        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-        icon.setImageResource(R.drawable.add_group_img);
-        icon.setVisibility(View.VISIBLE);
-        title.setText("创建分组");
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -480,42 +512,75 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        negativeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                baseDialog.dismiss();
-            }
-        });
         baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setContentView(contentView);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView,contentLp);
     }
 
     /**
-     * 重命名分组,已经修改完布局
+     * 重命名分组
      * @param groupName
      */
     protected void showRenameGroupDailog(final String groupName) {
-        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
-        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
-        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
-        final EditText renameEditText = (EditText)contentView.findViewById(R.id.equipment_add_group_edittext);
-        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
-        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
-//        renameEditText.setText(groupName);
-        //设置光标的位置
-//        renameEditText.setSelection(renameEditText.getText().length());
-        icon.setImageResource(R.drawable.rename_group_title);
-        icon.setVisibility(View.VISIBLE);
-        title.setText("分组:"+groupName);
-        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-        negativeBtn.setOnClickListener(new View.OnClickListener() {
+//        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
+//        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
+//        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
+//        final EditText renameEditText = (EditText)contentView.findViewById(R.id.equipment_add_group_edittext);
+//        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
+//        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
+//
+//        icon.setImageResource(R.drawable.rename_group_title);
+//        icon.setVisibility(View.VISIBLE);
+//        title.setText("分组:"+groupName);
+//        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+//        negativeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                baseDialog.dismiss();
+//            }
+//        });
+//        positiveBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (renameEditText.length()>0)
+//                {
+//                    if(!renameEditText.getText().toString().equals(groupName))
+//                    {
+//                        try {
+//                            new Group(activity, equipmentBeans).renameGroup(groupName, renameEditText.getText().toString());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                            ToastUtil.showLong(activity, "重命名分组失败。");
+//                        }
+//                        reloadView();
+//                        baseDialog.dismiss();
+//                    }
+//                    baseDialog.dismiss();
+//                }
+//                else
+//                {
+//                    ToastUtil.showShort(activity,"请输入分组新的名字");
+//                }
+//            }
+//        });
+//        baseDialog.setLocation(Gravity.CENTER,0,0);
+//        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+//        baseDialog.setContentView(contentView);
+        // TODO: 2016/9/22 适配不同分辨率
+        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
+        final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
+        baseDialog.setIcon(R.drawable.rename_group_title);
+        baseDialog.setTitle("分组:"+groupName);
+        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
         });
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
+        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -539,9 +604,12 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
-        baseDialog.setContentView(contentView);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setContentView(contentView,contentLp);
+
     }
 
     /**
@@ -549,30 +617,6 @@ public class EquipmentListFragment extends BaseFragment {
      * @param equipmentCode
      */
     protected void showDeleteEquipmentConfirmDialog(final String equipmentCode) {
-//        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout_new,null);
-//        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
-//        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
-//        TextView title=(TextView)view.findViewById(R.id.delete_title);
-//        title.setText("确定删除设备：" + Equipment.getEquipmentName(activity, equipmentCode) + "?");
-//        final AlertDialog dialog=new AlertDialog.Builder(activity).
-//                setView(view).
-//                create();
-//        dialog.show();
-//        dialog.setCanceledOnTouchOutside(true);
-//        sure.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new Group(activity,equipmentBeans).deleteLatestUse(equipmentCode);
-//                deleteEquipment(equipmentCode);
-//                dialog.dismiss();
-//            }
-//        });
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
 
         View contentView = View.inflate(activity,R.layout.delete_layout,null);
         TextView title=(TextView)contentView.findViewById(R.id.delete_title);
