@@ -35,7 +35,7 @@ public class PublishWC {
 
 	private String arrivedMessage;
 
-	private MyListenerhs myListener = null;
+	private MyListeners myListener = null;
 
 	public PublishWC() {
 		optionInit();
@@ -56,7 +56,7 @@ public class PublishWC {
 		options.setKeepAliveInterval(20);
 	}
 
-	public interface MyListenerhs {// 自定义一个接口
+	public interface MyListeners {// 自定义一个接口
 
 		void loading();
 
@@ -100,7 +100,7 @@ public class PublishWC {
 	// 获得请求的方法，带code参数和一个MyListener监听接口，发布浇水信息
 	//Topic格式：鉴权token/上位机编号/alarm
 	//例如：1233425sdfsdfdsfdsfdsfdsg/0000010000000/alarm
-	public void request(MyListenerhs myListener,String topic,String clientId,String message) {
+	public void request(MyListeners myListener,String topic,String clientId,String message) {
 
 		this.myListener = myListener;
 		this.myTopic = topic;

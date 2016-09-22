@@ -31,10 +31,13 @@
                 android:textSize="18sp"
                 android:lineSpacingExtra="3dp"
                 android:gravity="left"
-                android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                android:paddingRight="7dp"
+                android:layout_margin="10dp"
                 />
+
+            <!--android:paddingLeft="15dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingRight="5dp"-->
+
         </ScrollView>
         <Button
             android:id="@+id/id_dialog_about_btn"

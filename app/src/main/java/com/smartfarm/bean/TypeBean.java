@@ -1,5 +1,10 @@
 package com.smartfarm.bean;
-//设备控制的选项温度，光强等等
+
+/**
+ * 设备的key与name
+ * key为设备对应的lqc等
+ * name为设备对应的传感器名称
+ */
 public class TypeBean {
 
 	public String name;

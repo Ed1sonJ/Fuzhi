@@ -24,7 +24,8 @@
                 android:layout_height="@dimen/title_logo_height"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/title_logo_left"
-                android:src="@drawable/icon_titlebar" />
+                android:src="@drawable/icon_titlebar"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/overview_equiment_name"

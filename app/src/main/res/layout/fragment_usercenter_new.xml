@@ -18,7 +18,8 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/icon_titlebar"
             android:layout_marginLeft="@dimen/title_logo_left"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/title"

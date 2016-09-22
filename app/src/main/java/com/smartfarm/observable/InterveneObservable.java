@@ -11,7 +11,17 @@ import com.smartfarm.util.Common;
 import com.smartfarm.util.Protocol;
 
 public class InterveneObservable {
-
+	/**
+	 * 得到传送到服务器的json参数
+	 * @param code
+	 * @param startTime
+	 * @param endTime
+	 * @param protocolKey
+	 * @param value
+	 * @param upper
+     * @param lower
+     * @return
+     */
 	private static String getPayload(String code, String startTime, String endTime, String protocolKey,
 			String value, String upper, String lower){
 		try {

@@ -156,6 +156,10 @@ public class SchemeDefaultFragment extends BaseFragment {
      * 浇水控制器信息
      */
     private static final String WATERCONTROLLER = "/c/shc/1";
+    /**
+     * 施肥控制器信息
+     */
+    private static final String FERTILIZECONTROLLER = "/c/fc/1";
     private String clientId = "ClientOfSmartFarm";
     //index
     private int currentIndex;   //当前选中控制器
@@ -166,6 +170,9 @@ public class SchemeDefaultFragment extends BaseFragment {
     //时间格式
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    /**
+     * 根据EventBus实现点击设备控制item返回equipmentCodes
+     */
     private class EventHandler {
         public void onEvent(EquipmentSelectedEvent event) {
             equipmentCodes = event.equipmentCode;
@@ -189,11 +196,13 @@ public class SchemeDefaultFragment extends BaseFragment {
 
             @Override
             public void watering(String code) {
+                //点亮图标
                 SchemeWatering(code);
             }
 
             @Override
             public void waterTimeOut(String code) {
+                //熄灭图标
                 SchemeWaterTimeout(code);
             }
         });
@@ -304,7 +313,6 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     private void initView() {
         equipmentsName = (TextView) rootView.findViewById(R.id.scheme_default_equiment_name);
-
 //        uploadLayout = (LinearLayout) rootView.findViewById(R.id.scheme_default_upload_layout);
 //        uploadLayout.setOnClickListener(new uploadListener());
         //表头功能光质
@@ -319,7 +327,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         listViewlqc = (ListView) lqcLayout.findViewById(R.id.scheme_default_parameter_lqc_listview);
         //灯光比例的数组，红:蓝 = 1:0，红:蓝 = 5:1
         lqcItemText = getResources().getStringArray(R.array.lqc_text);
-        //设置相应的光比的图片
+        //获取相应的光比的图片，保存在lqcItemColor数组中
         getLqcItemImage();
         lqcListView(listViewlqc, lqcItemText, lqcItemColor);
         listViewlqc.setOnItemClickListener(new lqcListener());
@@ -328,7 +336,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         initParamOthersLayout();
     }
 
-    //上传按钮
+    /**
+     * 除喷淋、光质布局下的上传按钮的监听事件
+     */
     private class uploadListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -337,7 +347,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //获取光质比的图像
+    /**
+     * 获取光质比的图片id，保存到lqcItemColor的数组中
+     */
     private void getLqcItemImage() {
         TypedArray ar = activity.getResources().obtainTypedArray(R.array.lqc_color);
         int len = ar.length();
@@ -353,7 +365,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         ar.recycle();
     }
 
-    //光质比列表项监听
+    /**
+     * 光质比列表项的监听
+     */
     private class lqcListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -361,13 +375,16 @@ public class SchemeDefaultFragment extends BaseFragment {
                 //光质控制中的自定义按钮
                 customLed();
             } else {
+                //lqcItemText[position] --> 红:蓝:白 = 1:5:0
                 lqc = cutLqcParam(lqcItemText[position]);
                 uploadScheme("lqc");
             }
         }
     }
 
-    //自定义光质比值,已经更新了布局
+    /**
+     * 自定义光强比dialog
+     */
     private void customLed() {
         View contentView = View.inflate(activity, R.layout.fragment_scheme_new_custom_lqc, null);
         final NumberPickerView ledRed = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_red);
@@ -404,7 +421,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         return null;
     }
 
-    //除光质比外其它参数的初始化
+    /**
+     * 初始化除喷淋、光质外的统一布局
+     */
     private void initParamOthersLayout() {
         targetSeekBar = (SeekBar) othersParamLayout.findViewById(R.id.target);
         targetSeekBar.setProgress(1);
@@ -426,7 +445,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         lowerTextView.setOnClickListener(new paramTextViewListener());
         lowerSeekBar.setOnSeekBarChangeListener(new onSeekBarChangedListener(lowerTextView));
         lowerUnit = (TextView) othersParamLayout.findViewById(R.id.lower_unit);
-        //上存按钮
+        //上传按钮
         uploadLayout = (RelativeLayout) othersParamLayout.findViewById(R.id.upload_relate_layout);
         uploadLayout.setOnClickListener(new uploadListener());
 
@@ -463,15 +482,14 @@ public class SchemeDefaultFragment extends BaseFragment {
 //                }
 //            }).create()
 //                    .show();
-            // TODO: 2016/9/19 测试一下界面
-            View contentView = View.inflate(activity,R.layout.fragment_scheme_new_parameter_adjustment,null);
+            View contentView = View.inflate(activity, R.layout.fragment_scheme_new_parameter_adjustment, null);
             final EditText target = (EditText) contentView.findViewById(R.id.param_target);
             final EditText upper = (EditText) contentView.findViewById(R.id.param_upper);
             final EditText lower = (EditText) contentView.findViewById(R.id.param_lower);
             final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-            baseDialog.setLocation(Gravity.CENTER,0,0);
+            baseDialog.setLocation(Gravity.CENTER, 0, 0);
             baseDialog.setTitle("参数调整");
-            baseDialog.setWidthAndHeightRadio(0.8f,0.4f);
+            baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
             baseDialog.setNegativeBtnListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -490,11 +508,12 @@ public class SchemeDefaultFragment extends BaseFragment {
                         upperSeekBar.setProgress(upperTmp);
                     if (lowerTmp != -1)
                         lowerSeekBar.setProgress(lowerTmp);
+                    baseDialog.dismiss();
                 }
             });
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-            baseDialog.setContentView(contentView,lp);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            baseDialog.setContentView(contentView, lp);
         }
     }
 
@@ -551,7 +570,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         getIndicators();
     }
 
-    //获取每个设备号控制器
+    /**
+     * 获取当前设备号下所有的控制器
+     */
     private void getIndicators() {
         uploadAndDownloadScheme.getIndicatorType(equipmentCodes, new UploadAndDownloadScheme.SchemeListener() {
             @Override
@@ -567,7 +588,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         });
     }
 
-    //没有控制器时需要隐藏的信息
+    /**
+     * 隐藏还没有选择设备时的提示
+     */
     private void noIndicatorHide() {
         noIndicatorText.setVisibility(View.GONE);
     }
@@ -577,38 +600,61 @@ public class SchemeDefaultFragment extends BaseFragment {
         noIndicatorText.setVisibility(View.VISIBLE);
     }
 
-    //获取控制的结果
+    /**
+     * 对控制器的结果进行排序和布局
+     *
+     * @param result
+     */
     private void indicatorsResult(Map<String, ArrayList<String>> result) {
         //控制器排序
         sortIndicators(result, indicatorNames, indicatorKeys);
+        //对布局进行初始化
         initIndicatorLayout(schemeDefaultIndicatorLayout, indicatorNames);
     }
 
-    //对获取到的控制器排序
-    //正则表达式
-    //^匹配输入字符串的开始位置
-    //.要匹配包括“\r\n”在内的任何字符
-    //*匹配前面的子表达式任意次
+
+    /**
+     * 1、将result里面的结果拆分保存在全局变量indicatorNames和indicatorKeys中
+     * 2、并对indicator的显示位置进行排序
+     * 3、^匹配输入字符串的开始位置
+     * .要匹配包括“\r\n”在内的任何字符
+     * *匹配前面的子表达式任意次
+     *
+     * @param result
+     * @param indicatorNames
+     * @param indicatorKeys
+     */
     private void sortIndicators(Map<String, ArrayList<String>> result, ArrayList<String> indicatorNames, ArrayList<String> indicatorKeys) {
+        // TODO: 2016/9/21 假如施肥之后需要改排序？假如要硬性显示前三则需要排序
         ArrayList<String> sortKeys = result.get("protocolKeys");
         ArrayList<String> sortNames = result.get("protocolNames");
-        //sortKeys.size() != sortNames.size()是什么
+
+        //判断keys与names数量是否一致，keys与names是否为空
         if (sortKeys == null || sortNames == null || sortKeys.size() != sortNames.size()) {
             toast.showLong(activity, "没有控制器");
             return;
         }
+        /**
+         * 要先清空是因为每次点击不同设备都是不同的设备码，请求回来的控制器种类不一样
+         */
         indicatorNames.clear();
         indicatorKeys.clear();
+        /**
+         * 先将土壤湿度，光质，光强匹配，优先显示
+         */
         int i = findSpecialIndicator(sortNames, "^土壤湿度.*");
         if (i != -1) {
+            //没有将“土壤湿度控制器”写入数组，用“喷淋控制器”这个名称覆盖了
             indicatorNames.add("喷淋控制器");
             indicatorKeys.add(sortKeys.get(i));
+            //sortNames.remove(i)是为了提高关键字查控制器的算法效率
             sortNames.remove(i);
+            //sortKeys.remove(i)是为了与sortNames下标对应
             sortKeys.remove(i);
         }
         i = findSpecialIndicator(sortNames, "^光质.*");
         if (i != -1) {
-            indicatorNames.add(sortNames.get(i));
+            indicatorNames.add("光强比控制器");
             indicatorKeys.add(sortKeys.get(i));
             sortNames.remove(i);
             sortKeys.remove(i);
@@ -620,11 +666,18 @@ public class SchemeDefaultFragment extends BaseFragment {
             sortNames.remove(i);
             sortKeys.remove(i);
         }
+        //因为下标本来已经匹配好，所以直接addAll()将剩下的keys与names添加
         indicatorNames.addAll(sortNames);
         indicatorKeys.addAll(sortKeys);
     }
 
-    //对控制器的匹配
+    /**
+     * 根据关键字找到对应控制器的名字及下标
+     *
+     * @param indicatorNames 控制器的名字数组
+     * @param indicator      控制器的关键字
+     * @return
+     */
     private int findSpecialIndicator(ArrayList<String> indicatorNames, String indicator) {
         for (int i = 0; i < indicatorNames.size(); i++) {
             if (indicatorNames.get(i).matches(indicator)) {
@@ -634,7 +687,11 @@ public class SchemeDefaultFragment extends BaseFragment {
         return -1;
     }
 
-    //整体初始化，也是获取到控制器之后的初始化
+    /**
+     * 对布局进行初始化
+     * @param tableLayout 要摆放tableRow的布局
+     * @param indicatorNames 已经排序好的控制器名称
+     */
     private void initIndicatorLayout(TableLayout tableLayout, ArrayList<String> indicatorNames) {
         tableLayout.removeAllViews();
         int size = indicatorNames.size();
@@ -646,7 +703,7 @@ public class SchemeDefaultFragment extends BaseFragment {
             View view;
             ImageView imageView;
             TextView textView;
-            //大于0，少于4种控制
+            //大于0，最多4种控制（目前最少4种）
             if (size < 5) {
                 for (int i = 0; i < size; i++) {
                     //设备控制的view,包括一张图和一个textview，合成一个按钮
@@ -655,6 +712,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                     setIconWithType(imageView, indicatorNames.get(i), false);
                     textView = (TextView) view.findViewById(R.id.indicator_textview);
                     textView.setText(cutIndicatorName(indicatorNames.get(i)));
+                    //为了区分点击事件中点击的item所以要setTag(),用显示的位置做标志
                     view.setTag(i);
                     //实现不同功能的控制
                     view.setOnClickListener(new indicatorPressedListener());
@@ -687,10 +745,17 @@ public class SchemeDefaultFragment extends BaseFragment {
                 tableLayout.addView(row);
             }
         }
+        //初始化完成后显示的哪个tableRow被点击
         paramFirstShow();
     }
 
-    //依照控制器类型设置图片
+    /**
+     * 按照控制器的类型与是否按下为imgView设置src
+     *
+     * @param iconIV  imgView
+     * @param type    控制器类型
+     * @param pressed 是否按下
+     */
     private void setIconWithType(ImageView iconIV, String type, boolean pressed) {
         if (type.matches("^喷淋.*")) {
             iconIV.setImageResource(R.drawable.icon_jiaoshui);
@@ -775,7 +840,12 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //截取控制器名称
+    /**
+     * 截取控制器的名称
+     *
+     * @param name 格式为 XXX控制器
+     * @return 控制器的名称
+     */
     private String cutIndicatorName(String name) {
         Pattern p = Pattern.compile("(.*)控制器");
         Matcher m = p.matcher(name);
@@ -792,9 +862,11 @@ public class SchemeDefaultFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             int choice = (int) v.getTag();
-            if (choice == MAGIC_NUMBER) {     //选中popupMenu按钮
+            //选中popupMenu按钮
+            if (choice == MAGIC_NUMBER) {
                 showPopupMenu(v);
                 pressIndicatorMenu(3, indicatorKeys.size());
+
             } else if (choice < indicatorKeys.size()) {
                 if (indicatorKeys.get(choice).equals("shc")) {    //选中喷淋按钮
                     water();
@@ -808,9 +880,12 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //监听选中的控制器按钮，分别显示光质比等设置界面
+    /**
+     * 点击不同的indicator显示不同的界面
+     * @param index 对应indicator的下标(已经排好序)
+     */
     private void indicatorShow(int index) {
-        //单位设置
+        //根据key设置单位
         setParamsUnit(indicatorKeys.get(index));
         //lqc光质
         if (indicatorKeys.get(index).equals("lqc")) {
@@ -820,7 +895,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         else if (indicatorKeys.get(index).equals("lc")) {
             initParamOthers(6000);
         }
-        //土养湿度控制？有phc?，二氧化碳是什么？
+        //phc 土壤PH值
         else if (indicatorKeys.get(index).equals("phc")) {
             initParamOthers(10);
         }
@@ -830,17 +905,20 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //设置控制的单位，比如设置光强的单位为lux
-    private void setParamsUnit(String indicator) {
-        if (indicator.equals("lc")) {
+    /**
+     * 根据控制器的key设置单位
+     * @param indicatorKey
+     */
+    private void setParamsUnit(String indicatorKey) {
+        if (indicatorKey.equals("lc")) {
             targetUnit.setText("/lux");
             upperUnit.setText("/lux");
             lowerUnit.setText("/lux");
-        } else if (indicator.equals("tc")) {
+        } else if (indicatorKey.equals("tc")) {
             targetUnit.setText("/°C");
             upperUnit.setText("/°C");
             lowerUnit.setText("/°C");
-        } else if (indicator.equals("hc")) {
+        } else if (indicatorKey.equals("hc")) {
             targetUnit.setText("/%");
             upperUnit.setText("/%");
             lowerUnit.setText("/%");
@@ -982,11 +1060,16 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //当控制器多于4项时，隐藏除前面3项外的其它项
+    /**
+     * 点击其他按钮时，显示PopupMenu
+     * @param view
+     */
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(activity, view);
         Menu menu = popupMenu.getMenu();
         for (int i = 3; i < indicatorKeys.size(); i++) {
+            //menu.add(groupId,itemId,itemName);
+            //已经设置了order为First+i -->4开始
             menu.add(Menu.NONE, Menu.FIRST + i, i, indicatorNames.get(i));
         }
         activity.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
@@ -997,13 +1080,16 @@ public class SchemeDefaultFragment extends BaseFragment {
     private class popupMenuListener implements PopupMenu.OnMenuItemClickListener {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            //item.getOrder()的值为4及4以上
             indicatorShow(item.getOrder());
             currentIndex = item.getOrder();
             return true;
         }
     }
 
-    //第一次进入时参数布局的显示
+    /**
+     * 决定哪个tableRow被显示
+     */
     private void paramFirstShow() {
         if (indicatorKeys != null && !indicatorKeys.isEmpty()) {
             //第一项是土壤湿度控制器且控制器个数多于1时，显示第二项
@@ -1041,18 +1127,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
 
-        //设置光标的位置为文本末尾
-//        waterTimeHours.setText("00");
-//        waterTimeMins.setText("00");
-//        waterTimeSecs.setText("00");
-//
-//        testEditText.setText("00");
-//        testEditText.setSelection(testEditText.getText().length());
-
         waterTimeHours.setSelection(waterTimeHours.getText().length());
         waterTimeMins.setSelection(waterTimeMins.getText().length());
         waterTimeSecs.setSelection(waterTimeSecs.getText().length());
-
 
         //设置在屏幕中的显示的比例
         baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
@@ -1073,25 +1150,23 @@ public class SchemeDefaultFragment extends BaseFragment {
                 String waterTimeSecsMsg = waterTimeSecs.getText().toString();
 
                 //三者为空则提示输入时长
-                if((waterTimeHoursMsg.equals("")||waterTimeHoursMsg == null)
-                        &&(waterTimeMinsMsg.equals("")||waterTimeMinsMsg==null)
-                        &&(waterTimeSecsMsg.equals("")||waterTimeSecsMsg==null)){
+                if ((waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null)
+                        && (waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null)
+                        && (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null)) {
                     ToastUtil.showShort(activity, "请输入时长");
-                    return ;
+                    return;
                 }
                 //以下情况是有其中没有输入时自动补零的情况
-                else
-                {
-                    if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null)
-                    {
-                        waterTimeSecsMsg="00";
+                else {
+                    if (waterTimeSecsMsg.equals("") || waterTimeSecsMsg == null) {
+                        waterTimeSecsMsg = "00";
                     }
 
-                    if (waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null){
-                        waterTimeMinsMsg="00";
+                    if (waterTimeMinsMsg.equals("") || waterTimeMinsMsg == null) {
+                        waterTimeMinsMsg = "00";
                     }
 
-                    if(waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null) {
+                    if (waterTimeHoursMsg.equals("") || waterTimeHoursMsg == null) {
                         waterTimeHoursMsg = "00";
                     }
                 }
@@ -1182,7 +1257,12 @@ public class SchemeDefaultFragment extends BaseFragment {
         schemeDefaultParameterLayout.addView(lqcLayout);
     }
 
-    //光质比视图，listview
+    /**
+     * 光质listView，配置adapter显示
+     * @param listView 需要显示的listView
+     * @param itemString 每个默认图片对应的文字，即X：X：X
+     * @param itemColor 每个默认图片 即R.drawable.X
+     */
     private void lqcListView(ListView listView, String[] itemString, int[] itemColor) {
         List<Map<String, Object>> listItems = new ArrayList<>();
         //光质比的图标和说明
@@ -1203,7 +1283,10 @@ public class SchemeDefaultFragment extends BaseFragment {
         listView.setAdapter(simpleAdapter);
     }
 
-    //初始化其它参数布局
+    /**
+     * 初始化除了光质、喷淋界面下的其他布(布局都是统一)
+     * @param theMaxValue 可调节的最大值
+     */
     private void initParamOthers(int theMaxValue) {
         schemeDefaultParameterLayout.removeAllViews();
         upperSeekBar.setMax(theMaxValue);
@@ -1212,14 +1295,21 @@ public class SchemeDefaultFragment extends BaseFragment {
         schemeDefaultParameterLayout.addView(othersParamLayout);
     }
 
-    //上传控制方案
-    private void uploadScheme(String indicator) {
-        if (fillingParams(indicator)) {
+    /**
+     * 上传方案，根据indicatorKey
+     * @param indicatorKey
+     */
+    private void uploadScheme(String indicatorKey) {
+        //为target、upper、lower填充参数
+        if (fillingParams(indicatorKey)) {
+            //选择人为干预的时间
             fillingTime();
         }
     }
 
-    //控制选择时间dialog，已经更改了新的布局
+    /**
+     * 弹出选择时间的dialog，选择人为干预的时间
+     */
     private void fillingTime() {
         String[] items = new String[]{"1分钟", "3分钟", "5分钟", "10分钟", "自定义"};
         startTime = "";
@@ -1239,6 +1329,7 @@ public class SchemeDefaultFragment extends BaseFragment {
                 adapter.removeAllViews();
                 //再设置点击的item的图片变化
                 ((ImageView) view.findViewById(R.id.id_water_choose_time_list_img)).setImageResource(R.drawable.dialog_img_select);
+                //根据点击的listView的item剪辑startTime和endTime
                 countTime(position);
             }
         });
@@ -1256,6 +1347,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //检查target、upper、lower、startTime、endTime是否输入正确，并上传
                 uploadAfterChecked();
                 baseDialog.dismiss();
             }
@@ -1267,15 +1359,19 @@ public class SchemeDefaultFragment extends BaseFragment {
         baseDialog.setContentView(contentView, contentLp);
     }
 
-    //计算时间
-    private void countTime(int time) {
-        if (time == 0) {
+    /**
+     * 根据点击的listView的timeDelay
+     * 设置startTime和endTime
+     * @param position
+     */
+    private void countTime(int position) {
+        if (position == 0) {
             timeDelay = 1;
-        } else if (time == 1) {
+        } else if (position == 1) {
             timeDelay = 3;
-        } else if (time == 2) {
+        } else if (position == 2) {
             timeDelay = 5;
-        } else if (time == 3) {
+        } else if (position == 3) {
             timeDelay = 10;
         } else {
             custom_time();
@@ -1413,23 +1509,27 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
     }
 
-    //光质人为控制填充参数
-    private Boolean fillingParams(String indicator) {
-        //人为干预光质，光质比，红：蓝：白，白光这里是默认为0
-        if (indicator.equals("lqc")) {
+
+    /**
+     * 为target、upper、lower填充参数
+     * 当indicatorKey为"lqc"时，target为1:5:0这样的参数
+     * 当indicatorKey为其他时，target为seekbar的值
+     * @param indicatorKey
+     * @return
+     */
+    private Boolean fillingParams(String indicatorKey) {
+        //干预光质
+        if (indicatorKey.equals("lqc")) {
             //target = lqc.trim() + ":0";原来红蓝两路光
             target = lqc.trim();
             upper = target;
             lower = target;
-
-
         }
-        //非光质人为干预，检查设置好的参数是否合理
+        //干预光强、温度、二氧化碳等
         else {
             target = targetTextView.getText().toString();
             upper = upperTextView.getText().toString();
             lower = lowerTextView.getText().toString();
-
 
             if (Integer.parseInt(target) > Integer.parseInt(upper)) {
                 toast.showShort(activity, "目标值不能大于上限值");

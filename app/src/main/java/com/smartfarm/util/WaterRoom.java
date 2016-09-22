@@ -3,13 +3,16 @@ package com.smartfarm.util;
 import android.os.CountDownTimer;
 
 import com.smartfarm.mqtt.PublishWC;
-import com.smartfarm.mqtt.PublishWC.MyListenerhs;
+import com.smartfarm.mqtt.PublishWC.MyListeners;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 浇水的封装类
+ */
 public class  WaterRoom {
 	private WaterInterface waterInterface = null;
 	private PublishWC publishWC = null;		//发布浇水信息
@@ -34,7 +37,7 @@ public class  WaterRoom {
 //			return;
 //		}
 //
-		publishWC.request(new MyListenerhs() {			
+		publishWC.request(new MyListeners() {
 			@Override
 			public void success(String arrivedMessage) {
 				System.out.println("收到发布浇水信息："+arrivedMessage);

@@ -8,6 +8,7 @@ import com.smartfarm.observable.GetIndicatorObservable;
 import com.smartfarm.observable.InterveneObservable;
 import com.smartfarm.util.BaseProgressDialog;
 import com.smartfarm.util.ToastUtil;
+import com.videogo.universalimageloader.utils.L;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,12 @@ public class UploadAndDownloadScheme {
         void result(Map<String, ArrayList<String>> result);
         void noIndicator();
     }
+
+    /**
+     * 获取Indicator的RxJava
+     * @param code
+     * @param listener
+     */
     public  void getIndicatorType(String code, final SchemeListener listener){
         this.schemeListener = listener;
         GetIndicatorObservable.createObservable(code).
@@ -85,7 +92,17 @@ public class UploadAndDownloadScheme {
                     }
                 });
     }
-    //name:指标名称,protocolKey:通讯协议中的指标类型关键字
+
+    /**
+     * 将list解析出key和name
+     * protocolKey:lc,protocolName:光强控制器
+     * protocolKey:lqc,protocolName:光质控制器
+     * protocolKey:tc,protocolName:温度控制器
+     * protocolKey:hc,protocolName:湿度控制器
+     * protocolKey:co2c,protocolName:二氧化碳控制器
+     * protocolKey:shc,protocolName:土壤湿度控制器
+     * @param list
+     */
     private void getProtocolKeyAndName(List<TypeBean> list){
         Map<String,ArrayList<String>> protocols = new HashMap<>();
         ArrayList<String> protocolKeys = new ArrayList<>();
@@ -93,9 +110,10 @@ public class UploadAndDownloadScheme {
         for (TypeBean t : list) {
             protocolKeys.add(t.protocolKey);
             protocolNames.add(t.name);
+//            Log.d("gzfuzhi","protocolKey:"+t.protocolKey+",protocolName:"+t.name);
         }
         protocols.put("protocolKeys",protocolKeys);
-        protocols.put("protocolNames", protocolNames);
+        protocols.put("protocolNames",protocolNames);
         schemeListener.result(protocols);
     }
     //intervene阻止,干预,人为控制，即用app控制

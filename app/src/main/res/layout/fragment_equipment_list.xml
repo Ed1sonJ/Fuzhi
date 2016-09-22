@@ -17,7 +17,8 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/title_logo_left"
-            android:src="@drawable/icon_titlebar" />
+            android:src="@drawable/icon_titlebar"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/logo_textview"
@@ -26,7 +27,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/title_logo_right"
             android:layout_toRightOf="@+id/usercenter_logo_imageview"
-            android:text="自然1号"
+            android:text="自然一号"
             android:textColor="@color/white"
             android:textSize="@dimen/title_text_size" />
 
@@ -86,7 +87,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/back"
                 android:layout_marginLeft="5dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                />
 
             <com.smartfarm.view.CleanEditText
                 android:id="@+id/equipment_list_search_edittext"

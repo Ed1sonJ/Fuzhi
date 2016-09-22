@@ -2,8 +2,6 @@ package com.smartfarm.util;
 
 public class Protocol {
 
-	
-
 	public static String key = "fuzhi123";
 
 //	public static String BASE_URL = "http://120.25.229.174:8080/fzwa/app/";
