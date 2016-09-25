@@ -2,8 +2,6 @@ package com.smartfarm.fragment;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,24 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
-import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.baidu.platform.comapi.map.B;
 import com.smartfarm.activity.R;
 import com.smartfarm.adapter.DialogTimeListAdapter;
 import com.smartfarm.adapter.SchemeLightQualityAdapter;
@@ -40,15 +32,17 @@ import com.smartfarm.event.EquipmentSelectedEvent;
 import com.smartfarm.event.GlobalEvent;
 import com.smartfarm.fragmentUtil.UploadAndDownloadScheme;
 import com.smartfarm.model.Equipment;
+import com.smartfarm.model.TimeSelector;
 import com.smartfarm.util.BaseProgressDialog;
+import com.smartfarm.util.DateUtil;
 import com.smartfarm.util.FertilizeRoom;
 import com.smartfarm.util.ToastUtil;
 import com.smartfarm.util.WaterRoom;
 import com.smartfarm.view.NumberPickerView;
-import com.videogo.universalimageloader.utils.L;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +149,6 @@ public class SchemeDefaultFragment extends BaseFragment {
     private String startTime;   //开始时间
     private String endTime;     //结束时间
     private int timeDelay = 5;  //时间参数
-    boolean isStartTime = true; //自定义时间用到的变量
     boolean isWater;    //浇水按钮是否按下
 
     // TODO: 2016/9/22 测试
@@ -175,9 +168,9 @@ public class SchemeDefaultFragment extends BaseFragment {
     private final static int MAGIC_NUMBER = 10;     //代码中用到的一个自定义数字
     //EventBus
     EventHandler handler = new EventHandler();
-
+    private final String FORMAT_STR = "yyyy-MM-dd HH:mm:ss";
     //时间格式
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat format = new SimpleDateFormat(FORMAT_STR);
 
     /**
      * 根据EventBus实现点击设备控制item返回equipmentCodes
@@ -1643,134 +1636,48 @@ public class SchemeDefaultFragment extends BaseFragment {
         startTime = format.format(currentTime);
         endTime = format.format(currentTime + timeDelay * 60 * 1000);
     }
-
     //自定义时间
     private void custom_time() {
-        isStartTime = true;
-        LinearLayout customTime = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_timer_picker, null);
-        Switch timeSwitch = (Switch) customTime.findViewById(R.id.time_switch);
-        timeSwitch.setOnCheckedChangeListener(new timeCheckedListener());
-        final TextView startTimeTextview = (TextView) customTime.findViewById(R.id.start_time_textview);
-        final TextView endTimeTextview = (TextView) customTime.findViewById(R.id.end_time_textview);
-        final DatePicker schemeDate = (DatePicker) customTime.findViewById(R.id.scheme_date);
-        final TimePicker schemeTime = (TimePicker) customTime.findViewById(R.id.scheme_time);
-        schemeTime.is24HourView();
-        startTimeTextview.setText(String.valueOf(schemeDate.getYear()) + "-"
-                + String.valueOf(schemeDate.getMonth() + 1) + "-"
-                + String.valueOf(schemeDate.getDayOfMonth()) + " "
-                + String.valueOf(schemeTime.getCurrentHour()) + ":"
-                + String.valueOf(schemeTime.getCurrentMinute()));
-        endTimeTextview.setText(String.valueOf(schemeDate.getYear()) + "-"
-                + String.valueOf(schemeDate.getMonth() + 1) + "-"
-                + String.valueOf(schemeDate.getDayOfMonth()) + " "
-                + String.valueOf(schemeTime.getCurrentHour()) + ":"
-                + String.valueOf(schemeTime.getCurrentMinute()));
-        schemeDate.init(schemeDate.getYear(), schemeDate.getMonth(),
-                schemeDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
-                    @Override
-                    public void onDateChanged(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-                        if (isStartTime) {
-                            startTimeTextview.setText(String.valueOf(year) + "-"
-                                    + String.valueOf(monthOfYear + 1) + "-"
-                                    + String.valueOf(dayOfMonth) + " "
-                                    + String.valueOf(schemeTime.getCurrentHour())
-                                    + ":"
-                                    + String.valueOf(schemeTime.getCurrentMinute()));
-                        } else {
-                            endTimeTextview.setText(String.valueOf(year) + "-"
-                                    + String.valueOf(monthOfYear + 1) + "-"
-                                    + String.valueOf(dayOfMonth) + " "
-                                    + String.valueOf(schemeTime.getCurrentHour())
-                                    + ":"
-                                    + String.valueOf(schemeTime.getCurrentMinute()));
-                        }
-                    }
-                });
-        schemeTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+        Calendar minCalendar=Calendar.getInstance();
+        Calendar maxCalendar=Calendar.getInstance();
+        int year=minCalendar.get(Calendar.YEAR)+2;
+        maxCalendar.set(Calendar.YEAR, year);
+        TimeSelector timeSelector = new TimeSelector(activity, new TimeSelector.ResultHandler() {
             @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                if (isStartTime) {
-                    startTimeTextview.setText(String.valueOf(schemeDate.getYear()) + "-"
-                            + String.valueOf(schemeDate.getMonth() + 1) + "-"
-                            + String.valueOf(schemeDate.getDayOfMonth()) + " "
-                            + String.valueOf(hourOfDay) + ":"
-                            + String.valueOf(minute));
-                } else {
-                    endTimeTextview.setText(String.valueOf(schemeDate.getYear()) + "-"
-                            + String.valueOf(schemeDate.getMonth() + 1) + "-"
-                            + String.valueOf(schemeDate.getDayOfMonth()) + " "
-                            + String.valueOf(hourOfDay) + ":"
-                            + String.valueOf(minute));
+            public void handle(String start,String end) {
+                if(end!="")
+                {
+                    if(isRightTime(start,end))
+                    {
+                        startTime=start;
+                        endTime=end;
+                    }
+                    else
+                    {
+                        ToastUtil.showShort(activity,"请选择正确的时间");
+                    }
+                }
+                else
+                {
+                    ToastUtil.showShort(activity,"请选结束时间");
                 }
             }
-        });
-        new AlertDialog.Builder(activity)
-                .setTitle("自定义持续时间")
-                .setView(customTime)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            startTime = customTimeFormatter(startTimeTextview.getText().toString());
-                            endTime = customTimeFormatter(endTimeTextview.getText().toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            startTime = startTimeTextview.getText().toString();
-                            endTime = endTimeTextview.getText().toString();
-                        }
-                        //toast.showLong(activity, "开始时间：" + startTime + "\n" + "结束时间：" + endTime);
-                    }
-                }).setNegativeButton("返回", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        }).create().show();
+        }, DateUtil.format(minCalendar.getTime(), FORMAT_STR)
+         , DateUtil.format(maxCalendar.getTime(), FORMAT_STR));
+        timeSelector.show();
     }
 
-    //耦合性很强，且没有错误检查的针对本应用的String到yyyy-MM-dd hh:MM:ss的方法
-    //耦合性，模块之间的依赖关系
-    private String customTimeFormatter(String orginalTime) {
-        String time = orginalTime;
-        String year = time.substring(0, time.indexOf("-"));
-        time = time.substring(time.indexOf("-") + 1);
-        String month = time.substring(0, time.indexOf("-"));
-        if (Integer.parseInt(month) < 10) {
-            month = "0" + month;
+    //判断输入的开始时间是否<=结束时间
+    private boolean isRightTime(String start,String end){
+        Calendar startCalendar = Calendar.getInstance();
+        Calendar endCalendar = Calendar.getInstance();
+        startCalendar.setTime(DateUtil.parse(start, FORMAT_STR));
+        endCalendar.setTime(DateUtil.parse(end, FORMAT_STR));
+        if (startCalendar.getTime().getTime() >= endCalendar.getTime().getTime()) {
+            return false;
         }
-        time = time.substring(time.indexOf("-") + 1);
-        String day = time.substring(0, time.indexOf(" "));
-        if (Integer.parseInt(day) < 10) {
-            day = "0" + day;
-        }
-        time = time.substring(time.indexOf(" ") + 1);
-        String hour = time.substring(0, time.indexOf(":"));
-        if (Integer.parseInt(hour) < 10) {
-            hour = "0" + hour;
-        }
-        time = time.substring(time.indexOf(":") + 1);
-        String minute = time;
-        if (Integer.parseInt(minute) < 10) {
-            minute = "0" + minute;
-        }
-        String second = "00";
-        String result = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-        return result;
+        return true;
     }
-
-    //转换开始和结束时间的选择按钮
-    private class timeCheckedListener implements CompoundButton.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                isStartTime = false;
-            } else {
-                isStartTime = true;
-            }
-        }
-    }
-
 
     /**
      * 为target、upper、lower填充参数
@@ -1842,7 +1749,8 @@ public class SchemeDefaultFragment extends BaseFragment {
     //光质控制输入合法后上传
     private void uploadAfterChecked() {
         if (checkedIsValid(target, upper, lower, startTime, endTime)) {
-            System.out.println("开始时间:" + startTime + "  结束时间:" + endTime);
+            System.out.println(equipmentCodes+","+
+                    startTime+","+ endTime+","+indicatorKeys.get(currentIndex)+","+target+","+ upper+","+ lower);
             uploadAndDownloadScheme.interveneObservable(equipmentCodes,
                     startTime, endTime, indicatorKeys.get(currentIndex), target, upper, lower);
         }

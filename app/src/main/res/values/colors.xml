@@ -47,5 +47,6 @@
     <color name="red_3">#e3495d</color>
     <color name="blue_1">#ff0000ff</color>
     <color name="blue_2">#aa0000ff</color>
-
+    <!-- timeselector -->
+    <color name="colorPrimary">#FF5722</color>
 </resources>
