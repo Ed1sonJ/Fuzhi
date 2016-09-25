@@ -201,6 +201,7 @@ public class ManagerEquipment extends Activity {
 		intentUpdate.putExtra("code", equipmentCode.get(currentEquipmentCodeIndex));
 		intentUpdate.putExtra("size", list.size());
 		int i = 0;
+
 		for (TypeBean t : list) {
 			intentUpdate.putExtra("protocolName" + String.valueOf(i),
 					t.name);

@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +23,7 @@ import com.smartfarm.util.IntentUtil;
 import com.smartfarm.util.ToastUtil;
 
 
-public class MainActivityNew extends BaseActivity {
+public class MainActivityNew extends AppCompatActivity {
     protected FragmentManager fm;
     /**设备列表*/
     protected EquipmentListFragment equipmentListFragment;

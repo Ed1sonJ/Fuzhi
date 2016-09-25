@@ -38,4 +38,10 @@
         <attr name="npv_AlternativeTextArrayWithoutMeasureHint" format="reference" />
         <attr name="npv_AlternativeHint" format="reference|string" />
     </declare-styleable>
+
+    <declare-styleable name="PickerView">
+
+        <attr name="isLoop" format="boolean" />
+
+    </declare-styleable>
 </resources>

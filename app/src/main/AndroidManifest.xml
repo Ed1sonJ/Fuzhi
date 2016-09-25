@@ -73,7 +73,7 @@
             android:name=".MainActivityNew"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ManagerEquipment"

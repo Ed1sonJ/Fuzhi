@@ -11,17 +11,6 @@
 
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-
-
-
-
-
-
-        -->
     </style>
 
     <!-- Application theme. -->
@@ -68,6 +57,30 @@
     <style name="OverviewBtnValueDateStyle">
         <item name="android:textSize"> 12sp </item>
         <item name="android:textColor">@color/gray_3</item>
+    </style>
+    <style name="time_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- switch 打开时的拇指按钮的颜色 轨迹颜色默认为30%这个颜色 -->
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/green_5</item>
+        <!-- switch关闭时的拇指按钮的颜色 -->
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/green_5</item>
+        <!-- switch关闭时的轨迹的颜色  30%这个颜色 -->
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/green_5</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
