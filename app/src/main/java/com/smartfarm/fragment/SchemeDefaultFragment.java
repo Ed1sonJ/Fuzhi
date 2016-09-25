@@ -34,6 +34,7 @@ import android.widget.TimePicker;
 import com.baidu.platform.comapi.map.B;
 import com.smartfarm.activity.R;
 import com.smartfarm.adapter.DialogTimeListAdapter;
+import com.smartfarm.adapter.SchemeLightQualityAdapter;
 import com.smartfarm.dialog.BaseCustomAlterDialog;
 import com.smartfarm.event.EquipmentSelectedEvent;
 import com.smartfarm.event.GlobalEvent;
@@ -56,6 +57,8 @@ import java.util.regex.Pattern;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.widget.VideoView;
+
+import static com.baidu.location.b.g.S;
 
 public class SchemeDefaultFragment extends BaseFragment {
     Activity activity;
@@ -136,6 +139,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     /**
      * 默认光质比内容
      */
+//    private String[] lqcText;
     private String[] lqcItemText;
     /**
      * 默认光质比图像
@@ -193,6 +197,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         uploadAndDownloadScheme = new UploadAndDownloadScheme(activity);
         dialog = new BaseProgressDialog(activity);
         //喷淋控制，以及回调
+        // TODO: 2016/9/25 修改了controller的回调
         waterRoom = new WaterRoom(new WaterRoom.WaterInterface() {
             @Override
             public void waterFailed() {
@@ -200,14 +205,14 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
 
             @Override
-            public void watering(String equipmentCode,String controller) {
+            public void watering(String equipmentCode, String controller) {
                 //点亮图标
 //                SchemeWatering(equipmentCode);
-                schemeAppointControllering(equipmentCode,controller);
+                schemeAppointControllering(equipmentCode, controller);
             }
 
             @Override
-            public void waterTimeOut(String equipmentCode,String controller) {
+            public void waterTimeOut(String equipmentCode, String controller) {
                 //熄灭图标
 //                SchemeWaterTimeout(equipmentCode);
                 schemeAppointControllerTimeOut(equipmentCode, controller);
@@ -221,13 +226,13 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
 
             @Override
-            public void Fertilizing(String equipmentCode,String controller) {
+            public void Fertilizing(String equipmentCode, String controller) {
                 //点亮正在施肥的图标
                 schemeAppointControllering(equipmentCode, controller);
             }
 
             @Override
-            public void FertilizeTimeOut(String equipmentCode,String controller) {
+            public void FertilizeTimeOut(String equipmentCode, String controller) {
                 //重置是施肥的图标
                 schemeAppointControllerTimeOut(equipmentCode, controller);
             }
@@ -353,10 +358,14 @@ public class SchemeDefaultFragment extends BaseFragment {
         //lqcLayout中的listview
         listViewlqc = (ListView) lqcLayout.findViewById(R.id.scheme_default_parameter_lqc_listview);
         //灯光比例的数组，红:蓝 = 1:0，红:蓝 = 5:1
-        lqcItemText = getResources().getStringArray(R.array.lqc_text);
+//        lqcItemText = getResources().getStringArray(R.array.lqc_text);
+
+        lqcItemText = getResources().getStringArray(R.array.lqc_text_test);
         //获取相应的光比的图片，保存在lqcItemColor数组中
-        getLqcItemImage();
-        lqcListView(listViewlqc, lqcItemText, lqcItemColor);
+//        getLqcItemImage();
+//        lqcListView(listViewlqc, lqcItemText, lqcItemColor);
+
+        lqcListViewTest(listViewlqc, lqcItemText);
         listViewlqc.setOnItemClickListener(new lqcListener());
 
         othersParamLayout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_others, schemeDefaultParameterLayout, false);
@@ -398,7 +407,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     private class lqcListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (position == lqcItemText.length) {
+            if (position == lqcItemText.length - 1) {
                 //光质控制中的自定义按钮
                 customLed();
             } else {
@@ -482,33 +491,6 @@ public class SchemeDefaultFragment extends BaseFragment {
     private class paramTextViewListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//            LinearLayout paramAdjustment = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_adjustment, null);
-//            final EditText target = (EditText) paramAdjustment.findViewById(R.id.param_target);
-//            final EditText upper = (EditText) paramAdjustment.findViewById(R.id.param_upper);
-//            final EditText lower = (EditText) paramAdjustment.findViewById(R.id.param_lower);
-//            new AlertDialog.Builder(activity)
-//                    .setTitle("参数调整")
-//                    .setView(paramAdjustment)
-//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            int targetTmp = getValidAdjustment(target);
-//                            int upperTmp = getValidAdjustment(upper);
-//                            int lowerTmp = getValidAdjustment(lower);
-//                            if (targetTmp != -1)
-//                                targetSeekBar.setProgress(targetTmp);
-//                            if (upperTmp != -1)
-//                                upperSeekBar.setProgress(upperTmp);
-//                            if (lowerTmp != -1)
-//                                lowerSeekBar.setProgress(lowerTmp);
-//                        }
-//                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            }).create()
-//                    .show();
             View contentView = View.inflate(activity, R.layout.fragment_scheme_new_parameter_adjustment, null);
             final EditText target = (EditText) contentView.findViewById(R.id.param_target);
             final EditText upper = (EditText) contentView.findViewById(R.id.param_upper);
@@ -652,7 +634,6 @@ public class SchemeDefaultFragment extends BaseFragment {
      * @param indicatorKeys
      */
     private void sortIndicators(Map<String, ArrayList<String>> result, ArrayList<String> indicatorNames, ArrayList<String> indicatorKeys) {
-        // TODO: 2016/9/21 假如施肥之后需要改排序？假如要硬性显示前三则需要排序
         ArrayList<String> sortKeys = result.get("protocolKeys");
         ArrayList<String> sortNames = result.get("protocolNames");
 
@@ -681,8 +662,8 @@ public class SchemeDefaultFragment extends BaseFragment {
         }
         //---------------------加入施肥控制器,排在了第二------------------------------
         // TODO: 2016/9/22 要验证能否加入施肥控制器
-        i = findSpecialIndicator(sortNames,"^施肥.*");
-        if(i!=-1){
+        i = findSpecialIndicator(sortNames, "^施肥.*");
+        if (i != -1) {
             indicatorNames.add(sortNames.get(i));
             indicatorKeys.add(sortKeys.get(i));
             sortNames.remove(i);
@@ -727,7 +708,8 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 对布局进行初始化，一个tableLayout下包含一个tableRow，包含多个LinearLayout
-     * @param tableLayout 要摆放tableRow的布局
+     *
+     * @param tableLayout    要摆放tableRow的布局
      * @param indicatorNames 已经排序好的控制器名称
      */
     private void initIndicatorLayout(TableLayout tableLayout, ArrayList<String> indicatorNames) {
@@ -799,8 +781,7 @@ public class SchemeDefaultFragment extends BaseFragment {
             iconIV.setImageResource(R.drawable.icon_jiaoshui);
         }
         //---------------------加入施肥icon显示的判断----------------------
-        // TODO: 2016/9/22 检验是否正确
-        else if(type.matches("^施肥.*")){
+        else if (type.matches("^施肥.*")) {
             iconIV.setImageResource(R.drawable.icon_shifei);
         }
         //因为将光质控制器改成了光强比控制器，所以这里也要更改
@@ -915,12 +896,10 @@ public class SchemeDefaultFragment extends BaseFragment {
             } else if (choice < indicatorKeys.size()) {
                 if (indicatorKeys.get(choice).equals("shc")) {    //选中喷淋按钮
                     water();
-                }
-                else if(indicatorKeys.get(choice).equals("fc")){
+                } else if (indicatorKeys.get(choice).equals("fc")) {
                     // TODO: 2016/9/22 测试，弹出施肥的dialog
                     fertilize();
-                }
-                else {   //选中除喷淋、施肥、popupMenu的按钮
+                } else {   //选中除喷淋、施肥、popupMenu的按钮
                     currentIndex = (int) v.getTag();
                     //显示相应的view
                     indicatorShow(currentIndex);
@@ -932,6 +911,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 点击不同的indicator显示不同的界面，设置单位
+     *
      * @param index 对应indicator的下标(已经排好序)
      */
     private void indicatorShow(int index) {
@@ -957,6 +937,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 根据控制器的key设置单位
+     *
      * @param indicatorKey
      */
     private void setParamsUnit(String indicatorKey) {
@@ -1111,6 +1092,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 点击其他按钮时，显示PopupMenu
+     *
      * @param view
      */
     private void showPopupMenu(View view) {
@@ -1151,18 +1133,17 @@ public class SchemeDefaultFragment extends BaseFragment {
             //第一项是土壤湿度控制器且控制器个数多于1时，显示第二项
             //因为喷淋那个是个dialog
             //情况1
-            if(indicatorKeys.get(0).equals("shc")&&indicatorKeys.get(1).equals("fc")&&indicatorKeys.size()>2){
+            if (indicatorKeys.get(0).equals("shc") && indicatorKeys.get(1).equals("fc") && indicatorKeys.size() > 2) {
                 indicatorShow(2);
                 currentIndex = 2;
-                pressIndicatorMenu(2,indicatorKeys.size());
+                pressIndicatorMenu(2, indicatorKeys.size());
             }
             //情况2、3
-            else if ((indicatorKeys.get(0).equals("shc") && indicatorKeys.size() > 1)||(indicatorKeys.get(0).equals("fc")&&indicatorKeys.size()>1)) {
+            else if ((indicatorKeys.get(0).equals("shc") && indicatorKeys.size() > 1) || (indicatorKeys.get(0).equals("fc") && indicatorKeys.size() > 1)) {
                 indicatorShow(1);
                 currentIndex = 1;
                 pressIndicatorMenu(1, indicatorKeys.size());
-            }
-            else {
+            } else {
                 indicatorShow(0);
                 currentIndex = 0;
                 pressIndicatorMenu(0, indicatorKeys.size());
@@ -1190,10 +1171,6 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
         final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
-//好像不需要设置光标
-//        waterTimeHours.setSelection(waterTimeHours.getText().length());
-//        waterTimeMins.setSelection(waterTimeMins.getText().length());
-//        waterTimeSecs.setSelection(waterTimeSecs.getText().length());
 
         //设置在屏幕中的显示的比例
         baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
@@ -1277,12 +1254,14 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 根据设备标志位fc、shc等来设置点亮的图片，设备编码没有用上
+     * 嵌套关系是Indicatorlayout->row->线性布局(n)->img+text
+     *
      * @param equipmentCode 设备的编码
-     * @param controller /c/fc/1的样式
+     * @param controller    /c/fc/1的样式
      */
-    public void schemeAppointControllering(String equipmentCode,String controller){
+    public void schemeAppointControllering(String equipmentCode, String controller) {
         //逻辑已经写好了浇水摆在第一个item的位置，施肥摆在了第(一)二个item的位置
-        if(controller.contains("shc")){
+        if (controller.contains("shc")) {
             if (indicatorKeys.get(0).equals("shc")) {
                 if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
                     TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
@@ -1295,10 +1274,9 @@ public class SchemeDefaultFragment extends BaseFragment {
                     }
                 }
             }
-            reverseControllerBtn(equipmentCode,"shc");
+            reverseControllerBtn(equipmentCode, "shc");
             dismissDialog();
-        }
-        else if(controller.contains("fc")){
+        }else if (controller.contains("fc")) {
             if (indicatorKeys.get(0).equals("fc")) {
                 if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
                     TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
@@ -1310,30 +1288,31 @@ public class SchemeDefaultFragment extends BaseFragment {
                         }
                     }
                 }
-            }else if(indicatorKeys.get(1).equals("fc")){
-                if (schemeDefaultIndicatorLayout.getChildAt(1) instanceof TableRow){
-                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(1);
-                    if(tableRow.getChildAt(0) instanceof  LinearLayout){
-                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
-                        if(linearLayout.getChildAt(0) instanceof ImageView){
+            } else if (indicatorKeys.get(1).equals("fc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(1) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(1);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
                             ImageView imageView = (ImageView) linearLayout.getChildAt(0);
                             imageView.setImageResource(R.drawable.icon_fertilize_on);
                         }
                     }
                 }
             }
-            reverseControllerBtn(equipmentCode,"fc");
+            reverseControllerBtn(equipmentCode, "fc");
             dismissDialog();
         }
     }
 
     /**
      * 根据设备标志位fc、shc等来设置熄灭的图片，设备编码没有用上
+     *
      * @param equipmentCode
      * @param controller
      */
-    public void schemeAppointControllerTimeOut(String equipmentCode,String controller){
-        if (controller.contains("shc")){
+    public void schemeAppointControllerTimeOut(String equipmentCode, String controller) {
+        if (controller.contains("shc")) {
             //设置shc样式
             if (indicatorKeys.get(0).equals("shc")) {
                 if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
@@ -1349,8 +1328,7 @@ public class SchemeDefaultFragment extends BaseFragment {
             }
             reverseControllerBtn(equipmentCode, "shc");
             dismissDialog();
-        }
-        else if(controller.contains("fc")){
+        } else if (controller.contains("fc")) {
             //设置fc的样式
             if (indicatorKeys.get(0).equals("fc")) {
                 if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
@@ -1363,12 +1341,12 @@ public class SchemeDefaultFragment extends BaseFragment {
                         }
                     }
                 }
-            }else if(indicatorKeys.get(1).equals("fc")){
-                if(schemeDefaultIndicatorLayout.getChildAt(1) instanceof TableRow){
-                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(1);
-                    if(tableRow.getChildAt(0) instanceof  LinearLayout){
-                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(0);
-                        if(linearLayout.getChildAt(0) instanceof  ImageView){
+            } else if (indicatorKeys.get(1).equals("fc")) {
+                if (schemeDefaultIndicatorLayout.getChildAt(0) instanceof TableRow) {
+                    TableRow tableRow = (TableRow) schemeDefaultIndicatorLayout.getChildAt(0);
+                    if (tableRow.getChildAt(1) instanceof LinearLayout) {
+                        LinearLayout linearLayout = (LinearLayout) tableRow.getChildAt(1);
+                        if (linearLayout.getChildAt(0) instanceof ImageView) {
                             ImageView imageView = (ImageView) linearLayout.getChildAt(0);
                             imageView.setImageResource(R.drawable.icon_shifei);
                         }
@@ -1382,11 +1360,12 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 转换淋水和施肥的状态，方便以后增加
+     *
      * @param equipmentCode
      * @param controller
      */
-    public void reverseControllerBtn(String equipmentCode,String controller){
-        switch (controller){
+    public void reverseControllerBtn(String equipmentCode, String controller) {
+        switch (controller) {
             case "shc":
                 isWater = !isWater;
                 break;
@@ -1424,11 +1403,11 @@ public class SchemeDefaultFragment extends BaseFragment {
     /**
      * 调用施肥
      */
-    private void fertilize(){
-        if(!isFertilize){
+    private void fertilize() {
+        if (!isFertilize) {
             setFertilizeTimes();
-        }else{
-            fertilizeRoom.FertilizeOffByBtn(equipmentCodes,FERTILIZECONTROLLER,clientId);
+        } else {
+            fertilizeRoom.FertilizeOffByBtn(equipmentCodes, FERTILIZECONTROLLER, clientId);
             showDialog("正在关闭施肥");
         }
     }
@@ -1436,7 +1415,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     /**
      * 设置施肥时间
      */
-    public void setFertilizeTimes(){
+    public void setFertilizeTimes() {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final View contentView = View.inflate(activity, R.layout.view_fertilize_button, null);
 
@@ -1494,7 +1473,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
                 String fertilizeMessage = String.valueOf(totalTime);
                 //发布施肥消息
-                fertilizeRoom.FertilizeOn(equipmentCodes,FERTILIZECONTROLLER,clientId,fertilizeMessage);
+                fertilizeRoom.FertilizeOn(equipmentCodes, FERTILIZECONTROLLER, clientId, fertilizeMessage);
                 showDialog("正在打开施肥");
                 baseDialog.dismiss();
             }
@@ -1527,34 +1506,40 @@ public class SchemeDefaultFragment extends BaseFragment {
         schemeDefaultParameterLayout.addView(lqcLayout);
     }
 
-    /**
-     * 光质listView，配置adapter显示
-     * @param listView 需要显示的listView
-     * @param itemString 每个默认图片对应的文字，即X：X：X
-     * @param itemColor 每个默认图片 即R.drawable.X
-     */
-    private void lqcListView(ListView listView, String[] itemString, int[] itemColor) {
-        List<Map<String, Object>> listItems = new ArrayList<>();
-        //光质比的图标和说明
-        for (int i = 0; i < itemString.length; i++) {
-            Map<String, Object> listItem = new HashMap<>();
-            listItem.put("lqc_item_imageview", itemColor[i]);
-            listItem.put("lqc_item_textview", itemString[i]);
-            listItems.add(listItem);
-        }
-        //自定义的图标和说明
-        Map<String, Object> listItem = new HashMap<>();
-        listItem.put("lqc_item_imageview", R.drawable.icon_config);
-        listItem.put("lqc_item_textview", "自定义");
-        listItems.add(listItem);
+//    /**
+//     * 光质listView，配置adapter显示
+//     * @param listView 需要显示的listView
+//     * @param itemString 每个默认图片对应的文字，即X：X：X
+//     * @param itemColor 每个默认图片 即R.drawable.X
+//     */
+//    private void lqcListView(ListView listView, String[] itemString, int[] itemColor) {
+//        List<Map<String, Object>> listItems = new ArrayList<>();
+//        //光质比的图标和说明
+//        for (int i = 0; i < itemString.length; i++) {
+//            Map<String, Object> listItem = new HashMap<>();
+//            listItem.put("lqc_item_imageview", itemColor[i]);
+//            listItem.put("lqc_item_textview", itemString[i]);
+//            listItems.add(listItem);
+//        }
+//        //自定义的图标和说明
+//        Map<String, Object> listItem = new HashMap<>();
+//        listItem.put("lqc_item_imageview", R.drawable.icon_config);
+//        listItem.put("lqc_item_textview", "自定义");
+//        listItems.add(listItem);
+//
+//        SimpleAdapter simpleAdapter = new SimpleAdapter(activity, listItems, R.layout.fragment_scheme_new_parameter_lqc_item,
+//                new String[]{"lqc_item_imageview", "lqc_item_textview"}, new int[]{R.id.lqc_item_iamgeview, R.id.lqc_item_textview});
+//        listView.setAdapter(simpleAdapter);
+//    }
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(activity, listItems, R.layout.fragment_scheme_new_parameter_lqc_item,
-                new String[]{"lqc_item_imageview", "lqc_item_textview"}, new int[]{R.id.lqc_item_iamgeview, R.id.lqc_item_textview});
-        listView.setAdapter(simpleAdapter);
+    private void lqcListViewTest(ListView listView, String[] itemTexts) {
+        SchemeLightQualityAdapter listAdapter = new SchemeLightQualityAdapter(activity, itemTexts);
+        listView.setAdapter(listAdapter);
     }
 
     /**
      * 初始化除了光质、喷淋界面下的其他布(布局都是统一)
+     *
      * @param theMaxValue 可调节的最大值
      */
     private void initParamOthers(int theMaxValue) {
@@ -1568,6 +1553,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
     /**
      * 上传方案，根据indicatorKey
+     *
      * @param indicatorKey
      */
     private void uploadScheme(String indicatorKey) {
@@ -1607,7 +1593,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.6f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0.55f);
         baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
@@ -1623,6 +1609,10 @@ public class SchemeDefaultFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
+        listTime.measure(0, 0);
+        ToastUtil.showShort(activity, "listTime的高度：" + listTime.getMeasuredHeight() + ",listTime的宽度：" + listTime.getMeasuredWidth());
+
+
         baseDialog.setTitle("请选择持续时间");
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //        contentLp.setMargins(0, 70, 0, 0);
@@ -1633,6 +1623,7 @@ public class SchemeDefaultFragment extends BaseFragment {
     /**
      * 根据点击的listView的timeDelay
      * 设置startTime和endTime
+     *
      * @param position
      */
     private void countTime(int position) {
@@ -1785,6 +1776,7 @@ public class SchemeDefaultFragment extends BaseFragment {
      * 为target、upper、lower填充参数
      * 当indicatorKey为"lqc"时，target为1:5:0这样的参数
      * 当indicatorKey为其他时，target为seekbar的值
+     *
      * @param indicatorKey
      * @return
      */

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.smartfarm.activity.R;
+import com.smartfarm.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,6 @@ public class DialogTimeListAdapter extends BaseAdapter {
         viewHolder.titleTv.setText(mDatas[position]);
         //将图片保存在全局变量中，方便点击item时更改drawable
         imgs.add(viewHolder.iconImg);
-
         return convertView;
     }
 

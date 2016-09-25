@@ -118,6 +118,7 @@ public class MainActivityNew extends BaseActivity {
         }
         setContentView(R.layout.activity_main_new);
         initView();
+
     }
 
     @Override

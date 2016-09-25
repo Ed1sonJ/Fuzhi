@@ -110,7 +110,7 @@ public class UploadAndDownloadScheme {
         for (TypeBean t : list) {
             protocolKeys.add(t.protocolKey);
             protocolNames.add(t.name);
-//            Log.d("gzfuzhi","protocolKey:"+t.protocolKey+",protocolName:"+t.name);
+            Log.i("gzfuzhi","protocolKey:"+t.protocolKey+",protocolName:"+t.name);
         }
         protocols.put("protocolKeys",protocolKeys);
         protocols.put("protocolNames",protocolNames);

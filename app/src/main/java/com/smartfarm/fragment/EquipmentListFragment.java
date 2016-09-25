@@ -55,9 +55,12 @@ import com.smartfarm.observable.DeleteEquipmentObservable;
 import com.smartfarm.observable.EquipmentsListObservable;
 import com.smartfarm.observable.SendQRCodeObservable;
 import com.smartfarm.util.BaseProgressDialog;
+import com.smartfarm.util.BaseUtil;
 import com.smartfarm.util.Common;
 import com.smartfarm.util.ToastUtil;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -66,6 +69,10 @@ import java.util.Map;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+
+import static android.R.attr.width;
+import static android.R.id.list;
+import static com.smartfarm.activity.R.drawable.item;
 
 public class EquipmentListFragment extends BaseFragment {
     public static final int GET_BARCODE = 0;
@@ -430,7 +437,7 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
@@ -441,46 +448,6 @@ public class EquipmentListFragment extends BaseFragment {
      * 显示添加分组的对话框
      */
     protected void showAddGroupDialog() {
-//        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
-//        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-//        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
-//        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
-//        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
-//        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
-//        final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-//        icon.setImageResource(R.drawable.add_group_img);
-//        icon.setVisibility(View.VISIBLE);
-//        title.setText("创建分组");
-//        positiveBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (renameEditText.length()>0)
-//                {
-//                    try {
-//                        new Group(activity, equipmentBeans).addGroup(renameEditText.getText().toString());
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        ToastUtil.showLong(activity, "创建分组失败。");
-//                    }
-//                    reloadView();
-//                    baseDialog.dismiss();
-//                }
-//                else
-//                {
-//                    ToastUtil.showShort(activity,"请输入分组的名字");
-//                }
-//            }
-//        });
-//        negativeBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                baseDialog.dismiss();
-//            }
-//        });
-//        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
-//        baseDialog.setLocation(Gravity.CENTER,0,0);
-//        baseDialog.setContentView(contentView);
-        // TODO: 2016/9/22 适配不同分辨率，已经适配，在平板上跑看效果
         View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
@@ -512,7 +479,7 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
@@ -524,51 +491,6 @@ public class EquipmentListFragment extends BaseFragment {
      * @param groupName
      */
     protected void showRenameGroupDailog(final String groupName) {
-//        View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view2,null);
-//        ImageView icon = (ImageView) contentView.findViewById(R.id.id_base_dialog_icon);
-//        TextView title = (TextView) contentView.findViewById(R.id.id_base_dialog_title);
-//        final EditText renameEditText = (EditText)contentView.findViewById(R.id.equipment_add_group_edittext);
-//        Button positiveBtn = (Button) contentView.findViewById(R.id.id_base_dialog_rightBtn);
-//        Button negativeBtn = (Button) contentView.findViewById(R.id.id_base_dialog_leftBtn);
-//
-//        icon.setImageResource(R.drawable.rename_group_title);
-//        icon.setVisibility(View.VISIBLE);
-//        title.setText("分组:"+groupName);
-//        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-//        negativeBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                baseDialog.dismiss();
-//            }
-//        });
-//        positiveBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (renameEditText.length()>0)
-//                {
-//                    if(!renameEditText.getText().toString().equals(groupName))
-//                    {
-//                        try {
-//                            new Group(activity, equipmentBeans).renameGroup(groupName, renameEditText.getText().toString());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            ToastUtil.showLong(activity, "重命名分组失败。");
-//                        }
-//                        reloadView();
-//                        baseDialog.dismiss();
-//                    }
-//                    baseDialog.dismiss();
-//                }
-//                else
-//                {
-//                    ToastUtil.showShort(activity,"请输入分组新的名字");
-//                }
-//            }
-//        });
-//        baseDialog.setLocation(Gravity.CENTER,0,0);
-//        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
-//        baseDialog.setContentView(contentView);
-        // TODO: 2016/9/22 适配不同分辨率
         View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
@@ -604,7 +526,7 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.3f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
@@ -651,36 +573,6 @@ public class EquipmentListFragment extends BaseFragment {
      * @param groupName
      */
     protected void showDeleteGroupConfirmDialog(final String groupName) {
-//        LinearLayout view=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.delete_layout_new,null);
-//        RelativeLayout sure=(RelativeLayout)view.findViewById(R.id.delete_dialog_sure);
-//        RelativeLayout cancel=(RelativeLayout)view.findViewById(R.id.delete_dialog_cancel);
-//        TextView title=(TextView)view.findViewById(R.id.delete_title);
-//        title.setText("确定删除分组：" + groupName + "?");
-//        final AlertDialog dialog=new AlertDialog.Builder(activity).
-//                setView(view).
-//                create();
-//        dialog.show();
-//        dialog.setCanceledOnTouchOutside(true);
-//        sure.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    new Group(activity, equipmentBeans).deleteGroup(groupName);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    ToastUtil.showLong(activity, "删除分组失败。");
-//                }
-//                reloadView();
-//                dialog.dismiss();
-//            }
-//        });
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-
         View contentView = View.inflate(activity,R.layout.delete_layout,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         TextView title=(TextView)contentView.findViewById(R.id.delete_title);
@@ -715,50 +607,13 @@ public class EquipmentListFragment extends BaseFragment {
      * 设置群组的对话框
      * @param equipmentCode
      */
+    private float itemHeightRadio = 0;//listView每个item在屏幕的高度比率
+    private float titleHeightRadio = 0;//title在屏幕的高度比率
     protected void showSetGroupDialog(final String equipmentCode) {
-//        LinearLayout view=(LinearLayout) activity.getLayoutInflater().inflate(R.layout.add_to_group_list,null);
-//        //dialog
-//        final AlertDialog dialog=new AlertDialog.Builder(activity).
-//                setView(view).
-//                create();
-//        dialog.show();
-//        dialog.setCanceledOnTouchOutside(true);
-//        //listview
-//        ListView listView=(ListView)view.findViewById(R.id.add_to_group_dialog_list);
-//        ArrayList<HashMap<String,Object>> data=new ArrayList<HashMap<String,Object>>();
-//        final Group modelGroup = new Group(activity, equipmentBeans);
-//        List<String> groups = modelGroup.getGroupNames();
-//        String[] arrayGroups = new String[groups.size()];
-//        for (int i = 0; i < groups.size(); ++i) {
-//            HashMap<String,Object> map=new HashMap<String,Object>();
-//            map.put("img",R.drawable.group);
-//            map.put("group",groups.get(i));
-//            data.add(map);
-//        }
-//        SimpleAdapter adapter=new SimpleAdapter(
-//                activity,
-//                data,
-//                R.layout.add_to_group_dialog_list_item,
-//                new String[]{"img","group"},
-//                new int[]{R.id.add_to_group,R.id.add_to_group_dialog_title});
-//        listView.setAdapter(adapter);
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                try {
-//                    new Group(activity, equipmentBeans).addChildToGroup(equipmentCode, modelGroup.getGroupNames().get(position));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    ToastUtil.showLong(activity, "设置分组失败。");
-//                }
-//                reloadView();
-//                dialog.dismiss();
-//            }
-//        });
-
         View contentView = View.inflate(activity,R.layout.add_to_group_list,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         ListView lstView = (ListView) contentView.findViewById(R.id.add_to_group_dialog_list);
+        RelativeLayout titleBar = (RelativeLayout) contentView.findViewById(R.id.id_add_to_group_dialog_titleBar);
         ArrayList<HashMap<String,Object>> data=new ArrayList<HashMap<String,Object>>();
         final Group modelGroup = new Group(activity, equipmentBeans);
         List<String> groups = modelGroup.getGroupNames();
@@ -790,16 +645,22 @@ public class EquipmentListFragment extends BaseFragment {
             }
         });
 
-        //item的高度为0.08或者0.07
-        //title的高度为0.09
+        //初始化比率
+        if(itemHeightRadio==0||titleHeightRadio==0) {
+            lstView.measure(0, 0);
+            titleBar.measure(0, 0);
+            itemHeightRadio = ((lstView.getMeasuredHeight() - 5) * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
+            titleHeightRadio = (titleBar.getMeasuredHeight() * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
+        }
 
-        //判断group.size（）大小，大于4个则固定大小
+        //动态设置dialog比例
         if(groups.size()>=4){
-            baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
+            baseDialog.setWidthAndHeightRadio(0.8f,titleHeightRadio+4*itemHeightRadio);
         }
         else {
-            baseDialog.setWidthAndHeightRadio(0.8f, (float) (0.08f+groups.size()*0.07));
+            baseDialog.setWidthAndHeightRadio(0.8f, titleHeightRadio+groups.size()*itemHeightRadio);
         }
+
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);
     }

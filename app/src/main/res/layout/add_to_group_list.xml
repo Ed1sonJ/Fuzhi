@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="@color/white">
     <RelativeLayout
+        android:id="@+id/id_add_to_group_dialog_titleBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/baseDialog_layout_height"
         android:background="@color/green_1"

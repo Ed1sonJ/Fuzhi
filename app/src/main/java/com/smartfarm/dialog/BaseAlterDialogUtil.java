@@ -3,6 +3,7 @@ package com.smartfarm.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -49,8 +50,11 @@ public class BaseAlterDialogUtil{
      * 设置宽高在屏幕中的比例
      */
     public void setWidthAndHeightRadio(float widthRadio, float heightRadio) {
+
         params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRadio);
         params.height = (int) (BaseUtil.getScreenHeight(mContext) * heightRadio);
+
+        Log.i("gzfuzhi","heightRadio:"+heightRadio+"转换后的值width:"+params.height);
         dialogWindow.setAttributes(params);
     }
 

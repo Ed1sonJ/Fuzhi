@@ -16,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +39,7 @@ import com.smartfarm.activity.MainActivityNew;
 import com.smartfarm.activity.R;
 import com.smartfarm.bean.ConfigBean;
 import com.smartfarm.bean.RealtimeDataBean;
+import com.smartfarm.dialog.BaseAlterDialogUtil;
 import com.smartfarm.event.EquipmentImageEvent;
 import com.smartfarm.event.EquipmentSelectedEvent;
 import com.smartfarm.event.GlobalEvent;
@@ -70,6 +72,8 @@ import java.util.regex.Pattern;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+
+import static com.baidu.location.b.g.T;
 
 public class OverviewFragment extends BaseFragment {
     protected Activity activity = null;
@@ -505,46 +509,47 @@ public class OverviewFragment extends BaseFragment {
     }
 
     protected void showTakePictureDialog() {
-        new Builder(activity)
-                .setTitle("选择图片")
-                .setItems(new String[]{"本地相册", "拍照"},
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                switch (which) {
-                                    case 0:
-                                        try {
-                                            //打开图片
-                                            Intent gallery = new Intent(
-                                                    Intent.ACTION_PICK);
-                                            gallery.setType("image/*");
-                                            //startActivityForResult，根据resultCode区分不同的activity
-                                            activity.startActivityForResult(
-                                                    gallery,
-                                                    IntentUtil.PICTURE_FROM_GALLERY);
-                                            // TODO: 2016/9/19 测试
-//                                            Intent intentGallery = new Intent(Intent.ACTION_PICK,
-//                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                                            startActivityForResult(intentGallery,IntentUtil.PICTURE_FROM_GALLERY);
+        View contentView = View.inflate(activity,R.layout.select_photo_dialog_layout,null);
+        final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
+        baseDialog.setLocation(Gravity.CENTER,0,0);
+        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
+        TextView tvGallery = (TextView) contentView.findViewById(R.id.id_dialog_gallery);
+        TextView tvTakePhoto = (TextView) contentView.findViewById(R.id.id_dialog_takePhoto);
+        tvGallery.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //打开图片
+                    Intent gallery = new Intent(
+                            Intent.ACTION_PICK);
+                    gallery.setType("image/*");
+                    activity.startActivityForResult(
+                            gallery,
+                            IntentUtil.PICTURE_FROM_GALLERY);
+                    baseDialog.dismiss();
+                } catch (Exception e) {
+                    ToastUtil.showLong(activity, "打开图库失败");
+                    baseDialog.dismiss();
 
-                                        } catch (Exception e) {
-                                            ToastUtil.showLong(activity, "打开图库失败");
-                                        }
-                                        break;
+                }
+            }
+        });
+        tvTakePhoto.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //打开摄像头
+                    takePicture();
+                    baseDialog.dismiss();
 
-                                    case 1:
-                                        try {
-                                            //打开摄像头
-                                            takePicture();
-                                        } catch (Exception e) {
-                                            ToastUtil.showLong(activity, "打开摄像头失败");
-                                        }
-                                        break;
-                                }
+                } catch (Exception e) {
+                    ToastUtil.showLong(activity, "打开摄像头失败");
+                    baseDialog.dismiss();
 
-                            }
-                        }).show();
+                }
+            }
+        });
+        baseDialog.setContentView(contentView);
     }
 
     protected class OnCameraButtonClickedListener implements OnClickListener {

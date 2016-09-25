@@ -47,5 +47,6 @@
     <!--baseDialog-->
     <dimen name="baseDialog_layout_height">55dp</dimen>
     <dimen name="baseDialog_title_textSize">20sp</dimen>
+    <dimen name="baseDialog_title_margin_left">10dp</dimen>
 
 </resources>
