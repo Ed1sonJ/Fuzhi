@@ -437,10 +437,10 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        contentLp.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
         baseDialog.setContentView(contentView,contentLp);
     }
 
@@ -479,7 +479,7 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
@@ -526,7 +526,7 @@ public class EquipmentListFragment extends BaseFragment {
                 }
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.35f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0f);
         baseDialog.setLocation(Gravity.CENTER,0,0);
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
@@ -535,7 +535,7 @@ public class EquipmentListFragment extends BaseFragment {
     }
 
     /**
-     * 弹出删除设备对话框，已经更新了布局
+     * 弹出删除设备对话框
      * @param equipmentCode
      */
     protected void showDeleteEquipmentConfirmDialog(final String equipmentCode) {
@@ -548,7 +548,7 @@ public class EquipmentListFragment extends BaseFragment {
 
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0);
         baseDialog.setContentView(contentView);
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -599,7 +599,7 @@ public class EquipmentListFragment extends BaseFragment {
             }
         });
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0f);
         baseDialog.setContentView(contentView);
     }
 
@@ -607,8 +607,9 @@ public class EquipmentListFragment extends BaseFragment {
      * 设置群组的对话框
      * @param equipmentCode
      */
-    private float itemHeightRadio = 0;//listView每个item在屏幕的高度比率
-    private float titleHeightRadio = 0;//title在屏幕的高度比率
+//    private float itemHeightRadio = 0;//listView每个item在屏幕的高度比率
+//    private float titleHeightRadio = 0;//title在屏幕的高度比率
+    private int fourItemHeight = 0;
     protected void showSetGroupDialog(final String equipmentCode) {
         View contentView = View.inflate(activity,R.layout.add_to_group_list,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
@@ -645,21 +646,32 @@ public class EquipmentListFragment extends BaseFragment {
             }
         });
 
-        //初始化比率
-        if(itemHeightRadio==0||titleHeightRadio==0) {
+//        //初始化比率
+//        if(fourHeightRadio==0) {
+//            lstView.measure(0, 0);
+//            titleBar.measure(0, 0);
+//
+//            itemHeightRadio = ((lstView.getMeasuredHeight() - 5) * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
+//            titleHeightRadio = (titleBar.getMeasuredHeight() * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
+//        }
+        if(fourItemHeight==0) {
             lstView.measure(0, 0);
-            titleBar.measure(0, 0);
-            itemHeightRadio = ((lstView.getMeasuredHeight() - 5) * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
-            titleHeightRadio = (titleBar.getMeasuredHeight() * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
+            fourItemHeight = lstView.getMeasuredHeight() * 4;
         }
 
-        //动态设置dialog比例
+//        //动态设置dialog比例
         if(groups.size()>=4){
-            baseDialog.setWidthAndHeightRadio(0.8f,titleHeightRadio+4*itemHeightRadio);
+            ViewGroup.LayoutParams layoutParams = lstView.getLayoutParams();
+            layoutParams.height = fourItemHeight;
+            ToastUtil.showShort(activity,"fourItemHeight:"+fourItemHeight+",layoutHeight:"+layoutParams.height);
+            lstView.setLayoutParams(layoutParams);
         }
         else {
-            baseDialog.setWidthAndHeightRadio(0.8f, titleHeightRadio+groups.size()*itemHeightRadio);
+            ViewGroup.LayoutParams layoutParams = lstView.getLayoutParams();
+            layoutParams.height = -2;
+            lstView.setLayoutParams(layoutParams);
         }
+        baseDialog.setWidthAndHeightRadio(0.8f,0f);
 
         baseDialog.setLocation(Gravity.CENTER,0,0);
         baseDialog.setContentView(contentView);

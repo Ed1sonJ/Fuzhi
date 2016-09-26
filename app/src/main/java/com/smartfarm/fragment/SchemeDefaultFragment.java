@@ -34,6 +34,7 @@ import com.smartfarm.fragmentUtil.UploadAndDownloadScheme;
 import com.smartfarm.model.Equipment;
 import com.smartfarm.model.TimeSelector;
 import com.smartfarm.util.BaseProgressDialog;
+import com.smartfarm.util.BaseUtil;
 import com.smartfarm.util.DateUtil;
 import com.smartfarm.util.FertilizeRoom;
 import com.smartfarm.util.ToastUtil;
@@ -420,7 +421,8 @@ public class SchemeDefaultFragment extends BaseFragment {
         final NumberPickerView ledBlue = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_blue);
         final NumberPickerView ledWhite = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_white);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.65f);
+//        0.65
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
         baseDialog.setTitle("自定义光强比");
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
@@ -491,7 +493,8 @@ public class SchemeDefaultFragment extends BaseFragment {
             final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
             baseDialog.setLocation(Gravity.CENTER, 0, 0);
             baseDialog.setTitle("参数调整");
-            baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
+//            0.4
+            baseDialog.setWidthAndHeightRadio(0.8f, 0f);
             baseDialog.setNegativeBtnListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1586,7 +1589,8 @@ public class SchemeDefaultFragment extends BaseFragment {
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.55f);
+//        0.55
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
         baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
             @Override
@@ -1602,13 +1606,9 @@ public class SchemeDefaultFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        listTime.measure(0, 0);
-        ToastUtil.showShort(activity, "listTime的高度：" + listTime.getMeasuredHeight() + ",listTime的宽度：" + listTime.getMeasuredWidth());
-
 
         baseDialog.setTitle("请选择持续时间");
         RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        contentLp.setMargins(0, 70, 0, 0);
         contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         baseDialog.setContentView(contentView, contentLp);
     }

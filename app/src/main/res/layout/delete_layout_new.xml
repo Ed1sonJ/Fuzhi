@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        >
         <ImageView
             android:id="@+id/delete_img"
             android:layout_width="30dp"

@@ -4,13 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
  >
-    <!--240dp-->
+    <!--228dp-->
     <ListView
         android:id="@+id/id_dialog_water_choose_time_list"
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_height="wrap_content"
         android:divider="@null"
-        android:dividerHeight="10dp"
         >
     </ListView>
     <!--<TextView-->
