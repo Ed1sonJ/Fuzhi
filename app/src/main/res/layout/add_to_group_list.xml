@@ -33,8 +33,9 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="1dp"-->
         <!--android:background="#272636"/>-->
+
+    <!--android:padding="3dp"-->
     <ListView
-        android:padding="3dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/add_to_group_dialog_list"
