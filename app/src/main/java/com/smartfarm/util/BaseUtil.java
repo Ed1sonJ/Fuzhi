@@ -23,7 +23,7 @@ public class BaseUtil {
     }
 
     /**
-     * 获取屏幕的宽度
+     * 获取屏幕的像素宽度
      * @param context
      * @return
      */
@@ -35,7 +35,7 @@ public class BaseUtil {
     }
 
     /**
-     * 获取屏幕的高度
+     * 获取屏幕的像素高度
      * @param context
      * @return
      */

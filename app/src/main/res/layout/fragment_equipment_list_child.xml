@@ -24,7 +24,7 @@
         android:layout_gravity="center_vertical"
         android:layout_margin="10dp"
         android:padding="5dp"
-        fresco:placeholderImage="@drawable/shelf_logo"
+        fresco:placeholderImage="@drawable/shelf_logo2"
         fresco:placeholderImageScaleType="fitCenter"
         />
 

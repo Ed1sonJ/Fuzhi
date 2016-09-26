@@ -3,6 +3,7 @@ package com.smartfarm.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,14 +12,16 @@ import android.widget.EditText;
 
 import com.baidu.platform.comapi.map.I;
 import com.smartfarm.util.BaseUtil;
+import com.smartfarm.util.ToastUtil;
 
 /**
  * Created by hp on 2016/9/10.
+ *
  * @author EdisonJ
- * 封装了最底层的dialog
- * 提供设置dialog的基本样式：显示的位置、透明度、显示的View等
+ *         封装了最底层的dialog
+ *         提供设置dialog的基本样式：显示的位置、透明度、显示的View等
  */
-public class BaseAlterDialogUtil{
+public class BaseAlterDialogUtil {
     private AlertDialog baseDialog;
     private Context mContext;
     /**
@@ -49,8 +52,14 @@ public class BaseAlterDialogUtil{
      * 设置宽高在屏幕中的比例
      */
     public void setWidthAndHeightRadio(float widthRadio, float heightRadio) {
-        params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRadio);
-        params.height = (int) (BaseUtil.getScreenHeight(mContext) * heightRadio);
+
+        if (widthRadio != 0) {
+            params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRadio);
+        }
+        if (heightRadio != 0) {
+            params.height = (int) (BaseUtil.getScreenHeight(mContext) * heightRadio);
+        }
+//        warp_content=-2,match_parent=-1
         dialogWindow.setAttributes(params);
     }
 

@@ -123,6 +123,7 @@ public class MainActivityNew extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main_new);
         initView();
+
     }
 
     @Override
