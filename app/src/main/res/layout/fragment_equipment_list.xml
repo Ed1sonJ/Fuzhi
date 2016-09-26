@@ -98,10 +98,23 @@
                 android:cursorVisible="true"
                 android:imeOptions="actionSearch"
                 android:hint="搜索设备"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:background="@null"/>
 
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/search_layout_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginTop="80dp"
+                android:src="@drawable/icon"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/equipment_search_result_list"

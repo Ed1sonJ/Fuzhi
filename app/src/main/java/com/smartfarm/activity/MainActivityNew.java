@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smartfarm.fragment.ChartFragment;
@@ -50,7 +51,7 @@ public class MainActivityNew extends AppCompatActivity {
     protected String currentPressedBtn;
     /**标记有没有选择了一台设备,最开始只能从点击一台设备进入主界面,没有选择设备不能进入主界面,历史数据，设备控制等界面*/
     private boolean clickable;
-
+    public RelativeLayout bottom_bar;
     protected void initView() {
         equipmentListBtn = (ImageView) findViewById(R.id.equipment_list_btn);
         equipmentListBtn.setOnClickListener(new OnEquipmentListBtnClickedListener());
@@ -68,6 +69,9 @@ public class MainActivityNew extends AppCompatActivity {
         userBtn = (ImageView) findViewById(R.id.user_btn);
         userBtn.setOnClickListener(new OnUserBtnClickedListener());
         userTextView = (TextView) findViewById(R.id.user_textview);
+
+        //底部按钮，设备，主界面，历史数据，设备控制，我的
+        bottom_bar=(RelativeLayout)findViewById(R.id.bottom_bar);
 
         fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
