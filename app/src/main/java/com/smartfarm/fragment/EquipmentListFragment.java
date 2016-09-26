@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -59,7 +58,6 @@ import com.smartfarm.util.Common;
 import com.smartfarm.util.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +86,7 @@ public class EquipmentListFragment extends BaseFragment {
     private PopupWindow popupWindow;
     private ImageView back;
     protected EventHandler eventHandler;
+    private RelativeLayout search_layout_background;
 
     private UploadAndDownloadGPS gps = new UploadAndDownloadGPS();
     //Fragment与Activity发生关联时调用
@@ -129,6 +128,7 @@ public class EquipmentListFragment extends BaseFragment {
     protected void findView() {
         searchLayout = (LinearLayout) rootView.findViewById(R.id.equipment_list_search_layout);
         searchResultList = (ListView) rootView.findViewById(R.id.equipment_search_result_list);
+        search_layout_background=(RelativeLayout)rootView.findViewById(R.id.search_layout_background) ;
         searchEditText = (EditText) rootView.findViewById(R.id.equipment_list_search_edittext);
         back=(ImageView)rootView.findViewById(R.id.equipment_list_search_back);
         searchButton = (ImageView) rootView.findViewById(R.id.equipment_list_search_button);
@@ -808,9 +808,11 @@ public class EquipmentListFragment extends BaseFragment {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
         searchLayout.setVisibility(View.INVISIBLE);
+        ((MainActivityNew) activity).bottom_bar.setVisibility(View.VISIBLE);
     }
 
     protected void showSearchLayout() {
+        ((MainActivityNew) activity).bottom_bar.setVisibility(View.GONE);
         searchEditText.requestFocus();
         searchLayout.setVisibility(View.VISIBLE);
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -851,6 +853,7 @@ public class EquipmentListFragment extends BaseFragment {
         //s改变后的String
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            search_layout_background.setVisibility(View.GONE);
             if (s.length() > 0) {
                 List<EquipmentBean> equipmentBeanList = new ArrayList<>();
                 for (int i = 0; i < equipmentBeans.size(); ++i) {
