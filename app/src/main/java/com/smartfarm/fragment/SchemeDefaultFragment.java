@@ -1169,7 +1169,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
 
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
         //设置居中显示dialog并不设置偏移量
         baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {
@@ -1419,12 +1419,8 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText fertilizeTimeMins = (EditText) contentView.findViewById(R.id.et_fertilize_time_minutes);
         final EditText fertilizeTimeSecs = (EditText) contentView.findViewById(R.id.et_fertilize_time_seconds);
 
-//        fertilizeTimeHours.setSelection(fertilizeTimeHours.getText().length());
-//        fertilizeTimeMins.setSelection(fertilizeTimeMins.getText().length());
-//        fertilizeTimeSecs.setSelection(fertilizeTimeSecs.getText().length());
-
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f, 0.4f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
         //设置居中显示dialog并不设置偏移量
         baseDialog.setLocation(Gravity.CENTER, 0, 0);
         baseDialog.setNegativeBtnListener(new View.OnClickListener() {

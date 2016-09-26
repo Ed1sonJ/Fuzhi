@@ -32,8 +32,8 @@
     <dimen name="title_text_size">20dp</dimen>
     <dimen name="title_photo_image_size_width">36dp</dimen>
     <dimen name="title_photo_image_size_height">36dp</dimen>
-    <dimen name="title_search_image_size_width">42dp</dimen>
-    <dimen name="title_search_image_size_height">42dp</dimen>
+    <dimen name="title_search_image_size_width">52dp</dimen>
+    <dimen name="title_search_image_size_height">52dp</dimen>
     <!--others-->
     <dimen name="description_test_size">12dp</dimen>
     <dimen name="text_size">16sp</dimen>

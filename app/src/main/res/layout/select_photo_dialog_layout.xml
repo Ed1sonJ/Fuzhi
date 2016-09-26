@@ -7,8 +7,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_height="55dp"
         android:background="@color/green_1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/baseDialog_title_margin_left"
@@ -20,8 +19,7 @@
     <TextView
         android:id="@+id/id_dialog_gallery"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/baseDialog_title_margin_left"
         android:text="本地相册"
@@ -35,8 +33,7 @@
     <TextView
         android:id="@+id/id_dialog_takePhoto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/baseDialog_title_margin_left"
         android:text="拍照"

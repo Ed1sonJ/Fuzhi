@@ -512,7 +512,7 @@ public class OverviewFragment extends BaseFragment {
         View contentView = View.inflate(activity,R.layout.select_photo_dialog_layout,null);
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
         baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0.22f);
+        baseDialog.setWidthAndHeightRadio(0.8f,0f);
         TextView tvGallery = (TextView) contentView.findViewById(R.id.id_dialog_gallery);
         TextView tvTakePhoto = (TextView) contentView.findViewById(R.id.id_dialog_takePhoto);
         tvGallery.setOnClickListener(new OnClickListener() {

@@ -646,14 +646,6 @@ public class EquipmentListFragment extends BaseFragment {
             }
         });
 
-//        //初始化比率
-//        if(fourHeightRadio==0) {
-//            lstView.measure(0, 0);
-//            titleBar.measure(0, 0);
-//
-//            itemHeightRadio = ((lstView.getMeasuredHeight() - 5) * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
-//            titleHeightRadio = (titleBar.getMeasuredHeight() * 0.1f) / (BaseUtil.getScreenHeight(activity) * 0.1f);
-//        }
         if(fourItemHeight==0) {
             lstView.measure(0, 0);
             fourItemHeight = lstView.getMeasuredHeight() * 4;
@@ -663,7 +655,8 @@ public class EquipmentListFragment extends BaseFragment {
         if(groups.size()>=4){
             ViewGroup.LayoutParams layoutParams = lstView.getLayoutParams();
             layoutParams.height = fourItemHeight;
-            ToastUtil.showShort(activity,"fourItemHeight:"+fourItemHeight+",layoutHeight:"+layoutParams.height);
+//            ToastUtil.showShort(activity,"fourItemHeight:"+fourItemHeight+",layoutHeight:"+layoutParams.height);
+
             lstView.setLayoutParams(layoutParams);
         }
         else {
@@ -788,7 +781,7 @@ public class EquipmentListFragment extends BaseFragment {
         // popupWindow.showAtLocation(findViewById(R.id.manufacturer_register_typeBut),
         // Gravity.LEFT|Gravity.BOTTOM, 0, 0);
         //设置popupWindow显示的位置，依靠在addButton下面
-        popupWindow.showAsDropDown(addButton,0,10);
+        popupWindow.showAsDropDown(addButton,0,0);
         RelativeLayout scan=(RelativeLayout)view.findViewById(R.id.scan_device);
         RelativeLayout add=(RelativeLayout)view.findViewById(R.id.add_group);
         scan.setOnClickListener(new MyAddClickListener());
@@ -861,6 +854,7 @@ public class EquipmentListFragment extends BaseFragment {
             final Group group=new Group(activity,equipmentBeans);
             TopBean topBean=group.getTopBean();
             final String code=event.equipmentCode;
+
             if(topBean.top.contains(code))
             {
                 equipmentConfigMenu.getMenuInflater().inflate(R.menu.equipment_configure_new,
