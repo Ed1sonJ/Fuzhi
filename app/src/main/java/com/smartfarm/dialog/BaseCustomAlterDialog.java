@@ -52,8 +52,9 @@ public class BaseCustomAlterDialog {
      * @param widthRaido
      * @param heightRadio
      */
-    public void setWidthAndHeightRadio(float widthRaido, float heightRadio) {
+    public BaseCustomAlterDialog setWidthAndHeightRadio(float widthRaido, float heightRadio) {
         baseDialog.setWidthAndHeightRadio(widthRaido, heightRadio);
+        return this;
     }
 
     /**
@@ -62,23 +63,25 @@ public class BaseCustomAlterDialog {
      * @param x
      * @param y
      */
-    public void setLocation(int gravity, int x, int y) {
+    public BaseCustomAlterDialog setLocation(int gravity, int x, int y) {
         baseDialog.setLocation(gravity,x,y);
+        return this;
     }
 
     /**
      * 设置dialog的透明度
      * @param alphaRadio
      */
-    public void setAlpha(float alphaRadio) {
+    public BaseCustomAlterDialog setAlpha(float alphaRadio) {
         baseDialog.setAlpha(alphaRadio);
+        return this;
     }
 
     /**
      * 设置左边按钮的事件
      * @param listener 在外面已经写好的listener
      */
-    public void setNegativeBtnListener(View.OnClickListener listener){
+    public BaseCustomAlterDialog setNegativeBtnListener(View.OnClickListener listener){
         if(listener!=null){
             negativeBtn.setOnClickListener(listener);
         }
@@ -91,13 +94,14 @@ public class BaseCustomAlterDialog {
                 }
             });
         }
+        return this;
     }
 
     /**
      * 设置右边按钮的点击事件
      * @param listener 在外面已经写好的listener
      */
-    public void setPositiveBtnListener(View.OnClickListener listener){
+    public BaseCustomAlterDialog setPositiveBtnListener(View.OnClickListener listener){
         if(listener!=null){
             positiveBtn.setOnClickListener(listener);
         }
@@ -110,6 +114,7 @@ public class BaseCustomAlterDialog {
                 }
             });
         }
+        return this;
     }
 
     /**
@@ -136,15 +141,17 @@ public class BaseCustomAlterDialog {
     }
 
     //---------------------------------------dialog显示的基本信息--------------------------------
-    public void setTitle(String title){
+    public BaseCustomAlterDialog setTitle(String title){
         titleTV.setText(title);
+        return this;
     }
-    public void setIcon(int imgResId){
+    public BaseCustomAlterDialog setIcon(int imgResId){
         if(imgResId == -1){
-            return ;
+            return null;
         }
         iconImg = (ImageView) baseCustomView.findViewById(R.id.id_base_dialog_icon);
         iconImg.setImageResource(imgResId);
         iconImg.setVisibility(View.VISIBLE);
+        return this;
     }
 }

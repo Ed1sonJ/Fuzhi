@@ -179,9 +179,11 @@ public class UserCenterFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setWidthAndHeightRadio(0.8f,0.65f);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setContentView(contentView);
+
+        baseDialog
+                .setLocation(Gravity.CENTER,0,0)
+                .setWidthAndHeightRadio(0.8f,0.65f)
+                .setContentView(contentView);
 
     }
 

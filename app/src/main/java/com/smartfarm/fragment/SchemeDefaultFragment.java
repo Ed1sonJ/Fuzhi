@@ -422,25 +422,25 @@ public class SchemeDefaultFragment extends BaseFragment {
         final NumberPickerView ledWhite = (NumberPickerView) contentView.findViewById(R.id.scheme_custom_led_white);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
 //        0.65
-        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
-        baseDialog.setTitle("自定义光强比");
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f)
+        .setTitle("自定义光强比")
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lqc = ledRed.getValue() + ":" + ledBlue.getValue() + ":" + ledWhite.getValue();
                 uploadScheme("lqc");
                 baseDialog.dismiss();
             }
-        });
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView, contentLp);
+        })
+        .setContentView(contentView, contentLp);
     }
 
     //因为获取的光质比参数是“光质比=1：2：3”的情形，而我们只需要1：2：3,所以需要截取
@@ -491,17 +491,19 @@ public class SchemeDefaultFragment extends BaseFragment {
             final EditText upper = (EditText) contentView.findViewById(R.id.param_upper);
             final EditText lower = (EditText) contentView.findViewById(R.id.param_lower);
             final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
-            baseDialog.setLocation(Gravity.CENTER, 0, 0);
-            baseDialog.setTitle("参数调整");
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            baseDialog.setLocation(Gravity.CENTER, 0, 0)
+            .setTitle("参数调整")
 //            0.4
-            baseDialog.setWidthAndHeightRadio(0.8f, 0f);
-            baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+            .setWidthAndHeightRadio(0.8f, 0f)
+            .setNegativeBtnListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     baseDialog.dismiss();
                 }
-            });
-            baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+            })
+            .setPositiveBtnListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int targetTmp = getValidAdjustment(target);
@@ -515,10 +517,8 @@ public class SchemeDefaultFragment extends BaseFragment {
                         lowerSeekBar.setProgress(lowerTmp);
                     baseDialog.dismiss();
                 }
-            });
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            baseDialog.setContentView(contentView, lp);
+            })
+            .setContentView(contentView, lp);
         }
     }
 
@@ -1159,7 +1159,7 @@ public class SchemeDefaultFragment extends BaseFragment {
         //isWater = !isWater;
     }
 
-    //设置浇水时间，已经更改了新的布局
+    //设置浇水时间
     private void setWaterTimes() {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final View contentView = View.inflate(activity, R.layout.view_water_button, null);
@@ -1167,21 +1167,22 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText waterTimeHours = (EditText) contentView.findViewById(R.id.et_water_time_hours);
         final EditText waterTimeMins = (EditText) contentView.findViewById(R.id.et_water_time_minutes);
         final EditText waterTimeSecs = (EditText) contentView.findViewById(R.id.et_water_time_seconds);
-
+        //设置contentView在dialog中显示的布局参数
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f)
         //设置居中显示dialog并不设置偏移量
-        baseDialog.setLocation(Gravity.CENTER, 0, 0);
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        .setLocation(Gravity.CENTER, 0, 0)
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String waterTimeHoursMsg = waterTimeHours.getText().toString();
                 String waterTimeMinsMsg = waterTimeMins.getText().toString();
                 String waterTimeSecsMsg = waterTimeSecs.getText().toString();
@@ -1218,15 +1219,12 @@ public class SchemeDefaultFragment extends BaseFragment {
                 showDialog("正在打开喷淋");
                 baseDialog.dismiss();
             }
-        });
+        })
         //设置dialog显示的标题
-        baseDialog.setTitle(equipmentCodes + "");
-        baseDialog.setIcon(R.drawable.icon_water_on_dialog);
-        //设置contentView在dialog中显示的布局参数
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        .setTitle(equipmentCodes + "")
+        .setIcon(R.drawable.icon_water_on_dialog)
         //匹配dialog与contentView
-        baseDialog.setContentView(contentView, contentLp);
+        .setContentView(contentView, contentLp);
     }
 
 //    //正在浇水，点亮图片
@@ -1418,18 +1416,20 @@ public class SchemeDefaultFragment extends BaseFragment {
         final EditText fertilizeTimeHours = (EditText) contentView.findViewById(R.id.et_fertilize_time_hours);
         final EditText fertilizeTimeMins = (EditText) contentView.findViewById(R.id.et_fertilize_time_minutes);
         final EditText fertilizeTimeSecs = (EditText) contentView.findViewById(R.id.et_fertilize_time_seconds);
-
+        //设置contentView在dialog中显示的布局参数
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         //设置在屏幕中的显示的比例
-        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f)
         //设置居中显示dialog并不设置偏移量
-        baseDialog.setLocation(Gravity.CENTER, 0, 0);
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        .setLocation(Gravity.CENTER, 0, 0)
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -1469,15 +1469,12 @@ public class SchemeDefaultFragment extends BaseFragment {
                 showDialog("正在打开施肥");
                 baseDialog.dismiss();
             }
-        });
+        })
         //设置dialog显示的标题
-        baseDialog.setTitle(equipmentCodes + "");
-        baseDialog.setIcon(R.drawable.icon_fertilize_on_dialog);
-        //设置contentView在dialog中显示的布局参数
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        .setTitle(equipmentCodes + "")
+        .setIcon(R.drawable.icon_fertilize_on_dialog)
         //匹配dialog与contentView
-        baseDialog.setContentView(contentView, contentLp);
+        .setContentView(contentView, contentLp);
     }
 
 
@@ -1585,28 +1582,29 @@ public class SchemeDefaultFragment extends BaseFragment {
 
         //设置dialog的基本属性，并将contentView加入到dialog中
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 //        0.55
-        baseDialog.setWidthAndHeightRadio(0.8f, 0f);
-        baseDialog.setLocation(Gravity.CENTER, 0, 0);
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        baseDialog.setWidthAndHeightRadio(0.8f, 0f)
+        .setLocation(Gravity.CENTER, 0, 0)
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //检查target、upper、lower、startTime、endTime是否输入正确，并上传
                 uploadAfterChecked();
                 baseDialog.dismiss();
             }
-        });
+        })
 
-        baseDialog.setTitle("请选择持续时间");
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView, contentLp);
+        .setTitle("请选择持续时间")
+
+        .setContentView(contentView, contentLp);
     }
 
     /**
