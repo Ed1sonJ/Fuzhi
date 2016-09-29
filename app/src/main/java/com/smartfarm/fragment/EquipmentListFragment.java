@@ -410,15 +410,19 @@ public class EquipmentListFragment extends BaseFragment {
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
         final String name=Equipment.getEquipmentName(activity, equipmentCode);
-        baseDialog.setIcon(R.drawable.rename_group_title);
-        baseDialog.setTitle("设备:"+name);
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
+
+        baseDialog
+                .setIcon(R.drawable.rename_group_title)
+                .setTitle("设备:"+name)
+                .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        }).setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -436,12 +440,10 @@ public class EquipmentListFragment extends BaseFragment {
                     ToastUtil.showShort(activity,"请输入设备新的名字");
                 }
             }
-        });
-        baseDialog.setWidthAndHeightRadio(0.8f,0);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView,contentLp);
+        })
+        .setWidthAndHeightRadio(0.8f,0)
+        .setLocation(Gravity.CENTER,0,0)
+        .setContentView(contentView,contentLp);
     }
 
     /**
@@ -451,15 +453,17 @@ public class EquipmentListFragment extends BaseFragment {
         View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-        baseDialog.setIcon(R.drawable.add_group_img);
-        baseDialog.setTitle("创建分组");
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setIcon(R.drawable.add_group_img)
+        .setTitle("创建分组")
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -478,12 +482,10 @@ public class EquipmentListFragment extends BaseFragment {
                     ToastUtil.showShort(activity,"请输入分组的名字");
                 }
             }
-        });
-        baseDialog.setWidthAndHeightRadio(0.8f,0f);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView,contentLp);
+        })
+        .setWidthAndHeightRadio(0.8f,0f)
+        .setLocation(Gravity.CENTER,0,0)
+        .setContentView(contentView,contentLp);
     }
 
     /**
@@ -494,15 +496,17 @@ public class EquipmentListFragment extends BaseFragment {
         View contentView = View.inflate(activity,R.layout.equipment_add_group_content_view,null);
         final BaseCustomAlterDialog baseDialog = new BaseCustomAlterDialog(activity);
         final EditText renameEditText = (EditText) contentView.findViewById(R.id.equipment_add_group_edittext);
-        baseDialog.setIcon(R.drawable.rename_group_title);
-        baseDialog.setTitle("分组:"+groupName);
-        baseDialog.setNegativeBtnListener(new View.OnClickListener() {
+        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        baseDialog.setIcon(R.drawable.rename_group_title)
+        .setTitle("分组:"+groupName)
+        .setNegativeBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 baseDialog.dismiss();
             }
-        });
-        baseDialog.setPositiveBtnListener(new View.OnClickListener() {
+        })
+        .setPositiveBtnListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (renameEditText.length()>0)
@@ -525,12 +529,10 @@ public class EquipmentListFragment extends BaseFragment {
                     ToastUtil.showShort(activity,"请输入分组新的名字");
                 }
             }
-        });
-        baseDialog.setWidthAndHeightRadio(0.8f,0f);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        RelativeLayout.LayoutParams contentLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-        baseDialog.setContentView(contentView,contentLp);
+        })
+        .setWidthAndHeightRadio(0.8f,0f)
+        .setLocation(Gravity.CENTER,0,0)
+        .setContentView(contentView,contentLp);
 
     }
 
@@ -547,9 +549,11 @@ public class EquipmentListFragment extends BaseFragment {
         TextView negativeBtn=(TextView)contentView.findViewById(R.id.delete_dialog_cancel);
 
         final BaseAlterDialogUtil baseDialog = new BaseAlterDialogUtil(activity);
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0);
-        baseDialog.setContentView(contentView);
+        baseDialog
+                .setLocation(Gravity.CENTER,0,0)
+                .setWidthAndHeightRadio(0.8f,0)
+                .setContentView(contentView);
+
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -564,8 +568,6 @@ public class EquipmentListFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-
-
     }
 
     /**
@@ -598,9 +600,10 @@ public class EquipmentListFragment extends BaseFragment {
                 baseDialog.dismiss();
             }
         });
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setWidthAndHeightRadio(0.8f,0f);
-        baseDialog.setContentView(contentView);
+        baseDialog
+                .setLocation(Gravity.CENTER,0,0)
+                .setWidthAndHeightRadio(0.8f,0)
+                .setContentView(contentView);
     }
 
     /**
@@ -664,10 +667,10 @@ public class EquipmentListFragment extends BaseFragment {
             layoutParams.height = -2;
             lstView.setLayoutParams(layoutParams);
         }
-        baseDialog.setWidthAndHeightRadio(0.8f,0f);
-
-        baseDialog.setLocation(Gravity.CENTER,0,0);
-        baseDialog.setContentView(contentView);
+        baseDialog
+                .setLocation(Gravity.CENTER,0,0)
+                .setWidthAndHeightRadio(0.8f,0)
+                .setContentView(contentView);
     }
 
     protected void closeSearchLayout() {

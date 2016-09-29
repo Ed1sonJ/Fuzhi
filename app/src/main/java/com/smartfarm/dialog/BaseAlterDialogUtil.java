@@ -42,7 +42,6 @@ public class BaseAlterDialogUtil {
         //设置点击dialog外面dismiss dialog
         baseDialog.setCanceledOnTouchOutside(true);
         baseDialog.setView(new EditText(context));
-
         //必须写在获取属性之前
         baseDialog.show();
 
@@ -51,7 +50,7 @@ public class BaseAlterDialogUtil {
     /**
      * 设置宽高在屏幕中的比例
      */
-    public void setWidthAndHeightRadio(float widthRadio, float heightRadio) {
+    public BaseAlterDialogUtil setWidthAndHeightRadio(float widthRadio, float heightRadio) {
 
         if (widthRadio != 0) {
             params.width = (int) (BaseUtil.getScreenWidth(mContext) * widthRadio);
@@ -61,6 +60,7 @@ public class BaseAlterDialogUtil {
         }
 //        warp_content=-2,match_parent=-1
         dialogWindow.setAttributes(params);
+        return this;
     }
 
     /**
@@ -69,12 +69,13 @@ public class BaseAlterDialogUtil {
      * @param x x为设置gravity之后x相对原始位置的偏移量，向左为负值，向右为正值
      * @param y y为设置gravity之后y相对原始位置的偏移量，向左为负值，向右为正值
      */
-    public void setLocation(int gravity, int x, int y) {
+    public BaseAlterDialogUtil setLocation(int gravity, int x, int y) {
         params.gravity = gravity;
         // TODO: 2016/8/30 可能要加一重判断
         params.x = x;
         params.y = y;
         dialogWindow.setAttributes(params);
+        return this;
     }
 
     /**
@@ -82,11 +83,12 @@ public class BaseAlterDialogUtil {
      *
      * @param alphaRadio 透明度的比率：0~1f
      */
-    public void setAlpha(float alphaRadio) {
+    public BaseAlterDialogUtil setAlpha(float alphaRadio) {
         if (alphaRadio > 1 || alphaRadio < 0) {
-            return;
+            return null;
         }
         params.alpha = alphaRadio;
+        return this;
     }
 
     public void setAnimations() {
