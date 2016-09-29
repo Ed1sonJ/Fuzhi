@@ -11,6 +11,7 @@ android {
         targetSdkVersion 22
         multiDexEnabled true
         ndk{
+            // 设置支持的SO库架构
             moduleName "hellojni"  //设置库(so)文件名称
             ldLibs "log"
             abiFilters  "armeabi"
@@ -49,13 +50,13 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.9.0+'
     compile project(':vitamio')
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/acra-4.6.1.jar')
     compile files('libs/locSDK_6.13.jar')
     compile files('libs/mpchart.jar')
     compile files('libs/mqttv3.jar')
     compile files('libs/rxjava-1.0.15.jar')
     compile project(':video')
     compile project(':barCodeTest')
+    compile 'com.tencent.bugly:crashreport:latest.release'
 }
 
 android {
