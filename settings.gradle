@@ -1,1 +1,1 @@
-include ':app', ':vitamio', ':video', ':barCodeTest'
+include ':app', ':video', ':barCodeTest'
