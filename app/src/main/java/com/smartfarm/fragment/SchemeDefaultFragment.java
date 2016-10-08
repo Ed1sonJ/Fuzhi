@@ -191,7 +191,6 @@ public class SchemeDefaultFragment extends BaseFragment {
         uploadAndDownloadScheme = new UploadAndDownloadScheme(activity);
         dialog = new BaseProgressDialog(activity);
         //喷淋控制，以及回调
-        // TODO: 2016/9/25 修改了controller的回调
         waterRoom = new WaterRoom(new WaterRoom.WaterInterface() {
             @Override
             public void waterFailed() {
@@ -359,7 +358,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 //        getLqcItemImage();
 //        lqcListView(listViewlqc, lqcItemText, lqcItemColor);
 
-        lqcListViewTest(listViewlqc, lqcItemText);
+        setLqcListViewAdapter(listViewlqc, lqcItemText);
         listViewlqc.setOnItemClickListener(new lqcListener());
 
         othersParamLayout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_scheme_new_parameter_others, schemeDefaultParameterLayout, false);
@@ -1521,7 +1520,7 @@ public class SchemeDefaultFragment extends BaseFragment {
 //        listView.setAdapter(simpleAdapter);
 //    }
 
-    private void lqcListViewTest(ListView listView, String[] itemTexts) {
+    private void setLqcListViewAdapter(ListView listView, String[] itemTexts) {
         SchemeLightQualityAdapter listAdapter = new SchemeLightQualityAdapter(activity, itemTexts);
         listView.setAdapter(listAdapter);
     }

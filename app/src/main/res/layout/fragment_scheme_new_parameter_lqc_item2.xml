@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:id="@+id/lqc_item_des"
-        android:layout_width="45dp"
+        android:layout_width="46dp"
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="5dp"
