@@ -19,10 +19,10 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.SimpleAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.smartfarm.activity.R;
 import com.smartfarm.adapter.DialogTimeListAdapter;
@@ -34,7 +34,6 @@ import com.smartfarm.fragmentUtil.UploadAndDownloadScheme;
 import com.smartfarm.model.Equipment;
 import com.smartfarm.model.TimeSelector;
 import com.smartfarm.util.BaseProgressDialog;
-import com.smartfarm.util.BaseUtil;
 import com.smartfarm.util.DateUtil;
 import com.smartfarm.util.FertilizeRoom;
 import com.smartfarm.util.ToastUtil;
@@ -44,16 +43,9 @@ import com.smartfarm.view.NumberPickerView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.widget.VideoView;
-
-import static com.baidu.location.b.g.S;
 
 public class SchemeDefaultFragment extends BaseFragment {
     Activity activity;
@@ -247,94 +239,12 @@ public class SchemeDefaultFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_scheme_default, container, false);
         initView();
-        setUpVideoView();
         return rootView;
     }
 
-    //视频，还没用到
-    protected void startVideo(String path) {
-        mVideoView.setBufferSize(128);
-        mVideoView.setVideoPath(path);
-        mVideoView.requestFocus();
-//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mediaPlayer) {
-//                mediaPlayer.setPlaybackSpeed(1.0f);
-//            }
-//        });
-        mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                switch (what) {
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                        progressLayout.setVisibility(View.VISIBLE);
-                        ToastUtil.showShort(activity, "加载数据");
-                        mp.pause();
-                        break;
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        progressLayout.setVisibility(View.GONE);
-                        mp.start();
-                        break;
-                    case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
-                        ToastUtil.showLong(activity, "速率:" + extra);
-                        break;
-                    default:
-                        ToastUtil.showLong(activity, "" + what);
-                        break;
-                }
-                return true;
-            }
-        });
-        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                ToastUtil.showLong(activity, "加载数据出错，请稍后再试");
-                progressLayout.setVisibility(View.GONE);
-                mp.pause();
-                mp.reset();
-                return false;
-            }
-        });
-        progressLayout.setVisibility(View.VISIBLE);
-    }
 
-    protected void stopVideo() {
-        mVideoView.pause();
-        mVideoView.stopPlayback();
-    }
 
-    protected void setUpVideoView() {
-        final String path = "rtmp://v.gzfuzhi.com/mytv/test";
 
-        videoBtn = (ImageView) rootView.findViewById(R.id.video_btn);
-        videoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (videoLayout.getVisibility() == View.GONE) {
-                    videoLayout.setVisibility(View.VISIBLE);
-                    startVideo(path);
-                } else {
-                    videoLayout.setVisibility(View.GONE);
-                    stopVideo();
-                }
-            }
-        });
-
-        fullScreenBtn = (ImageView) rootView.findViewById(R.id.video_full_screen);
-        fullScreenBtn.setOnClickListener(new View.OnClickListener() {
-            private boolean fullScreen = false;
-
-            @Override
-            public void onClick(View v) {
-                if (!fullScreen) {
-                } else {
-                }
-            }
-        });
-        videoLayout = (RelativeLayout) rootView.findViewById(R.id.video_layout);
-        progressLayout = (RelativeLayout) rootView.findViewById(R.id.video_progress_layout);
-        mVideoView = (VideoView) rootView.findViewById(R.id.vitamio_videoView);
-    }
 
     private void initView() {
         equipmentsName = (TextView) rootView.findViewById(R.id.scheme_default_equiment_name);

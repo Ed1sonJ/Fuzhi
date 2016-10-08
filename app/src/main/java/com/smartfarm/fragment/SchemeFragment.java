@@ -27,6 +27,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
+import android.widget.VideoView;
 
 import com.smartfarm.activity.R;
 import com.smartfarm.bean.TypeBean;
@@ -40,9 +41,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 //没用到
@@ -136,7 +134,6 @@ public class SchemeFragment extends BaseFragment {
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         rootView = localInflater.inflate(R.layout.fragment_scheme, container, false);
         findViewById();
-        setUpVideoView();
         return rootView;
     }
 
@@ -156,48 +153,7 @@ public class SchemeFragment extends BaseFragment {
         initView();
     }
 
-    protected void setUpVideoView() {
-        String path = "rtmp://v.gzfuzhi.com/mytv/test";
 
-        progressLayout = (RelativeLayout) rootView.findViewById(R.id.video_progress_layout);
-        mVideoView = (VideoView) rootView.findViewById(R.id.vitamio_videoView);
-        mVideoView.setBufferSize(128);
-        mVideoView.setVideoPath(path);
-        mVideoView.setMediaController(new MediaController(getActivity()));
-        mVideoView.requestFocus();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setPlaybackSpeed(1.0f);
-            }
-        });
-        mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                switch (what) {
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                        mp.pause();
-                        ToastUtil.showShort(activity, "加载数据");
-                        break;
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        progressLayout.setVisibility(View.GONE);
-                        mp.start();
-                        break;
-                }
-                return true;
-            }
-        });
-        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                ToastUtil.showLong(activity, "加载数据出错，请稍后再试");
-                progressLayout.setVisibility(View.GONE);
-                activity.finish();
-                return false;
-            }
-        });
-        progressLayout.setVisibility(View.VISIBLE);
-    }
 
     private void noneInvalidIndicator() {
         updateScrollView.setVisibility(View.GONE);
