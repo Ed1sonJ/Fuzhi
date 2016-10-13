@@ -1,17 +1,5 @@
 package com.smartfarm.update;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import org.json.JSONObject;
-
-import com.smartfarm.util.BaseProgressDialog;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smartfarm.bean.UpdateBean;
@@ -36,7 +25,7 @@ import java.net.URL;
 public class UpdateManager {
 	private static UpdateManager instance;
 
-	private Activity context;
+	private Context context;
 
 //	static public synchronized UpdateManager getInstance(Activity ctx) {
 //		if (instance == null) {
@@ -45,22 +34,25 @@ public class UpdateManager {
 //		return instance;
 //	}
 
-	private UpdateManager(Activity ctx) {
+	private UpdateManager(Context ctx) {
 		context = ctx;
 	}
 
-	public static UpdateManager getInstance(Activity context){
+	public static UpdateManager getInstance(Context context){
 		//提高效率
 		if(instance == null){
 			synchronized (UpdateManager.class){
 				if(instance == null){
-					instance = new UpdateManager( context );
+					instance = new UpdateManager( context.getApplicationContext() );
 				}
 			}
 		}
 		return instance;
 	}
 
+	public static void deleteInstance(){
+		instance=null;
+	}
 	/**
 	 * 检测更新的方法，检测服务器存在的update.json文件
 	 * @param callback
