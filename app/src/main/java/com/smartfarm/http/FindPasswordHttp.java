@@ -98,7 +98,7 @@ public class FindPasswordHttp {
 		Log.e("找回密码", reponse);
 		if (reponse.contains("errmsg")) {
 			parseJSON(reponse);// parseJSON是自己定义的方法
-			handler.sendEmptyMessage(SUCCESS);
+			 handler.sendEmptyMessage(SUCCESS);
 		} else
 			handler.sendEmptyMessage(FAIL);
 		
