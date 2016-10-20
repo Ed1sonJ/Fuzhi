@@ -9,11 +9,11 @@ import android.content.DialogInterface.OnCancelListener;
  * 进度对话框的包装类
  */
 public class BaseProgressDialog {
-	private Activity activity;
+	private Context context;
 	private ProgressDialog progressDialog;
 
-	public BaseProgressDialog(Activity ctx) {
-		activity = ctx;
+	public BaseProgressDialog(Context ctx) {
+		context = ctx;
 		progressDialog = new ProgressDialog(ctx);
 		progressDialog.setCancelable(false);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -25,7 +25,7 @@ public class BaseProgressDialog {
 	}
 
 	public void show() {
-		if (!activity.isFinishing())
+		if (!((Activity)context).isFinishing())
 			progressDialog.show();
 	}
 

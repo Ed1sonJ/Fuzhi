@@ -110,7 +110,7 @@ public class MainActivityNew extends AppCompatActivity {
         currentPressedBtn = "list";
 
         //一进来就检测更新
-        UpdateManager updateManager = UpdateManager.getInstance(this);
+        UpdateManager updateManager = UpdateManager.getInstance(MainActivityNew.this);
         updateManager.checkUpdate(new OnCheckUpdateListener());
     }
 
@@ -364,4 +364,9 @@ public class MainActivityNew extends AppCompatActivity {
         chartTextView.setTextColor(getResources().getColor(R.color.green_1));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UpdateManager.deleteInstance();
+    }
 }

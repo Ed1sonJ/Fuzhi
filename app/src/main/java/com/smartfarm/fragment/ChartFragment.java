@@ -45,29 +45,9 @@ public class ChartFragment extends BaseFragment {
 	private int currentSensorIndex;
 	private ViewPagerAdapter adapter;
 	private LruCache<String, Map<String,List<String>>> timeCache = 
-			new LruCache<String, Map<String,List<String>>>(8)
-			{
-				/*当缓存大于我们设定的最大值时，会调用这个方法，我们可以用来做内存释放操作*/
-				@Override
-				protected void entryRemoved(boolean evicted, String key, Map<String, List<String>> oldValue, Map<String, List<String>> newValue) {
-					super.entryRemoved(evicted, key, oldValue, newValue);
-					if (evicted && oldValue != null){
-						oldValue.clear();
-					}
-				}
-			};
+			new LruCache<String, Map<String,List<String>>>(8);
 	private LruCache<String, List<Entry>> dataCache =
-			new LruCache<String, List<Entry>>(8)
-			{
-				/*当缓存大于我们设定的最大值时，会调用这个方法，我们可以用来做内存释放操作*/
-				@Override
-				protected void entryRemoved(boolean evicted, String key, List<Entry> oldValue, List<Entry> newValue) {
-					super.entryRemoved(evicted, key, oldValue, newValue);
-					if (evicted && oldValue != null){
-						oldValue.clear();
-					}
-				}
-			};
+			new LruCache<String, List<Entry>>(8);
 	private List<View> views;
 	private View downLoadFial;
 	private String equipmentCode;
@@ -103,12 +83,16 @@ public class ChartFragment extends BaseFragment {
 		Config config = new Config(activity);
 		config.setIsFirstOpen("isFirstOpen", false);
 		config = null;
+
+		System.out.println("chartfragment onDestroy");
 	}
 
 	@Override
 	public void onDetach() {
 		unregisterEvent();
 		super.onDetach();
+
+		System.out.println("chartfragment onDetach()");
 	}
 
 	private class EventHandler{

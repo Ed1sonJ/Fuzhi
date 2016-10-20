@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.smartfarm.fixleak.IMMLeaks;
 import com.smartfarm.observable.LoginObservable;
 import com.smartfarm.util.Common;
 import com.smartfarm.util.Config;
@@ -102,4 +103,19 @@ public class AutoLogin extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		IMMLeaks.fixFocusedViewLeak(getApplication());
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 }
