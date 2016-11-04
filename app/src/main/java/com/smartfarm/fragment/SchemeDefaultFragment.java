@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +40,7 @@ import com.smartfarm.util.FertilizeRoom;
 import com.smartfarm.util.ToastUtil;
 import com.smartfarm.util.WaterRoom;
 import com.smartfarm.view.NumberPickerView;
+import com.videogo.universalimageloader.utils.L;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.baidu.location.b.g.r;
 
 public class SchemeDefaultFragment extends BaseFragment {
     Activity activity;
@@ -241,9 +245,6 @@ public class SchemeDefaultFragment extends BaseFragment {
         initView();
         return rootView;
     }
-
-
-
 
 
     private void initView() {
@@ -553,8 +554,9 @@ public class SchemeDefaultFragment extends BaseFragment {
         indicatorNames.clear();
         indicatorKeys.clear();
         /**
-         * 先将土壤湿度，施肥、光质，光强匹配，优先显示
+        * 先将土壤湿度，施肥、光质，光强匹配，优先显示
          */
+        Log.i("gzfuzhi","result:"+result);
         int i = findSpecialIndicator(sortNames, "^土壤湿度.*");
         if (i != -1) {
             //没有将“土壤湿度控制器”写入数组，用“喷淋控制器”这个名称覆盖了
@@ -833,6 +835,10 @@ public class SchemeDefaultFragment extends BaseFragment {
         //phc 土壤PH值
         else if (indicatorKeys.get(index).equals("phc")) {
             initParamOthers(10);
+        }
+        //co2c 二氧化碳
+        else if(indicatorKeys.get(index).equals("co2c")){
+            initParamOthers(6000);
         }
         //其他
         else {
